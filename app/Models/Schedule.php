@@ -18,7 +18,7 @@ class Schedule extends Model
     // Quan hệ: Lấy môn học của lịch học
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
     }
 
     // Quan hệ: Lấy các sinh viên có lịch học này (qua student_schedules)

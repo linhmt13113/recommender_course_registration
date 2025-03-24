@@ -21,12 +21,12 @@ class Curriculum extends Model
     // Quan hệ: Một curriculum thuộc về một chuyên ngành
     public function major()
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
 
     // Quan hệ: Một curriculum chứa một môn học
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
     }
 }

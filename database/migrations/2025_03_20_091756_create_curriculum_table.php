@@ -11,15 +11,15 @@ class CreateCurriculumTable extends Migration
         Schema::create('curriculum', function (Blueprint $table) {
             $table->id(); // ID tự động
             $table->string('curriculum_id')->unique(); // Mã chương trình học tự tạo
-            $table->unsignedBigInteger('major_id');
+            $table->string('major_id');
             $table->integer('semester'); // Học kỳ: 1, 2, 3, ...
-            $table->unsignedBigInteger('course_id');
+            $table->string('course_id');
             $table->boolean('is_mandatory'); // true: bắt buộc, false: tự chọn
             $table->integer('semester_order'); // Thứ tự của môn học trong học kỳ
             $table->timestamps();
 
-            $table->foreign('major_id')->references('id')->on('majors')->onDelete('cascade');
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('major_id')->references('major_id')->on('majors')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
         });
     }
 

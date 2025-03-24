@@ -9,6 +9,10 @@ class Major extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'major_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'major_id',    // Mã chuyên ngành tự tạo
         'major_name',
@@ -17,13 +21,13 @@ class Major extends Model
     // Quan hệ: Một chuyên ngành có nhiều sinh viên
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'major_id', 'major_id');
     }
 
     // Quan hệ: Một chuyên ngành có nhiều khóa chương trình đào tạo (curriculum)
     public function curriculums()
     {
-        return $this->hasMany(Curriculum::class);
+        return $this->hasMany(Curriculum::class, 'major_id', 'major_id');
     }
 
     // Quan hệ: Một chuyên ngành có nhiều môn học thông qua bảng trung gian course_major

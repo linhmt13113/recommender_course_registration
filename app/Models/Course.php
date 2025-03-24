@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'course_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'course_id',           // Mã môn học tự tạo
@@ -31,13 +34,13 @@ class Course extends Model
     // Quan hệ: Một môn học được dạy bởi một giảng viên
     public function lecturer()
     {
-        return $this->belongsTo(Lecturer::class);
+        return $this->belongsTo(Lecturer::class, 'lecturer_id', 'lecturer_id');
     }
 
     // Quan hệ: Một môn học có thể xuất hiện trong nhiều chương trình đào tạo (curriculum)
     public function curriculums()
     {
-        return $this->hasMany(Curriculum::class);
+        return $this->hasMany(Curriculum::class, 'course_id', 'course_id');
     }
 
     // Quan hệ: Một môn học có thể có nhiều yêu cầu tiên quyết (prerequisites)

@@ -10,13 +10,13 @@ class CreateCourseMajorTable extends Migration
     {
         Schema::create('course_major', function (Blueprint $table) {
             $table->id(); // ID tự động để dễ quản lý và mở rộng
-            $table->unsignedBigInteger('course_id');
-            $table->unsignedBigInteger('major_id');
+            $table->string('course_id');
+            $table->string('major_id');
             $table->boolean('is_elective'); // true: môn tự chọn, false: bắt buộc
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->foreign('major_id')->references('id')->on('majors')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
+            $table->foreign('major_id')->references('major_id')->on('majors')->onDelete('cascade');
 
             // Nếu không cần id tự động, bạn có thể sử dụng composite key:
             // $table->primary(['course_id', 'major_id']);

@@ -16,15 +16,14 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id(); // ID tự tăng hỗ trợ khóa chính
-            $table->string('student_id')->unique(); // Mã sinh viên tự tạo
+            $table->string('student_id')->primary(); // Đánh dấu là khóa chính
             $table->string('student_name');
-            $table->unsignedBigInteger('major_id');
-            $table->string('password'); // Lưu mật khẩu đã băm
+            $table->string('major_id');
+            $table->string('password');
             $table->timestamps();
 
-            // Khóa ngoại liên kết đến bảng majors (sẽ tạo sau)
-            $table->foreign('major_id')->references('id')->on('majors')->onDelete('cascade');
+            // Sửa lại khóa ngoại liên kết đến majors, tham chiếu đến cột 'major_id' (không còn là 'id')
+            $table->foreign('major_id')->references('major_id')->on('majors')->onDelete('cascade');
         });
     }
 
@@ -40,3 +39,4 @@ class CreateStudentsTable extends Migration
         Schema::dropIfExists('students');
     }
 }
+

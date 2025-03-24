@@ -9,7 +9,6 @@ class CreateAdminsTable extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id(); // ID tự tăng
             $table->string('admin_id')->unique(); // Mã admin tự tạo
             $table->string('admin_name');
             $table->string('email')->unique();

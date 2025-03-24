@@ -10,14 +10,14 @@ class CreateStudentCoursesTable extends Migration
     {
         Schema::create('student_courses', function (Blueprint $table) {
             $table->id(); // ID tự động để dễ quản lý và mở rộng
-            $table->unsignedBigInteger('student_id');
-            $table->unsignedBigInteger('course_id');
+            $table->string('student_id');
+            $table->string('course_id');
             // status: 0 = chưa hoàn thành, 1 = đã hoàn thành
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
 
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('student_id')->references('student_id')->on('students')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
 
             // Nếu dùng composite key:
             // $table->primary(['student_id', 'course_id']);

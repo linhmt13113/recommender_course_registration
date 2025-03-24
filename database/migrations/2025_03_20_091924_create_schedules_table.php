@@ -12,12 +12,12 @@ class CreateSchedulesTable extends Migration
             $table->id(); // ID tự động
             // Nếu bạn muốn sử dụng mã thời khóa biểu tự tạo, thêm cột dưới đây:
             $table->string('schedule_id')->unique()->nullable();
-            $table->unsignedBigInteger('course_id');
+            $table->string('course_id');
             // day_of_week: 1 - Thứ 2, 2 - Thứ 3, ...
             $table->tinyInteger('day_of_week');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('course_id')->references('course_id')->on('courses')->onDelete('cascade');
         });
     }
 

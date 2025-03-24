@@ -35,12 +35,12 @@ class UserSeeder extends Seeder
             'password'      => Hash::make('lecturer123'),
         ]);
 
-        Student::create([
-            'student_id'   => 'SV' . time(),
-            'student_name' => 'Sinh viên 1',
-            'major_id'     => $major->id,
-            'password'     => Hash::make('student123'),
+        // Student::create([
+        //     'student_id'   => 'SV' . time(),
+        //     'student_name' => 'Sinh viên 1',
+        //     'major_id'     => $major->id,
+        //     'password'     => Hash::make('student123'),
 
-        ]);
+        // ]);
     }
 }

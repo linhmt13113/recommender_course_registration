@@ -16,6 +16,7 @@ class Course extends Model
         'course_id',           // Mã môn học tự tạo
         'course_name',
         'course_description',
+        'credits',
         'lecturer_id'          // Giảng viên dạy môn học (có thể null)
     ];
 

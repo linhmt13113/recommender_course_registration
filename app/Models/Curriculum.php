@@ -15,7 +15,6 @@ class Curriculum extends Model
         'semester',
         'course_id',
         'is_mandatory',
-        'semester_order'
     ];
 
     // Quan hệ: Một curriculum thuộc về một chuyên ngành

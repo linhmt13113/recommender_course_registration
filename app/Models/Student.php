@@ -30,7 +30,7 @@ class Student extends Model
     // Quan hệ: Một sinh viên có thể đăng ký nhiều môn học (qua bảng pivot student_courses)
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'student_courses', 'student_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'student_courses', 'student_id', 'course_id')->withPivot('semester', 'status');
     }
 
     // Quan hệ: Một sinh viên có thể có nhiều thời khóa biểu (qua bảng pivot student_schedules)

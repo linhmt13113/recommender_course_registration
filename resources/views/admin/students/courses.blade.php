@@ -13,6 +13,8 @@
             <tr>
                 <th>Mã môn học</th>
                 <th>Tên môn học</th>
+                <th>Semester</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +22,8 @@
             <tr>
                 <td>{{ $course->course_id }}</td>
                 <td>{{ $course->course_name }}</td>
+                <td>{{ $course->pivot->semester }}</td>
+                <td>{{ $course->pivot->status == 1 ? 'Đã học' : 'Chưa hoàn thành'}}</td>
             </tr>
             @empty
             <tr>

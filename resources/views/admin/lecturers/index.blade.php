@@ -30,6 +30,7 @@
                 <td>{{ $lecturer->lecturer_name }}</td>
                 <td>
                     <a href="{{ route('giangvien.edit', ['giangvien' => $lecturer->lecturer_id]) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="{{ route('giangvien.courses', $lecturer->lecturer_id) }}" class="btn btn-info btn-sm">Xem môn dạy</a>
                     <form action="{{ route('giangvien.destroy', ['giangvien' => $lecturer->lecturer_id]) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')

@@ -53,6 +53,8 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
     // Quản lý Giảng viên
     Route::resource('giangvien', LecturerController::class);
+    Route::get('giangvien/{lecturer}/courses', [LecturerController::class, 'courses'])->name('giangvien.courses');
+
 
     // Quản lý Môn học
     Route::resource('monhoc', CourseController::class);

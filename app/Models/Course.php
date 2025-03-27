@@ -23,7 +23,8 @@ class Course extends Model
     // Quan hệ: Một môn học thuộc về nhiều chuyên ngành thông qua bảng course_major
     public function majors()
     {
-        return $this->belongsToMany(Major::class, 'course_major')->withPivot('is_elective');
+        return $this->belongsToMany(Major::class, 'course_major', 'course_id', 'major_id')
+            ->withPivot('is_elective');
     }
 
     // Quan hệ: Một môn học có thể có nhiều sinh viên đăng ký (qua student_courses)
@@ -65,5 +66,21 @@ class Course extends Model
     public function semesters()
     {
         return $this->belongsToMany(Semester::class, 'semester_courses', 'course_id', 'semester_id')->withTimestamps();
+    }
+
+    /**
+     * Quan hệ: Lấy thông tin chuyên ngành duy nhất của môn học (course_major).
+     */
+    public function course_major()
+    {
+        return $this->hasOne(\App\Models\CourseMajor::class, 'course_id', 'course_id');
+    }
+
+    /**
+     * Quan hệ: Lấy thông tin tiên quyết duy nhất của môn học.
+     */
+    public function prerequisite()
+    {
+        return $this->hasOne(\App\Models\Prerequisite::class, 'course_id', 'course_id');
     }
 }

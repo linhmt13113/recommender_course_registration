@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
+use App\Models\Course;
 
 class LecturerController extends Controller
 {
@@ -80,5 +81,13 @@ class LecturerController extends Controller
 
         return redirect()->route('giangvien.index')
                          ->with('success', 'Xóa giảng viên thành công.');
+    }
+
+    public function courses($lecturer_id)
+    {
+        $lecturer = Lecturer::findOrFail($lecturer_id);
+        $courses  = Course::where('lecturer_id', $lecturer_id)->get();
+
+        return view('admin.lecturers.courses', compact('lecturer', 'courses'));
     }
 }

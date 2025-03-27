@@ -42,6 +42,8 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     // Route quản lý mở đợt đăng ký
     Route::get('/registration', [RegistrationController::class, 'index'])->name('admin.registration.index');
     Route::post('/registration/open/{id}', [RegistrationController::class, 'openRegistration'])->name('admin.registration.open');
+    Route::get('/registration/courses/{id}', [RegistrationController::class, 'showRegistrationCourses'])->name('admin.registration.courses');
+    Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('admin.registration.storeCourses');
 
     // Quản lý Sinh viên
     Route::resource('sinhvien', StudentController::class);

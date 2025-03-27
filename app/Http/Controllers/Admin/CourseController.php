@@ -33,25 +33,36 @@ class CourseController extends Controller
      * Lưu môn học mới.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'course_name'        => 'required',
-            'course_description' => 'nullable',
-        ]);
+{
+    $request->validate([
+        'course_name'        => 'required',
+        'course_description' => 'nullable',
+        'day_of_week'        => 'required|integer|min:1|max:7',
+        'start_time'         => 'required',
+        'end_time'           => 'required',
+    ]);
 
-        $course = new Course();
-        // Sinh mã môn học tự tạo: 'MH' + thời gian hiện tại
-        $course->course_id           = 'MH' . time();
-        $course->course_name         = $request->input('course_name');
-        $course->course_description  = $request->input('course_description');
-        if ($request->filled('lecturer_id')) {
-            $course->lecturer_id = $request->input('lecturer_id');
-        }
-        $course->save();
-
-        return redirect()->route('monhoc.index')
-                         ->with('success', 'Thêm môn học thành công.');
+    $course = new Course();
+    // Sinh mã môn học tự tạo: 'MH' + thời gian hiện tại
+    $course->course_id           = 'MH' . time();
+    $course->course_name         = $request->input('course_name');
+    $course->course_description  = $request->input('course_description');
+    if ($request->filled('lecturer_id')) {
+        $course->lecturer_id = $request->input('lecturer_id');
     }
+    $course->save();
+
+    // Tạo lịch học cho môn học vừa thêm
+    $course->schedules()->create([
+        'day_of_week' => $request->input('day_of_week'),
+        'start_time'  => $request->input('start_time'),
+        'end_time'    => $request->input('end_time'),
+    ]);
+
+    return redirect()->route('monhoc.index')
+                     ->with('success', 'Thêm môn học thành công.');
+}
+
 
     /**
      * Hiển thị form chỉnh sửa môn học.
@@ -68,23 +79,42 @@ class CourseController extends Controller
      * Cập nhật thông tin môn học.
      */
     public function update(Request $request, $course_id)
-    {
-        $request->validate([
-            'course_name'        => 'required',
-            'course_description' => 'nullable',
-        ]);
+{
+    $request->validate([
+        'course_name'        => 'required',
+        'course_description' => 'nullable',
+        'day_of_week'        => 'required|integer|min:1|max:7',
+        'start_time'         => 'required',
+        'end_time'           => 'required',
+    ]);
 
-        $course = Course::findOrFail($course_id);
-        $course->course_name        = $request->input('course_name');
-        $course->course_description = $request->input('course_description');
-        if ($request->filled('lecturer_id')) {
-            $course->lecturer_id = $request->input('lecturer_id');
-        }
-        $course->save();
-
-        return redirect()->route('monhoc.index')
-                         ->with('success', 'Cập nhật môn học thành công.');
+    $course = Course::findOrFail($course_id);
+    $course->course_name        = $request->input('course_name');
+    $course->course_description = $request->input('course_description');
+    if ($request->filled('lecturer_id')) {
+        $course->lecturer_id = $request->input('lecturer_id');
     }
+    $course->save();
+
+    // Cập nhật lịch học nếu có, hoặc tạo mới nếu chưa có
+    if ($course->schedules()->exists()) {
+        $course->schedules()->update([
+            'day_of_week' => $request->input('day_of_week'),
+            'start_time'  => $request->input('start_time'),
+            'end_time'    => $request->input('end_time'),
+        ]);
+    } else {
+        $course->schedules()->create([
+            'day_of_week' => $request->input('day_of_week'),
+            'start_time'  => $request->input('start_time'),
+            'end_time'    => $request->input('end_time'),
+        ]);
+    }
+
+    return redirect()->route('monhoc.index')
+                     ->with('success', 'Cập nhật môn học thành công.');
+}
+
 
     /**
      * Xóa môn học.

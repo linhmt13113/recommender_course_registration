@@ -59,6 +59,11 @@ class Course extends Model
     // Quan hệ: Một môn học có thể có nhiều lịch học
     public function schedules()
     {
-        return $this->hasMany(Schedule::class);
+        return $this->hasMany(Schedule::class, 'course_id', 'course_id');
+    }
+
+    public function semesters()
+    {
+        return $this->belongsToMany(Semester::class, 'semester_courses', 'course_id', 'semester_id')->withTimestamps();
     }
 }

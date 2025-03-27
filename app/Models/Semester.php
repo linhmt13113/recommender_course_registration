@@ -15,4 +15,9 @@ class Semester extends Model
         'end_date',
         'registration_status',
     ];
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class, 'semester_courses', 'semester_id', 'course_id')->withTimestamps();
+    }
 }

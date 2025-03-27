@@ -22,6 +22,7 @@
                 <th>Tên Môn học</th>
                 <th>Mô tả Môn học</th>
                 <th>Giảng viên</th>
+                <th>Thời gian học</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -32,6 +33,31 @@
                 <td>{{ $course->course_name }}</td>
                 <td>{{ $course->course_description ?? 'Không có mô tả' }}</td>
                 <td>{{ $course->lecturer ? $course->lecturer->lecturer_name : 'N/A' }}</td>
+                <td>
+                    @if($course->schedules->isNotEmpty())
+                        @php
+                            // Nếu mỗi môn học chỉ có 1 lịch chính, ta hiển thị lịch đầu tiên
+                            $schedule = $course->schedules->first();
+                        @endphp
+                        <div>
+                            <strong>Ngày:</strong>
+                            @switch($schedule->day_of_week)
+                                @case(1) Thứ 2 @break
+                                @case(2) Thứ 3 @break
+                                @case(3) Thứ 4 @break
+                                @case(4) Thứ 5 @break
+                                @case(5) Thứ 6 @break
+                                @case(6) Thứ 7 @break
+                                @case(7) Chủ nhật @break
+                                @default Không xác định
+                            @endswitch
+                        </div>
+                        <div><strong>Bắt đầu:</strong> {{ $schedule->start_time }}</div>
+                        <div><strong>Kết thúc:</strong> {{ $schedule->end_time }}</div>
+                    @else
+                        Chưa có lịch học
+                    @endif
+                </td>
                 <td>
                     <a href="{{ route('monhoc.edit', $course->course_id) }}" class="btn btn-warning btn-sm">Sửa</a>
                     <form action="{{ route('monhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">

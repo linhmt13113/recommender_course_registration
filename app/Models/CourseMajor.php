@@ -16,6 +16,10 @@ class CourseMajor extends Model
         'recommended_semester',
     ];
 
+    protected $casts = [
+        'recommended_semester' => 'integer',
+    ];
+
     // Quan hệ với Course (nếu cần)
     public function course()
     {

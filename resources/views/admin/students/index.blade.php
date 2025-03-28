@@ -32,6 +32,7 @@
                 <td>{{ $student->major->major_name ?? 'N/A' }}</td>
                 <td>
                     <a href="{{ route('admin.students.courses', ['id' => $student->student_id]) }}" class="btn btn-info btn-sm">Xem môn học</a>
+                    <a href="{{ route('admin.students.registrations', ['id' => $student->student_id]) }}" class="btn btn-success btn-sm">Xem đăng ký mới</a>
                     <a href="{{ route('sinhvien.edit', ['sinhvien' => $student->student_id]) }}" class="btn btn-warning btn-sm">Sửa</a>
                     <form action="{{ route('sinhvien.destroy', ['sinhvien' => $student->student_id]) }}" method="POST" style="display:inline-block">
                         @csrf

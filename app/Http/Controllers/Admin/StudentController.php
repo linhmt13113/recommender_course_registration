@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Major;
+use App\Models\StudentRegistration;
 
 class StudentController extends Controller
 {
@@ -93,11 +94,22 @@ class StudentController extends Controller
     }
 
     /**
-     * Xem chi tiết các môn học mà sinh viên đã đăng ký.
+     * Xem chi tiết các môn học mà sinh viên đã hoc.
      */
     public function showCourses($student_id)
     {
         $student = Student::with('courses', 'major')->findOrFail($student_id);
         return view('admin.students.courses', compact('student'));
+    }
+
+    public function showRegistrations($student_id)
+    {
+        $student = Student::with('major')->findOrFail($student_id);
+        // Lấy đăng ký từ bảng student_registrations, eager load quan hệ course
+        $registrations = StudentRegistration::with('course')
+                            ->where('student_id', $student_id)
+                            ->get();
+
+        return view('admin.students.registrations', compact('student', 'registrations'));
     }
 }

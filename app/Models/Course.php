@@ -83,4 +83,9 @@ class Course extends Model
     {
         return $this->hasOne(\App\Models\Prerequisite::class, 'course_id', 'course_id');
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(\App\Models\StudentRegistration::class, 'course_id', 'course_id');
+    }
 }

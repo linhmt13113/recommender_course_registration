@@ -38,4 +38,9 @@ class Student extends Model
     {
         return $this->belongsToMany(Schedule::class, 'student_schedules');
     }
+
+    public function registrations()
+    {
+        return $this->hasMany(\App\Models\StudentRegistration::class, 'student_id', 'student_id');
+    }
 }

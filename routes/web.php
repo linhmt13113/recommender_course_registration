@@ -49,7 +49,10 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     Route::resource('sinhvien', StudentController::class);
     // Xem danh sách các môn học mà sinh viên đã học
     Route::get('sinhvien/{id}/courses', [StudentController::class, 'showCourses'])
-         ->name('admin.students.courses');
+        ->name('admin.students.courses');
+    // Route xem danh sách các môn mới đăng ký (từ bảng student_registrations)
+    Route::get('sinhvien/{id}/registrations', [StudentController::class, 'showRegistrations'])
+        ->name('admin.students.registrations');
 
     // Quản lý Giảng viên
     Route::resource('giangvien', LecturerController::class);

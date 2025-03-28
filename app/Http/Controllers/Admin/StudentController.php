@@ -43,7 +43,7 @@ class StudentController extends Controller
         $student->student_id   = $request->input('student_id');
         $student->student_name = $request->input('student_name');
         $student->major_id     = $request->input('major_id');
-        $student->password     = bcrypt('defaultpassword');
+        $student->password     = bcrypt('student123');
         $student->save();
 
         return redirect()->route('sinhvien.index')

@@ -10,7 +10,8 @@ class SemesterCourse extends Model
     protected $table = 'semester_courses';
 
     protected $fillable = [
-        'semester_id',
+        'semester_id', // cái này nó là khóa ngoại (foreign key)
+                       // dùng để liên kết đến bảng semesters có id(khóa chính) là 1
         'course_id',
     ];
 

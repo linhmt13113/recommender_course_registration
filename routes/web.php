@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SemesterController;
+use App\Http\Controllers\Lecturer\LecturersController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -68,9 +69,15 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
 
 // Route cho Lecturer
-Route::get('/gvien/lichday', function () {
-    return view('lecturer.schedule');
-})->middleware(CheckLecturer::class);
+Route::prefix('gvien')->middleware(CheckLecturer::class)->group(function () {
+    // Route hiển thị thời khóa biểu của giảng viên
+    Route::get('/lichday', [LecturersController::class, 'schedule'])
+         ->name('lecturer.schedule');
+
+    // Route hiển thị danh sách đăng ký của một môn học
+    Route::get('/monhoc/{course_id}/dangky', [LecturersController::class, 'courseRegistrations'])
+         ->name('lecturer.courses.registrations');
+});
 
 // Route cho Student
 Route::get('/svien/dashboard', function () {

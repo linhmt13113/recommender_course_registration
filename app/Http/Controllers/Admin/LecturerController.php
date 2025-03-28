@@ -32,13 +32,14 @@ class LecturerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'lecturer_id'   => 'required|unique:lecturers,lecturer_id',
             'lecturer_name' => 'required',
         ]);
 
         $lecturer = new Lecturer();
-        $lecturer->lecturer_id   = 'GV' . time();
+        $lecturer->lecturer_id = $request->input('lecturer_id');
         $lecturer->lecturer_name = $request->input('lecturer_name');
-        $lecturer->password      = bcrypt('defaultpassword');
+        $lecturer->password      = bcrypt('lecturer123');
         $lecturer->save();
 
         return redirect()->route('giangvien.index')

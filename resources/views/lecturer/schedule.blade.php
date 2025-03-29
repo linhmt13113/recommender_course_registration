@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <title>Thời khóa biểu giảng viên</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <a href="{{ route('lecturer.change_password') }}">Đổi mật khẩu</a>
+    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit">Đăng xuất</button>
+        </form>
 </head>
 <body>
+
 <div class="container mt-4">
     <h1>Thời khóa biểu giảng viên: {{ session('user')->lecturer_name ?? session('user')->lecturer_id }}</h1>
     @if($activeSemester)

@@ -62,7 +62,7 @@ class AuthController extends Controller
                 'user'      => $student,
                 'major_id'  => $student->major_id
             ]);
-            return redirect('/svien/dashboard');
+            return redirect('/svien/dashboard')->with('student', $student);
         }
 
         // Nếu không tìm thấy hoặc mật khẩu không đúng, trả về lỗi

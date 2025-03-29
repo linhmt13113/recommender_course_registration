@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SemesterController;
 use App\Http\Controllers\Lecturer\LecturersController;
+use App\Http\Controllers\Student\MainStudentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -72,14 +73,30 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 Route::prefix('gvien')->middleware(CheckLecturer::class)->group(function () {
     // Route hiển thị thời khóa biểu của giảng viên
     Route::get('/lichday', [LecturersController::class, 'schedule'])
-         ->name('lecturer.schedule');
+        ->name('lecturer.schedule');
 
     // Route hiển thị danh sách đăng ký của một môn học
     Route::get('/monhoc/{course_id}/dangky', [LecturersController::class, 'courseRegistrations'])
-         ->name('lecturer.courses.registrations');
+        ->name('lecturer.courses.registrations');
+
+    Route::get('/change-password', function () {
+        return view('lecturer.change_password');
+    })->name('lecturer.change_password');
 });
 
 // Route cho Student
-Route::get('/svien/dashboard', function () {
-    return view('student.dashboard');
-})->middleware(CheckStudent::class);
+Route::prefix('svien')->middleware(CheckStudent::class)->group(function () {
+    Route::get('/dashboard', function () {
+        return view('student.dashboard');
+    })->name('student.dashboard');
+
+    // Route hiển thị view đổi mật khẩu cho sinh viên
+    Route::get('/change-password', function () {
+        return view('student.change_password');
+    })->name('student.change_password');
+
+    // Các route khác của sinh viên có thể được thêm vào đây
+    Route::get('/past-courses', [MainStudentController::class, 'showPastCourses'])->name('student.past_courses');
+
+    Route::get('/curriculum', [MainStudentController::class, 'showCurriculum'])->name('student.curriculum');
+});

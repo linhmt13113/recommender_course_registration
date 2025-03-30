@@ -44,6 +44,11 @@ class MainStudentController extends Controller
         // Chuyển $curriculum thành mảng
     $curriculumArr = $curriculum->toArray();
 
+    // Loại bỏ các môn tự chọn (is_elective == 1) từ dữ liệu gốc
+    $curriculumArr = array_filter($curriculumArr, function($item) {
+        return $item['is_elective'] != 1;
+    });
+
     // Tạo các dòng "Elective mặc định" cho học kỳ 5,6,7,8 dưới dạng mảng
     $defaultElectivesArr = [];
     foreach ([5, 6, 7, 8] as $semester) {

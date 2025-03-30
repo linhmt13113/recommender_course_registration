@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\SemesterController;
 use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
+use App\Http\Controllers\Student\CourseRegistrationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,6 +57,9 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     Route::get('sinhvien/{id}/registrations', [StudentController::class, 'showRegistrations'])
         ->name('admin.students.registrations');
 
+    Route::delete('sinhvien/registrations/{registration}', [StudentController::class, 'destroyRegistration'])
+        ->name('admin.students.registrations.destroy');
+
     // Quản lý Giảng viên
     Route::resource('giangvien', LecturerController::class);
     Route::get('giangvien/{lecturer}/courses', [LecturerController::class, 'courses'])->name('giangvien.courses');
@@ -99,4 +103,15 @@ Route::prefix('svien')->middleware(CheckStudent::class)->group(function () {
     Route::get('/past-courses', [MainStudentController::class, 'showPastCourses'])->name('student.past_courses');
 
     Route::get('/curriculum', [MainStudentController::class, 'showCurriculum'])->name('student.curriculum');
+
+    // Trang đăng ký môn học
+    Route::get('/course-registration', [CourseRegistrationController::class, 'index'])->name('student.course_registration.index');
+    Route::post('/course-registration/register', [CourseRegistrationController::class, 'register'])->name('student.course_registration.register');
+    Route::delete('/course-registration/{courseId}', [CourseRegistrationController::class, 'deleteRegistration'])->name('student.course_registration.delete');
+
+    // Lưu sở thích của sinh viên
+    Route::post('/course-registration/preferences', [CourseRegistrationController::class, 'storePreferences'])->name('student.course_registration.preferences');
+
+    // Xem thời khóa biểu
+    Route::get('/schedule', [CourseRegistrationController::class, 'showSchedule'])->name('student.schedule');
 });

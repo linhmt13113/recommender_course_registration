@@ -19,6 +19,8 @@
         <nav>
             <a href="{{ route('student.curriculum') }}">Chương trình đào tạo</a> |
             <a href="{{ route('student.past_courses') }}">Các môn đã học</a>
+            <a href="{{ route('student.course_registration.index') }}" class="btn btn-primary">Đăng ký môn học</a>
+            <a href="{{ route('student.schedule') }}" class="btn btn-primary">Thời khóa biểu</a>
         </nav>
     </header>
     <div class="container">

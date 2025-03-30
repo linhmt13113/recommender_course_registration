@@ -20,7 +20,8 @@
                         <td>{{ $course->course->course_id }}</td>
                         <td>{{ $course->course->course_name }}</td>
                         <td>{{ $course->semester }}</td>
-                        <td>{{ $course->status }}</td>
+                        <td>{{ $course->status == '1' || $course->status == 1 ? 'Đã học' : 'Chưa hoàn thành'}}</td>
+
                     </tr>
                 @endforeach
             </tbody>

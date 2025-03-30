@@ -76,9 +76,10 @@ class RegistrationController extends Controller
         if (now()->lt($semester->start_date)) {
             $semester->registration_status = 'open';
             $semester->save();
-        } else {
-            return redirect()->back()->with('error', 'Học kỳ này đã bắt đầu, không thể mở đăng ký.');
         }
+        // else {
+        //     return redirect()->back()->with('error', 'Học kỳ này đã bắt đầu, không thể mở đăng ký.');
+        // }
 
         // Cập nhật danh sách các môn được chọn cho học kỳ bằng sync,
         // sync sẽ tự động thêm các môn mới và xóa những môn bị bỏ chọn.

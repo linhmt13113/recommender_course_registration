@@ -29,11 +29,51 @@
         </div>
     @endif
 
+    {{-- Phần gợi ý các môn tự chọn dựa trên sở thích --}}
+    <h2>Gợi ý các môn tự chọn (Top 3) dựa trên sở thích của bạn</h2>
+    @if(session('electiveRecommendations'))
+        @php $recommendations = session('electiveRecommendations'); @endphp
+        @if(count($recommendations) > 0)
+            <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
+                <thead>
+                    <tr>
+                        <th>Mã môn</th>
+                        <th>Tên môn</th>
+                        <th>Độ tương đồng (Cosine Similarity)</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($recommendations as $rec)
+                        <tr>
+                            <td>{{ $rec['course_id'] }}</td>
+                            <td>{{ $rec['course_name'] }}</td>
+                            <td>{{ round($rec['score'], 4) }}</td>
+                            <td>
+                                <!-- Nút tìm ngay: gọi JS để điền tên môn vào ô tìm kiếm -->
+                                <button type="button" onclick="fillSearch('{{ $rec['course_id'] }}')">Tìm ngay</button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p>Không có gợi ý nào.</p>
+        @endif
+    @else
+        <p>Chưa có gợi ý môn tự chọn. Hãy lưu sở thích để nhận gợi ý.</p>
+    @endif
+
+    {{-- Ô tìm kiếm cho phần "Các môn mở đăng ký" --}}
     <h2>Các môn mở đăng ký</h2>
+    <input type="text" id="searchAvailable" placeholder="Tìm kiếm môn học..." onkeyup="searchAvailableCourses()"
+        style="width: 300px; margin-bottom: 10px;" />
+
     @if($availableCourses->isEmpty())
         <p>Không có môn học nào mở đăng ký.</p>
     @else
-        <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
+        <table id="availableCoursesTable" style="border: 1px solid black; border-collapse: collapse; width: 100%;"
+            cellpadding="5">
             <thead>
                 <tr>
                     <th>Mã môn</th>
@@ -49,9 +89,7 @@
             <tbody>
                 @foreach($availableCourses as $semesterCourse)
                     @php
-                        // Lấy thông tin course từ semesterCourse, nếu chưa có sẽ là null
                         $course = optional($semesterCourse)->course;
-                        // Lấy lịch học đầu tiên của course nếu tồn tại, ngược lại null.
                         $schedule = $course ? $course->schedules->first() : null;
                     @endphp
                     <tr>
@@ -79,7 +117,7 @@
     @if($registeredCourses->isEmpty())
         <p>Chưa đăng ký môn học nào.</p>
     @else
-        <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
+        <table style="border: 1px solid black; border-collapse: collapse; width: 100%;" cellpadding="5">
             <thead>
                 <tr>
                     <th>Mã môn</th>
@@ -97,9 +135,7 @@
             <tbody>
                 @foreach($registeredCourses as $reg)
                     @php
-                        // Lấy thông tin course từ registration
                         $course = optional($reg->course);
-                        // Lấy lịch học đầu tiên của course, nếu có
                         $schedule = $course ? $course->schedules->first() : null;
                     @endphp
                     <tr>
@@ -125,13 +161,12 @@
         </table>
     @endif
 
-
-    <h2>Học kỳ hiện tại của sinh viên là {{ $currentSemester }}. </h2>
+    <h2>Học kỳ hiện tại của sinh viên là {{ $currentSemester }}.</h2>
     <h2>Các môn bắt buộc cho học kỳ {{ $currentSemester + 1 }} bao gồm:</h2>
     @if($requiredNextSemesterCourses->isEmpty())
         <p>Không có môn bắt buộc nào cần đăng ký.</p>
     @else
-        <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
+        <table style="border: 1px solid black; border-collapse: collapse; width: 100%;" cellpadding="5">
             <thead>
                 <tr>
                     <th>Mã môn</th>
@@ -142,9 +177,12 @@
             </thead>
             <tbody>
                 @foreach($requiredNextSemesterCourses as $item)
+                    @php
+                        $course = optional($item->course);
+                    @endphp
                     <tr>
-                        <td>{{ optional($item->course)->course_id }}</td>
-                        <td>{{ optional($item->course)->course_name }}</td>
+                        <td>{{ optional($course)->course_id }}</td>
+                        <td>{{ optional($course)->course_name }}</td>
                         <td>{{ optional($course)->credits }}</td>
                         <td>{{ $item->recommended_semester }}</td>
                     </tr>
@@ -157,7 +195,7 @@
     @if($electiveCourses->isEmpty())
         <p>Không có môn tự chọn nào cần đăng ký.</p>
     @else
-        <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
+        <table style="border: 1px solid black; border-collapse: collapse; width: 100%;" cellpadding="5">
             <thead>
                 <tr>
                     <th>Mã môn</th>
@@ -167,9 +205,12 @@
             </thead>
             <tbody>
                 @foreach($electiveCourses as $item)
+                    @php
+                        $course = optional($item->course);
+                    @endphp
                     <tr>
-                        <td>{{ optional($item->course)->course_id }}</td>
-                        <td>{{ optional($item->course)->course_name }}</td>
+                        <td>{{ optional($course)->course_id }}</td>
+                        <td>{{ optional($course)->course_name }}</td>
                         <td>{{ optional($course)->credits }}</td>
                     </tr>
                 @endforeach
@@ -181,39 +222,56 @@
     <form action="{{ route('student.course_registration.preferences') }}" method="POST">
         @csrf
         <div>
-            <label for="preferences">Sở thích của bạn với các môn học:</label><br>
-            <textarea name="preferences" id="preferences" cols="50" rows="5">{{ old('preferences') }}</textarea>
+            <label for="preference_text">Nhập sở thích của bạn:</label><br>
+            <textarea name="preference_text" id="preference_text" cols="50" rows="5">{{ old('preference_text') }}</textarea>
+        </div>
+        <div style="margin-top: 10px;">
+            <label for="preference_select">Chọn sở thích từ danh sách (có thể chọn nhiều):</label><br>
+            <select name="preference_select[]" id="preference_select" multiple style="width:300px;">
+                <option value="Sáng tạo">Sáng tạo</option>
+                <option value="Tư duy logic">Tư duy logic</option>
+                <option value="Khám phá">Khám phá</option>
+                <option value="Kinh doanh">Kinh doanh</option>
+                <option value="Nghiên cứu khoa học">Nghiên cứu khoa học</option>
+            </select>
         </div>
         <button type="submit">Lưu sở thích</button>
     </form>
 
-    <h1>Gợi ý các môn tự chọn dựa trên sở thích của bạn</h1>
+    <script>
+        // Hàm lọc các môn mở đăng ký theo từ khóa nhập vào ô tìm kiếm
+        function searchAvailableCourses() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById("searchAvailable");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("availableCoursesTable");
+            tr = table.getElementsByTagName("tr");
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+            // Lặp qua từng hàng trong bảng (bắt đầu từ hàng thứ 2, bỏ qua header)
+            for (i = 1; i < tr.length; i++) {
+                var rowVisible = false;
+                td = tr[i].getElementsByTagName("td");
+                // Lặp qua từng cột trong hàng
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            rowVisible = true;
+                            break;
+                        }
+                    }
+                }
+                tr[i].style.display = rowVisible ? "" : "none";
+            }
+        }
 
-    @if(empty($topCourses))
-        <p>Không có gợi ý nào.</p>
-    @else
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Mã môn</th>
-                    <th>Tên môn</th>
-                    <th>Độ tương đồng (Cosine Similarity)</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($topCourses as $course)
-                    <tr>
-                        <td>{{ $course['course_id'] }}</td>
-                        <td>{{ $course['course_name'] }}</td>
-                        <td>{{ round($course['score'], 4) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+        // Hàm điền giá trị vào ô tìm kiếm và kích hoạt hàm lọc
+        function fillSearch(courseId) {
+            var input = document.getElementById("searchAvailable");
+            input.value = courseId;
+            searchAvailableCourses();
+        }
+    </script>
+
 
 @endsection

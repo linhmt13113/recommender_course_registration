@@ -230,7 +230,8 @@ class CourseRegistrationController extends Controller
         // dd($payload);
 
         // Gọi API bằng HTTP POST (sử dụng Laravel Http facade)
-        $response = Http::post('http://localhost:8001/recommend', $payload);
+        // $response = Http::post('http://localhost:8001/recommend', $payload);
+        $response = Http::post('http://localhost:8002/retrain_and_recommend', $payload);
         $electiveRecommendations = [];
         if ($response->successful()) {
             $result = $response->json();

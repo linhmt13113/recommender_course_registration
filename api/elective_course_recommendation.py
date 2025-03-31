@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# uvicorn api.elective_course_recommendation:app --host 0.0.0.0 --port 8001 --reload --log-level debug
+# uvicorn elective_course_recommendation:app --host 0.0.0.0 --port 8001 --reload --log-level debug
 import logging
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel

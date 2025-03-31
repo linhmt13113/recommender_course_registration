@@ -186,4 +186,34 @@
         </div>
         <button type="submit">Lưu sở thích</button>
     </form>
+
+    <h1>Gợi ý các môn tự chọn dựa trên sở thích của bạn</h1>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(empty($topCourses))
+        <p>Không có gợi ý nào.</p>
+    @else
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Mã môn</th>
+                    <th>Tên môn</th>
+                    <th>Độ tương đồng (Cosine Similarity)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($topCourses as $course)
+                    <tr>
+                        <td>{{ $course['course_id'] }}</td>
+                        <td>{{ $course['course_name'] }}</td>
+                        <td>{{ round($course['score'], 4) }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+
 @endsection

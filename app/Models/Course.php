@@ -24,7 +24,7 @@ class Course extends Model
     public function majors()
     {
         return $this->belongsToMany(Major::class, 'course_major', 'course_id', 'major_id')
-            ->withPivot('is_elective');
+        ->withPivot('is_elective', 'recommended_semester');
     }
 
     // Quan hệ: Một môn học có thể có nhiều sinh viên đăng ký (qua student_courses)

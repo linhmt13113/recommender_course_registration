@@ -91,32 +91,50 @@
             <hr>
             <h4>Thông tin Chuyên ngành (Course Major)</h4>
             @php
-                $courseMajorMajorId = isset($courseMajor) ? $courseMajor->major_id : '';
+
                 $isElective = isset($courseMajor) ? $courseMajor->is_elective : 0;
                 $recommendedSemester = isset($courseMajor) ? $courseMajor->recommended_semester : '';
+                $selectedMajors = $course->majors->pluck('major_id')->toArray();
             @endphp
             <div class="form-group">
-                <label for="course_major_major_id">Chọn Chuyên ngành:</label>
-                <select name="course_major_major_id" id="course_major_major_id" class="form-control">
-                    <option value="">-- Chọn chuyên ngành --</option>
-                    @foreach($majors as $major)
-                        <option value="{{ $major->major_id }}" {{ $courseMajorMajorId == $major->major_id ? 'selected' : '' }}>
-                            {{ $major->major_name }}
-                        </option>
+                <label>Chuyên ngành:</label>
+                @error('majors')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
+
+                <div class="border p-2">
+                    @foreach($majors as $index => $major)
+                                        @php
+                                            $courseMajor = $course->majors->firstWhere('major_id', $major->major_id);
+                                        @endphp
+                                        <div class="form-group border-bottom pb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox"
+                                                    name="majors[{{ $major->major_id }}][active]" value="1" {{ $courseMajor ? 'checked' : '' }}>
+                                                <input type="hidden" name="majors[{{ $major->major_id }}][major_id]"
+                                                    value="{{ $major->major_id }}">
+                                                <label class="form-check-label">
+                                                    {{ $major->major_name }}
+                                                </label>
+                                            </div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-6">
+                                                    <label>Loại môn:</label>
+                                                    <select name="majors[{{ $major->major_id }}][is_elective]" class="form-control">
+                                                        <option value="0" {{ ($courseMajor->pivot->is_elective ?? 0) == 0 ? 'selected' : '' }}>Bắt buộc</option>
+                                                        <option value="1" {{ ($courseMajor->pivot->is_elective ?? 0) == 1 ? 'selected' : '' }}>Tự chọn</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Học kỳ đề xuất:</label>
+                                                    <input type="number" name="majors[{{ $major->major_id }}][recommended_semester]"
+                                                        class="form-control" value="{{ $courseMajor->pivot->recommended_semester ?? '' }}">
+                                                </div>
+                                            </div>
+                                        </div>
                     @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="is_elective">Loại môn học:</label>
-                <select name="is_elective" id="is_elective" class="form-control">
-                    <option value="0" {{ $isElective == 0 ? 'selected' : '' }}>Bắt buộc</option>
-                    <option value="1" {{ $isElective == 1 ? 'selected' : '' }}>Tự chọn</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="recommended_semester">Học kỳ đề xuất:</label>
-                <input type="number" name="recommended_semester" id="recommended_semester" class="form-control"
-                    value="{{ $recommendedSemester }}">
+                </div>
             </div>
 
             <hr>
@@ -165,9 +183,9 @@
 
             <script>
                 // Nếu checkbox "Xóa hết thông tin tiên quyết" được chọn, ẩn các trường nhập
-                document.getElementById('delete_prerequisites').addEventListener('change', function(){
+                document.getElementById('delete_prerequisites').addEventListener('change', function () {
                     var prereqFields = document.getElementById('prerequisites_fields');
-                    if(this.checked) {
+                    if (this.checked) {
                         prereqFields.style.display = 'none';
                     } else {
                         prereqFields.style.display = 'block';

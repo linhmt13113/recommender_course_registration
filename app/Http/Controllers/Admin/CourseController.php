@@ -71,6 +71,8 @@ class CourseController extends Controller
             'day_of_week' => 'required|integer|min:1|max:7',
             'start_time' => 'required',
             'end_time' => 'required',
+            'majors' => 'required|array',
+            'majors.*' => 'exists:majors,major_id',
         ]);
 
         $course = new Course();
@@ -90,16 +92,26 @@ class CourseController extends Controller
             'end_time' => $request->input('end_time'),
         ]);
 
-        // Tạo bản ghi cho bảng course_major nếu có nhập
-        if ($request->filled('course_major_major_id')) {
+        // Xử lý chuyên ngành
+        $majors = $request->input('majors', []);
+        foreach ($majors as $majorId) {
             CourseMajor::create([
                 'course_id' => $course->course_id,
-                'major_id' => $request->input('course_major_major_id'),
-                // Giả sử 0: bắt buộc, 1: tự chọn
+                'major_id' => $majorId,
                 'is_elective' => $request->input('is_elective', 0),
                 'recommended_semester' => $request->input('recommended_semester'),
             ]);
         }
+        // Tạo bản ghi cho bảng course_major nếu có nhập
+        // if ($request->filled('course_major_major_id')) {
+        //     CourseMajor::create([
+        //         'course_id' => $course->course_id,
+        //         'major_id' => $request->input('course_major_major_id'),
+        //         // Giả sử 0: bắt buộc, 1: tự chọn
+        //         'is_elective' => $request->input('is_elective', 0),
+        //         'recommended_semester' => $request->input('recommended_semester'),
+        //     ]);
+        // }
 
         // Tạo bản ghi cho bảng prerequisites nếu có nhập
         if (
@@ -134,8 +146,9 @@ class CourseController extends Controller
         // Lấy thông tin course_major và prerequisite (giả sử mỗi môn học có 1 bản ghi)
         $courseMajor = $course->course_major ?? CourseMajor::where('course_id', $course->course_id)->first();
         $prerequisite = $course->prerequisite ?? Prerequisite::where('course_id', $course->course_id)->first();
+        $selectedMajors = $course->majors->keyBy('major_id');
 
-        return view('admin.courses.edit', compact('course', 'lecturers', 'majors', 'coursesList', 'courseMajor', 'prerequisite'));
+        return view('admin.courses.edit', compact('course', 'lecturers', 'majors', 'coursesList', 'courseMajor', 'prerequisite', 'selectedMajors'));
     }
 
     /**
@@ -152,6 +165,10 @@ class CourseController extends Controller
             'day_of_week' => 'required|integer|min:1|max:7',
             'start_time' => 'required',
             'end_time' => 'required',
+            'majors' => 'required|array',
+            'majors.*.major_id' => 'required|exists:majors,major_id',
+            'majors.*.is_elective' => 'required|in:0,1',
+            'majors.*.recommended_semester' => 'nullable|integer|min:1',
         ]);
 
         // Lấy bản ghi course theo khóa cũ
@@ -185,25 +202,39 @@ class CourseController extends Controller
         }
 
         // Cập nhật hoặc tạo mới bản ghi cho course_major
-        $courseMajor = CourseMajor::where('course_id', $oldCourseId)->first();
-        if ($request->filled('course_major_major_id')) {
-            $dataCourseMajor = [
-                'major_id' => $request->input('course_major_major_id'),
-                'is_elective' => $request->input('is_elective', 0),
-                'recommended_semester' => $request->input('recommended_semester'),
-            ];
-            if ($courseMajor) {
-                $courseMajor->update($dataCourseMajor);
-                // Nếu mã môn học thay đổi, cập nhật luôn course_id trong bảng course_major
-                if ($oldCourseId !== $newCourseId) {
-                    $courseMajor->course_id = $newCourseId;
-                    $courseMajor->save();
-                }
-            } else {
-                $dataCourseMajor['course_id'] = $newCourseId;
-                CourseMajor::create($dataCourseMajor);
+        // $courseMajor = CourseMajor::where('course_id', $oldCourseId)->first();
+        // if ($request->filled('course_major_major_id')) {
+        //     $dataCourseMajor = [
+        //         'major_id' => $request->input('course_major_major_id'),
+        //         'is_elective' => $request->input('is_elective', 0),
+        //         'recommended_semester' => $request->input('recommended_semester'),
+        //     ];
+        //     if ($courseMajor) {
+        //         $courseMajor->update($dataCourseMajor);
+        //         // Nếu mã môn học thay đổi, cập nhật luôn course_id trong bảng course_major
+        //         if ($oldCourseId !== $newCourseId) {
+        //             $courseMajor->course_id = $newCourseId;
+        //             $courseMajor->save();
+        //         }
+        //     } else {
+        //         $dataCourseMajor['course_id'] = $newCourseId;
+        //         CourseMajor::create($dataCourseMajor);
+        //     }
+        // }
+
+        // Xử lý chuyên ngành
+        $syncData = [];
+        foreach ($request->input('majors') as $majorData) {
+            if (isset($majorData['active'])) {
+                $syncData[$majorData['major_id']] = [
+                    'is_elective' => $majorData['is_elective'],
+                    'recommended_semester' => $majorData['recommended_semester']
+                ];
             }
         }
+
+        $course->majors()->sync($syncData);
+
 
         // Cập nhật hoặc tạo mới bản ghi cho prerequisites
 

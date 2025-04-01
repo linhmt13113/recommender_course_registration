@@ -78,13 +78,21 @@
             <hr>
             <h4>Thông tin Chuyên ngành (Course Major)</h4>
             <div class="form-group">
-                <label for="course_major_major_id">Chọn Chuyên ngành:</label>
-                <select name="course_major_major_id" id="course_major_major_id" class="form-control">
-                    <option value="">-- Chọn chuyên ngành --</option>
+                <label >Chọn Chuyên ngành:</label>
+                <div class="border p-2" style="max-height: 200px; overflow-y: auto;">
                     @foreach($majors as $major)
-                        <option value="{{ $major->major_id }}">{{ $major->major_name }}</option>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="majors[]"
+                                id="major_{{ $major->major_id }}" value="{{ $major->major_id }}">
+                            <label class="form-check-label" for="major_{{ $major->major_id }}">
+                                {{ $major->major_name }}
+                            </label>
+                        </div>
                     @endforeach
-                </select>
+                </div>
+                @error('majors')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="is_elective">Loại môn học:</label>

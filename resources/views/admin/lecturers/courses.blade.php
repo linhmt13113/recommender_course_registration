@@ -16,7 +16,7 @@
                     <th>Mã môn học</th>
                     <th>Tên môn học</th>
                     <th>Số tín chỉ</th>
-                    <th>Lịch học</th>
+                    <th>Thời gian</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,7 +43,7 @@
                             <div><strong>Bắt đầu:</strong> {{ $schedule->start_time }}</div>
                             <div><strong>Kết thúc:</strong> {{ $schedule->end_time }}</div>
                         @else
-                            Chưa có lịch học
+                            Chưa có lịch dạy
                         @endif
                     </td>
                 </tr>

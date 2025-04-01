@@ -142,11 +142,13 @@ class CourseController extends Controller
         $lecturers = Lecturer::all();
         $majors = Major::all();
         $coursesList = Course::all();
+        // $coursesList = Course::where('course_id', '!=', $course_id)->get(); // Loại trừ môn học hiện tại
 
         // Lấy thông tin course_major và prerequisite (giả sử mỗi môn học có 1 bản ghi)
         $courseMajor = $course->course_major ?? CourseMajor::where('course_id', $course->course_id)->first();
         $prerequisite = $course->prerequisite ?? Prerequisite::where('course_id', $course->course_id)->first();
         $selectedMajors = $course->majors->keyBy('major_id');
+        $course->load('majors', 'prerequisites');
 
         return view('admin.courses.edit', compact('course', 'lecturers', 'majors', 'coursesList', 'courseMajor', 'prerequisite', 'selectedMajors'));
     }
@@ -169,6 +171,10 @@ class CourseController extends Controller
             'majors.*.major_id' => 'required|exists:majors,major_id',
             'majors.*.is_elective' => 'required|in:0,1',
             'majors.*.recommended_semester' => 'nullable|integer|min:1',
+            'prerequisites' => 'nullable|array',
+            'prerequisites.*.major_id' => 'required_with:prerequisites|exists:majors,major_id',
+            'prerequisites.*.prerequisite_course_id' => 'required_with:prerequisites|exists:courses,course_id',
+            'prerequisites.*.prerequisite_type' => 'required_with:prerequisites|in:Required,Optional,Previous',
         ]);
 
         // Lấy bản ghi course theo khóa cũ
@@ -238,34 +244,22 @@ class CourseController extends Controller
 
         // Cập nhật hoặc tạo mới bản ghi cho prerequisites
 
-        // Xử lý thông tin prerequisites
+        // Xử lý prerequisites
         if ($request->has('delete_prerequisites')) {
-            // Nếu checkbox "delete_prerequisites" được chọn, xóa hết bản ghi prerequisites của môn học cũ
-            Prerequisite::where('course_id', $oldCourseId)->delete();
+            Prerequisite::where('course_id', $course->course_id)->delete();
         } else {
-            // Nếu không, kiểm tra và cập nhật (hoặc tạo mới) bản ghi prerequisites nếu đủ thông tin
-            if (
-                $request->filled('prerequisite_major_id') &&
-                $request->filled('prerequisite_course_id') &&
-                $request->filled('prerequisite_type')
-            ) {
+            // Xóa tất cả prerequisites cũ
+            Prerequisite::where('course_id', $course->course_id)->delete();
 
-                $dataPrerequisite = [
-                    'major_id' => $request->input('prerequisite_major_id'),
-                    'prerequisite_course_id' => $request->input('prerequisite_course_id'),
-                    'prerequisite_type' => $request->input('prerequisite_type'),
-                ];
-
-                $prerequisite = Prerequisite::where('course_id', $oldCourseId)->first();
-                if ($prerequisite) {
-                    $prerequisite->update($dataPrerequisite);
-                    if ($oldCourseId !== $newCourseId) {
-                        $prerequisite->course_id = $newCourseId;
-                        $prerequisite->save();
-                    }
-                } else {
-                    $dataPrerequisite['course_id'] = $newCourseId;
-                    Prerequisite::create($dataPrerequisite);
+            // Thêm prerequisites mới
+            foreach ($request->input('prerequisites', []) as $prerequisiteData) {
+                if (!empty($prerequisiteData['major_id']) && !empty($prerequisiteData['prerequisite_course_id'])) {
+                    Prerequisite::create([
+                        'course_id' => $course->course_id,
+                        'major_id' => $prerequisiteData['major_id'],
+                        'prerequisite_course_id' => $prerequisiteData['prerequisite_course_id'],
+                        'prerequisite_type' => $prerequisiteData['prerequisite_type'],
+                    ]);
                 }
             }
         }

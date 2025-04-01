@@ -137,49 +137,94 @@
                 </div>
             </div>
 
+
             <hr>
             <h4>Thông tin Tiên quyết (Prerequisites)</h4>
-            <!-- Checkbox để chọn xóa hết thông tin tiên quyết -->
             <div class="form-group">
                 <label>
                     <input type="checkbox" name="delete_prerequisites" id="delete_prerequisites" value="1">
-                    Xóa hết thông tin tiên quyết (không có prerequisites)
+                    Xóa hết thông tin tiên quyết
                 </label>
             </div>
 
-            <!-- Các trường nhập cho prerequisites; bao bọc trong div để có thể ẩn khi chọn checkbox -->
             <div id="prerequisites_fields">
-                <div class="form-group">
-                    <label for="prerequisite_major_id">Chọn Chuyên ngành áp dụng:</label>
-                    <select name="prerequisite_major_id" id="prerequisite_major_id" class="form-control">
-                        <option value="">-- Chọn chuyên ngành --</option>
-                        @foreach($majors as $major)
-                            <option value="{{ $major->major_id }}" {{ (isset($prereqMajorId) && $prereqMajorId == $major->major_id) ? 'selected' : '' }}>
-                                {{ $major->major_name }}
-                            </option>
-                        @endforeach
-                    </select>
+                @foreach($course->prerequisites as $index => $prereq)
+                <div class="prerequisite-group border p-2 mb-3">
+                    <div class="form-group">
+                        <label>Chuyên ngành áp dụng:</label>
+                        <select name="prerequisites[{{ $index }}][major_id]" class="form-control">
+                            <option value="">-- Chọn chuyên ngành --</option>
+                            @foreach($majors as $major)
+                                <option value="{{ $major->major_id }}" {{ $prereq->major_id == $major->major_id ? 'selected' : '' }}>
+                                    {{ $major->major_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Môn học tiên quyết:</label>
+                        <select name="prerequisites[{{ $index }}][prerequisite_course_id]" class="form-control">
+                            <option value="">-- Chọn môn học --</option>
+                            @foreach($coursesList as $courseItem)
+                                <option value="{{ $courseItem->course_id }}" {{ $prereq->prerequisite_course_id == $courseItem->course_id ? 'selected' : '' }}>
+                                    {{ $courseItem->course_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Loại tiên quyết:</label>
+                        <select name="prerequisites[{{ $index }}][prerequisite_type]" class="form-control">
+                            <option value="Required" {{ $prereq->prerequisite_type == 'Required' ? 'selected' : '' }}>Bắt buộc</option>
+                            <option value="Optional" {{ $prereq->prerequisite_type == 'Optional' ? 'selected' : '' }}>Tùy chọn</option>
+                            <option value="Previous" {{ $prereq->prerequisite_type == 'Previous' ? 'selected' : '' }}>Trước</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="prerequisite_course_id">Chọn Môn học tiên quyết:</label>
-                    <select name="prerequisite_course_id" id="prerequisite_course_id" class="form-control">
-                        <option value="">-- Chọn Môn học tiên quyết --</option>
-                        @foreach($coursesList as $courseItem)
-                            <option value="{{ $courseItem->course_id }}" {{ (isset($prereqCourseId) && $prereqCourseId == $courseItem->course_id) ? 'selected' : '' }}>
-                                {{ $courseItem->course_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="prerequisite_type">Loại tiên quyết:</label>
-                    <select name="prerequisite_type" id="prerequisite_type" class="form-control">
-                        <option value="Required" {{ (isset($prereqType) && $prereqType == 'Required') ? 'selected' : '' }}>Bắt buộc</option>
-                        <option value="Optional" {{ (isset($prereqType) && $prereqType == 'Optional') ? 'selected' : '' }}>Tùy chọn</option>
-                        <option value="Previous" {{ (isset($prereqType) && $prereqType == 'Previous') ? 'selected' : '' }}>Trước</option>
-                    </select>
-                </div>
+                @endforeach
             </div>
+
+            <!-- Nút thêm prerequisite mới -->
+            <button type="button" id="add_prerequisite" class="btn btn-sm btn-secondary mb-3">Thêm Tiên quyết</button>
+
+            <script>
+                // Thêm prerequisite mới
+                let prerequisiteIndex = {{ count($course->prerequisites) }};
+                document.getElementById('add_prerequisite').addEventListener('click', function() {
+                    const newPrereq = `
+                    <div class="prerequisite-group border p-2 mb-3">
+                        <div class="form-group">
+                            <label>Chuyên ngành áp dụng:</label>
+                            <select name="prerequisites[${prerequisiteIndex}][major_id]" class="form-control">
+                                <option value="">-- Chọn chuyên ngành --</option>
+                                @foreach($majors as $major)
+                                    <option value="{{ $major->major_id }}">{{ $major->major_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Môn học tiên quyết:</label>
+                            <select name="prerequisites[${prerequisiteIndex}][prerequisite_course_id]" class="form-control">
+                                <option value="">-- Chọn môn học --</option>
+                                @foreach($coursesList as $courseItem)
+                                    <option value="{{ $courseItem->course_id }}">{{ $courseItem->course_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Loại tiên quyết:</label>
+                            <select name="prerequisites[${prerequisiteIndex}][prerequisite_type]" class="form-control">
+                                <option value="Required">Bắt buộc</option>
+                                <option value="Optional">Tùy chọn</option>
+                                <option value="Previous">Trước</option>
+                            </select>
+                        </div>
+                    </div>`;
+
+                    document.getElementById('prerequisites_fields').insertAdjacentHTML('beforeend', newPrereq);
+                    prerequisiteIndex++;
+                });
+            </script>
 
             <script>
                 // Nếu checkbox "Xóa hết thông tin tiên quyết" được chọn, ẩn các trường nhập

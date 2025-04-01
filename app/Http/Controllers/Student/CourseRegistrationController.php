@@ -184,19 +184,52 @@ class CourseRegistrationController extends Controller
             return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
         }
         $request->validate([
-            'preference_text' => 'required|string',
-            'preference_select' => 'required|array'
+            'q1_project_description' => 'nullable|string',
+            'q2_tools'             => 'nullable|array',
+            'q2_other_tools'       => 'nullable|string',
+            'q3_interested_skills' => 'nullable|string',
+            'q4_desired_skill'     => 'nullable|string',
+            'q5_time_activity'     => 'nullable|array',
+            'q5_other_activity'    => 'nullable|string',
+            'q6_other_interest'    => 'nullable|string',
         ]);
 
-        // Lấy dữ liệu từ form
-        $preferenceText = $request->input('preference_text');
-        $preferenceSelect = $request->input('preference_select');
+        $q1 = $request->input('q1_project_description');
+        $q2 = $request->input('q2_tools', []); // Mảng checkbox
+        $q2Other = trim($request->input('q2_other_tools', ''));
+        if (!empty($q2Other)) {
+            $q2[] = $q2Other;
+        }
+        $q3 = $request->input('q3_interested_skills');
+        $q4 = $request->input('q4_desired_skill');
 
-        // Kết hợp mảng lựa chọn thành chuỗi (ví dụ, cách nhau bởi dấu phẩy)
-        $selectedPreferences = implode(", ", $preferenceSelect);
+        $q5 = $request->input('q5_time_activity', []); // Mảng checkbox
+        $q5Other = trim($request->input('q5_other_activity', ''));
+        if (!empty($q5Other)) {
+            $q5[] = $q5Other;
+        }
 
-        // Kết hợp sở thích tự do và sở thích từ lựa chọn (sử dụng dấu phân cách, ví dụ: "|")
-        $combinedPreference = $preferenceText . " . " . $selectedPreferences;
+        $q6 = $request->input('q6_other_interest');
+
+        $combinedPreference = '';
+        if (!empty($q1)) {
+        $combinedPreference .= "$q1. ";
+        }
+        if (!empty($q2)) {
+        $combinedPreference .= implode(', ', $q2) . ". ";
+        }
+        if (!empty($q3)) {
+        $combinedPreference .= "$q3. ";
+        }
+        if (!empty($q4)) {
+        $combinedPreference .= "$q4. ";
+        }
+        if (!empty($q5)) {
+        $combinedPreference .= implode(', ', $q5) . ". ";
+        }
+        if (!empty($q6)) {
+        $combinedPreference .= "$q6. ";
+        }
 
         // dd($preferenceText, $preferenceSelect, $combinedPreference);
 
@@ -230,8 +263,8 @@ class CourseRegistrationController extends Controller
         // dd($payload);
 
         // Gọi API bằng HTTP POST (sử dụng Laravel Http facade)
-        // $response = Http::post('http://localhost:8001/recommend', $payload);
-        $response = Http::post('http://localhost:8002/retrain_and_recommend', $payload);
+        $response = Http::post('http://localhost:8001/recommend', $payload);
+        // $response = Http::post('http://localhost:8002/retrain_and_recommend', $payload);
         $electiveRecommendations = [];
         if ($response->successful()) {
             $result = $response->json();
@@ -247,6 +280,7 @@ class CourseRegistrationController extends Controller
                             'course_id' => $course->course_id,
                             'course_name' => $course->course_name,
                             'score' => $score,
+                            'course_description' => $course->course_description
                         ];
                     }
                 }

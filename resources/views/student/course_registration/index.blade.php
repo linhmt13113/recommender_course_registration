@@ -39,7 +39,8 @@
                     <tr>
                         <th>Mã môn</th>
                         <th>Tên môn</th>
-                        <th>Độ tương đồng (Cosine Similarity)</th>
+                        <th>Mô tả</th>
+                        <th>Cosine Similarity</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -48,6 +49,9 @@
                         <tr>
                             <td>{{ $rec['course_id'] }}</td>
                             <td>{{ $rec['course_name'] }}</td>
+                            <td>
+                                {{ $rec['course_description'] ?? 'N/A' }}
+                            </td>
                             <td>{{ round($rec['score'], 4) }}</td>
                             <td>
                                 <!-- Nút tìm ngay: gọi JS để điền tên môn vào ô tìm kiếm -->
@@ -173,6 +177,7 @@
                     <th>Tên môn</th>
                     <th>Tín chỉ</th>
                     <th>Học kỳ đề nghị</th>
+                    <th>Hành động</th>
                 </tr>
             </thead>
             <tbody>
@@ -185,6 +190,10 @@
                         <td>{{ optional($course)->course_name }}</td>
                         <td>{{ optional($course)->credits }}</td>
                         <td>{{ $item->recommended_semester }}</td>
+                        <td>
+                            <!-- Nút tìm ngay: gọi JS để điền tên môn vào ô tìm kiếm -->
+                            <button type="button" onclick="fillSearch('{{ optional($course)->course_id }}')">Tìm ngay</button>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -218,25 +227,101 @@
         </table>
     @endif
 
-    <h2>Lưu sở thích môn học</h2>
+    <h2>Save Your Preferences</h2>
     <form action="{{ route('student.course_registration.preferences') }}" method="POST">
         @csrf
-        <div>
-            <label for="preference_text">Nhập sở thích của bạn:</label><br>
-            <textarea name="preference_text" id="preference_text" cols="50" rows="5">{{ old('preference_text') }}</textarea>
+        <!-- Question 1 -->
+        <div style="margin-bottom: 20px;">
+            <label for="q1_project_description">
+                Question 1: Briefly describe your ideal future project
+                (e.g., "Build an AI system to detect fraudulent transactions", "Design an educational VR game", ...):
+            </label><br>
+            <textarea name="q1_project_description" id="q1_project_description" cols="50" rows="3">{{ old('q1_project_description') }}</textarea>
         </div>
-        <div style="margin-top: 10px;">
-            <label for="preference_select">Chọn sở thích từ danh sách (có thể chọn nhiều):</label><br>
-            <select name="preference_select[]" id="preference_select" multiple style="width:300px;">
-                <option value="Sáng tạo">Sáng tạo</option>
-                <option value="Tư duy logic">Tư duy logic</option>
-                <option value="Khám phá">Khám phá</option>
-                <option value="Kinh doanh">Kinh doanh</option>
-                <option value="Nghiên cứu khoa học">Nghiên cứu khoa học</option>
+
+        <!-- Question 2 -->
+        <div style="margin-bottom: 20px;">
+            <label>
+                Question 2: Which tools/technologies do you prefer to work with?
+            </label><br>
+            @foreach([
+                'Python/R' => 'Python/R',
+                'PyCharm/Visual Studio' => 'PyCharm/Visual Studio ',
+                'TensorFlow/PyTorch' => 'TensorFlow/PyTorch for AI',
+                'AWS/Google Cloud' => 'AWS/Google Cloud ',
+                'Unity/Unreal Engine' => 'Unity/Unreal Engine ',
+                'SQL/NoSQL' => 'SQL/NoSQL ',
+                'Wireshark/Postman' => 'Wireshark/Postman ',
+                'Docker/Kubernetes' => 'Docker/Kubernetes '
+            ] as $key => $fullLabel)
+                <label>
+                    <input type="checkbox" name="q2_tools[]" value="{{ $key }}"
+                        {{ (is_array(old('q2_tools')) && in_array($key, old('q2_tools'))) ? 'checked' : '' }}>
+                    {{ $key }}
+                </label><br>
+            @endforeach
+            <label for="q2_other_tools">Other (please specify your tool):</label>
+            <input type="text" name="q2_other_tools" id="q2_other_tools" value="{{ old('q2_other_tools') }}" style="width: 300px;">
+        </div>
+
+        <!-- Question 3 -->
+        <div style="margin-bottom: 20px;">
+            <label for="q3_interested_skills">
+                Question 3: Name 2-3 subjects/skills you are most passionate about at university
+                (e.g., "Game programming", "Data analysis", "Computer networks", ...):
+            </label><br>
+            <textarea name="q3_interested_skills" id="q3_interested_skills" cols="50" rows="3">{{ old('q3_interested_skills') }}</textarea>
+        </div>
+
+        <!-- Question 4 -->
+        <div style="margin-bottom: 20px;">
+            <label for="q4_desired_skill">
+                Question 4: Which skill do you most want to learn?
+            </label><br>
+            <select name="q4_desired_skill" id="q4_desired_skill" style="width:300px;">
+                <option value="">-- Select a skill --</option>
+                <option value="Build data mining algorithms" {{ old('q4_desired_skill') == 'Build data mining algorithms' ? 'selected' : '' }}>Build data mining algorithms</option>
+                <option value="Design distributed systems (Cloud, Distributed Systems)" {{ old('q4_desired_skill') == 'Design distributed systems (Cloud, Distributed Systems)' ? 'selected' : '' }}>Design distributed systems (Cloud, Distributed Systems)</option>
+                <option value="Develop AR/VR applications" {{ old('q4_desired_skill') == 'Develop AR/VR applications' ? 'selected' : '' }}>Develop AR/VR applications</option>
+                <option value="Implement virtual networks (VPN, IPSec)" {{ old('q4_desired_skill') == 'Implement virtual networks (VPN, IPSec)' ? 'selected' : '' }}>Implement virtual networks (VPN, IPSec)</option>
+                <option value="Create data visualization dashboards (Tableau, Power BI)" {{ old('q4_desired_skill') == 'Create data visualization dashboards (Tableau, Power BI)' ? 'selected' : '' }}>Create data visualization dashboards (Tableau, Power BI)</option>
             </select>
         </div>
-        <button type="submit">Lưu sở thích</button>
+
+        <!-- Question 5 -->
+        <div style="margin-bottom: 20px;">
+            <label>
+                Question 5: Which activity would you like to spend most of your time on?
+            </label><br>
+            @foreach([
+                'Write image/graphics processing algorithms' => 'Write image/graphics processing algorithms',
+                'Design software architecture (UML)' => 'Design software architecture (UML)',
+                'Debug and test software' => 'Debug and test software',
+                'Build network protocols (TCP/IP, HTTP)' => 'Build network protocols (TCP/IP, HTTP)',
+                'Research blockchain applications' => 'Research blockchain applications',
+                'Develop cross-platform mobile applications' => 'Develop cross-platform mobile applications'
+            ] as $key => $label)
+                <label>
+                    <input type="checkbox" name="q5_time_activity[]" value="{{ $key }}"
+                        {{ (is_array(old('q5_time_activity')) && in_array($key, old('q5_time_activity'))) ? 'checked' : '' }}>
+                    {{ $key }}
+                </label><br>
+            @endforeach
+            <label for="q5_other_activity">Other (please specify your activity):</label>
+            <input type="text" name="q5_other_activity" id="q5_other_activity" value="{{ old('q5_other_activity') }}" style="width: 300px;">
+        </div>
+
+        <!-- Question 6 -->
+        <div style="margin-bottom: 20px;">
+            <label for="q6_other_interest">
+                Question 6: Do you have any other interests or passions in technology?
+            </label><br>
+            <textarea name="q6_other_interest" id="q6_other_interest" cols="50" rows="3">{{ old('q6_other_interest') }}</textarea>
+        </div>
+
+        <button type="submit">Save Preferences</button>
     </form>
+
 
     <script>
         // Hàm lọc các môn mở đăng ký theo từ khóa nhập vào ô tìm kiếm

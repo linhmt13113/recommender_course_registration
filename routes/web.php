@@ -104,6 +104,7 @@ Route::prefix('svien')->middleware(CheckStudent::class)->group(function () {
 
     Route::get('/curriculum', [MainStudentController::class, 'showCurriculum'])->name('student.curriculum');
 
+
     // Trang đăng ký môn học
     Route::get('/course-registration', [CourseRegistrationController::class, 'index'])->name('student.course_registration.index');
     Route::post('/course-registration/register', [CourseRegistrationController::class, 'register'])->name('student.course_registration.register');

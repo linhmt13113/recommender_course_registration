@@ -1,3 +1,7 @@
+@php
+    $hideNews = true;
+@endphp
+
 @extends('student.dashboard')
 
 @section('content')

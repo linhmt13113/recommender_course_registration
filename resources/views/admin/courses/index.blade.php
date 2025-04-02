@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Danh sách Môn học</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         /* Một chút style để ẩn hiện ô tìm kiếm theo yêu cầu */
         .search-input {

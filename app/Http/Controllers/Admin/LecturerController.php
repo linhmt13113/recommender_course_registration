@@ -62,10 +62,12 @@ class LecturerController extends Controller
     {
         $request->validate([
             'lecturer_name' => 'required',
+            'password' => 'string|min:6'
         ]);
 
         $lecturer = Lecturer::findOrFail($lecturer_id);
         $lecturer->lecturer_name = $request->input('lecturer_name');
+        $lecturer->password = bcrypt($request->input('password'));
         $lecturer->save();
 
         return redirect()->route('giangvien.index')

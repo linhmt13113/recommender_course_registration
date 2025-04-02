@@ -58,6 +58,7 @@ class RegistrationController extends Controller
             ->get()
             ->unique('course_id');
 
+
         return view('admin.registration.courses', compact(
             'semester',
             'electiveCourses',

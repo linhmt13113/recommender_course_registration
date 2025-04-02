@@ -26,6 +26,7 @@
             margin-bottom: 10px;
             width: 30%;
         }
+
     </style>
 </head>
 <body>

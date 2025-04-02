@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Danh sách Giảng viên</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="container mt-4">
@@ -42,7 +44,7 @@
             @endforeach
         </tbody>
     </table>
-    {{ $lecturers->links() }}
+    {!! $lecturers->links() !!}
 </div>
 </body>
 </html>

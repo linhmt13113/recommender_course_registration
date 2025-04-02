@@ -33,13 +33,14 @@
                 <input type="text" name="course_name" id="course_name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="course_description">Mô tả:</label>
-                <textarea name="course_description" id="course_description" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
                 <label for="credits">Số tín chỉ:</label>
                 <input type="number" name="credits" id="credits" class="form-control" required min="1">
             </div>
+            <div class="form-group">
+                <label for="course_description">Mô tả:</label>
+                <textarea name="course_description" id="course_description" class="form-control"></textarea>
+            </div>
+
 
             <div class="form-group">
                 <label for="lecturer_id">Chọn Giảng viên (nếu có):</label>

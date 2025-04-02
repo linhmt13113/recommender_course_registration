@@ -1,45 +1,38 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thời khóa biểu giảng viên</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <a href="{{ route('lecturer.change_password') }}">Đổi mật khẩu</a>
-    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit">Đăng xuất</button>
-        </form>
-</head>
-<body>
+@extends('layouts.lecturer')
 
+@section('title', 'Thời khóa biểu')
+
+@section('content')
 <div class="container mt-4">
-    <h1>Thời khóa biểu giảng viên: {{ session('user')->lecturer_name ?? session('user')->lecturer_id }}</h1>
     @if($activeSemester)
-        <h3>Kỳ học hiện hành: {{ $activeSemester->semester_id }}</h3>
+        <div class="alert alert-info">
+            Kỳ học hiện hành: {{ $activeSemester->semester_id }}
+        </div>
     @else
-        <p>Không có kỳ học hiện hành.</p>
+        <div class="alert alert-warning">Không có kỳ học hiện hành.</div>
     @endif
 
     @if($courses->isNotEmpty())
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Mã môn học</th>
-                    <th>Tên môn học</th>
-                    <th>Lịch học</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($courses as $course)
-                    <tr>
-                        <td>{{ $course->course_id }}</td>
-                        <td>{{ $course->course_name }}</td>
-                        <td>
-                            @if($course->schedules->isNotEmpty())
-                                @foreach($course->schedules as $schedule)
-                                    <div>
-                                        <strong>Ngày:</strong>
+        <div class="card shadow">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Mã môn</th>
+                            <th>Tên môn</th>
+                            <th>Lịch học</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($courses as $course)
+                        <tr>
+                            <td>{{ $course->course_id }}</td>
+                            <td>{{ $course->course_name }}</td>
+                            <td>
+                                @forelse($course->schedules as $schedule)
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary">
                                         @switch($schedule->day_of_week)
                                             @case(1) Thứ 2 @break
                                             @case(2) Thứ 3 @break
@@ -48,27 +41,28 @@
                                             @case(5) Thứ 6 @break
                                             @case(6) Thứ 7 @break
                                             @case(7) Chủ nhật @break
-                                            @default Không xác định
                                         @endswitch
-                                        <br>
-                                        <strong>Bắt đầu:</strong> {{ $schedule->start_time }}<br>
-                                        <strong>Kết thúc:</strong> {{ $schedule->end_time }}
-                                    </div>
-                                @endforeach
-                            @else
-                                Chưa có lịch học
-                            @endif
-                        </td>
-                        <td>
-                            <a href="{{ route('lecturer.courses.registrations', $course->course_id) }}" class="btn btn-info btn-sm">Xem đăng ký</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                                    </span>
+                                    {{ $schedule->start_time }} - {{ $schedule->end_time }}
+                                </div>
+                                @empty
+                                <span class="text-muted">Chưa có lịch</span>
+                                @endforelse
+                            </td>
+                            <td>
+                                <a href="{{ route('lecturer.courses.registrations', $course->course_id) }}"
+                                   class="btn btn-sm btn-outline-info">
+                                    Xem đăng ký
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     @else
-        <p>Không có môn học nào.</p>
+        <div class="alert alert-warning">Không có môn học được phân công.</div>
     @endif
 </div>
-</body>
-</html>
+@endsection

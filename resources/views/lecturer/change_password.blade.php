@@ -1,45 +1,52 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Đổi mật khẩu</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Đổi mật khẩu</h1>
+@extends('layouts.lecturer')
 
-        @if(session('success'))
-            <div style="color: green;">{{ session('success') }}</div>
-        @endif
+@section('title', 'Đổi mật khẩu')
 
-        @if($errors->any())
-            <div style="color: red;">
-                <ul>
-                    @foreach($errors->all() as $error)
-                       <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+@section('content')
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Đổi mật khẩu</h4>
+                </div>
 
-        <form action="{{ route('change.password') }}" method="POST">
-            @csrf
-            <div>
-                <label for="current_password">Mật khẩu hiện tại:</label>
-                <input type="password" id="current_password" name="current_password" required>
+                <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
+                    <form method="POST" action="{{ route('change.password') }}">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control"
+                                   id="current_password" name="current_password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control"
+                                   id="new_password" name="new_password" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="new_password_confirmation" class="form-label">Xác nhận mật khẩu</label>
+                            <input type="password" class="form-control"
+                                   id="new_password_confirmation" name="new_password_confirmation" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Cập nhật mật khẩu</button>
+                            <a href="{{ route('lecturer.schedule') }}" class="btn btn-outline-secondary">
+                                Hủy bỏ
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div>
-                <label for="new_password">Mật khẩu mới:</label>
-                <input type="password" id="new_password" name="new_password" required>
-            </div>
-            <div>
-                <label for="new_password_confirmation">Xác nhận mật khẩu mới:</label>
-                <input type="password" id="new_password_confirmation" name="new_password_confirmation" required>
-            </div>
-            <button type="submit">Đổi mật khẩu</button>
-        </form>
-        <a href="{{ route('lecturer.schedule') }}" class="btn btn-primary" style="margin-top: 20px;">Quay lại Thời khóa biểu</a>
+        </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

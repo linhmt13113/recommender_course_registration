@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Sửa Học kỳ</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Sửa Học kỳ')
+
+@section('content')
 <div class="container mt-4">
-    <h1>Sửa Học kỳ</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Sửa Học kỳ</h1>
+        <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Quay lại</a>
+    </div>
 
     @if($errors->any())
         <div class="alert alert-danger">
@@ -32,8 +32,10 @@
             <label for="end_date">Ngày kết thúc:</label>
             <input type="date" name="end_date" id="end_date" class="form-control" value="{{ $semester->end_date }}" required>
         </div>
-        <button type="submit" class="btn btn-primary">Cập nhật Học kỳ</button>
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Cập nhật Học kỳ</button>
+            <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Quay lại</a>
+        </div>
     </form>
 </div>
-</body>
-</html>
+@endsection

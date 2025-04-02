@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách Học kỳ</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Danh sách Học kỳ')
+
+@section('content')
 <div class="container mt-4">
     <h1>Quản lý Học kỳ</h1>
 
@@ -45,5 +42,4 @@
     </table>
     {{ $semesters->links() }}
 </div>
-</body>
-</html>
+@endsection

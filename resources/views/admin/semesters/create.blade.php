@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm Học kỳ</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Thêm Học kỳ')
+
+@section('content')
 <div class="container mt-4">
     <h1>Thêm Học kỳ</h1>
 
@@ -32,7 +29,7 @@
             <input type="date" name="end_date" id="end_date" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary">Thêm Học kỳ</button>
+        <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Quay lại</a>
     </form>
 </div>
-</body>
-</html>
+@endsection

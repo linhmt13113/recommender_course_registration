@@ -1,35 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chọn môn đăng ký cho học kỳ {{ $semester->semester_id }}</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
-        .btn-group {
-            margin-bottom: 10px;
-        }
-        .nested-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .nested-table th,
-        .nested-table td {
-            border: 1px solid #dee2e6;
-            padding: 8px;
-            text-align: left;
-        }
-        .nested-table th {
-            background-color: #f8f9fa;
-        }
-        .search-input {
-            margin-bottom: 10px;
-            width: 30%;
-        }
+@extends('layouts.app')
 
-    </style>
-</head>
-<body>
+@section('title', 'Chọn môn đăng ký cho học kỳ ' . $semester->semester_id)
+
+@section('content')
 <div class="container mt-4">
     <h1>Chọn môn đăng ký cho học kỳ {{ $semester->semester_id }}</h1>
 
@@ -52,7 +25,7 @@
             </div>
             <div class="card-body">
                 @if($electiveCourses->isNotEmpty())
-                <table class="nested-table" id="electiveTable">
+                <table class="nested-table table table-bordered" id="electiveTable">
                     <thead>
                         <tr>
                             <th>Chọn</th>
@@ -64,7 +37,7 @@
                         @foreach($electiveCourses as $cm)
                         <tr>
                             <td>
-                                <input type="checkbox" class="form-check-input elective" name="selected_courses[]" value="{{ $cm->course->course_id }}" id="elective_{{ $cm->course->course_id }}"
+                                <input type="checkbox" class="form-check-input elective" name="selected_courses[]" value="{{ $cm->course->course_id }}"
                                 {{ in_array($cm->course->course_id, $selectedCourses) ? 'checked' : '' }}>
                             </td>
                             <td>{{ $cm->course->course_id }}</td>
@@ -91,7 +64,7 @@
             </div>
             <div class="card-body">
                 @if($evenNonElectiveCourses->isNotEmpty())
-                <table class="nested-table" id="evenTable">
+                <table class="nested-table table table-bordered" id="evenTable">
                     <thead>
                         <tr>
                             <th>Chọn</th>
@@ -104,7 +77,7 @@
                         @foreach($evenNonElectiveCourses as $cm)
                         <tr>
                             <td>
-                                <input type="checkbox" class="form-check-input even" name="selected_courses[]" value="{{ $cm->course->course_id }}" id="even_{{ $cm->course->course_id }}"
+                                <input type="checkbox" class="form-check-input even" name="selected_courses[]" value="{{ $cm->course->course_id }}"
                                 {{ in_array($cm->course->course_id, $selectedCourses) ? 'checked' : '' }}>
                             </td>
                             <td>{{ $cm->course->course_id }}</td>
@@ -132,7 +105,7 @@
             </div>
             <div class="card-body">
                 @if($oddNonElectiveCourses->isNotEmpty())
-                <table class="nested-table" id="oddTable">
+                <table class="nested-table table table-bordered" id="oddTable">
                     <thead>
                         <tr>
                             <th>Chọn</th>
@@ -145,7 +118,7 @@
                         @foreach($oddNonElectiveCourses as $cm)
                         <tr>
                             <td>
-                                <input type="checkbox" class="form-check-input odd" name="selected_courses[]" value="{{ $cm->course->course_id }}" id="odd_{{ $cm->course->course_id }}"
+                                <input type="checkbox" class="form-check-input odd" name="selected_courses[]" value="{{ $cm->course->course_id }}"
                                 {{ in_array($cm->course->course_id, $selectedCourses) ? 'checked' : '' }}>
                             </td>
                             <td>{{ $cm->course->course_id }}</td>
@@ -166,37 +139,29 @@
 
     <a href="{{ route('admin.registration.index') }}" class="btn btn-secondary mt-3">Quay lại danh sách Học kỳ</a>
 </div>
+@endsection
 
+@push('scripts')
 <script>
-    // Hàm chọn tất cả checkbox theo nhóm (group: 'elective', 'even', 'odd')
     function selectAll(group) {
-        const checkboxes = document.querySelectorAll('input.' + group);
-        checkboxes.forEach(cb => cb.checked = true);
+        document.querySelectorAll('input.' + group).forEach(cb => cb.checked = true);
     }
-    // Hàm bỏ chọn tất cả checkbox theo nhóm
     function deselectAll(group) {
-        const checkboxes = document.querySelectorAll('input.' + group);
-        checkboxes.forEach(cb => cb.checked = false);
+        document.querySelectorAll('input.' + group).forEach(cb => cb.checked = false);
     }
-    // Hàm lọc bảng theo input tìm kiếm
     function filterTable(tableId, query) {
         const filter = query.toUpperCase();
         const table = document.getElementById(tableId);
         const tr = table.getElementsByTagName("tr");
 
-        for (let i = 1; i < tr.length; i++) { // bắt đầu từ 1 để bỏ qua header
+        for (let i = 1; i < tr.length; i++) {
             const tdArray = tr[i].getElementsByTagName("td");
             let rowText = "";
             for (let j = 0; j < tdArray.length; j++) {
                 rowText += tdArray[j].textContent || tdArray[j].innerText;
             }
-            if (rowText.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
+            tr[i].style.display = rowText.toUpperCase().indexOf(filter) > -1 ? "" : "none";
         }
     }
 </script>
-</body>
-</html>
+@endpush

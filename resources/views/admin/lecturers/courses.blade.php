@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Môn học do Giảng viên {{ $lecturer->lecturer_name }} dạy</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Môn học do Giảng viên ' . $lecturer->lecturer_name . ' dạy')
+
+@section('content')
 <div class="container mt-4">
     <h1>Môn học do Giảng viên {{ $lecturer->lecturer_name }} dạy</h1>
     <a href="{{ route('giangvien.index') }}" class="btn btn-secondary mb-3">Trở về danh sách Giảng viên</a>
@@ -54,5 +51,4 @@
         <p>Giảng viên này hiện chưa dạy môn học nào.</p>
     @endif
 </div>
-</body>
-</html>
+@endsection

@@ -1,18 +1,25 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Chào mừng Admin!</h1>
-        <p>Đây là trang quản trị hệ thống.</p>
-    </div>
-    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-            @csrf
-            <button type="submit">Đăng xuất</button>
-        </form>
-</body>
-</html>
+@extends('layouts.app')
+
+@section('title', 'Admin Dashboard')
+
+@section('content')
+    <h1>Chào mừng Admin!</h1>
+    <p>Đây là trang quản trị hệ thống.</p>
+@endsection
+
+@push('styles')
+<style>
+    .dashboard-menu a {
+        display: inline-block;
+        padding: 10px 15px;
+        margin-right: 10px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .dashboard-menu a:hover {
+        background-color: #0056b3;
+    }
+</style>
+@endpush

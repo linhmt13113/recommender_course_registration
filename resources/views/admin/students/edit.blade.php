@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Sửa Sinh viên</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Sửa Sinh viên')
+
+@section('content')
 <div class="container mt-4">
-    <h1>Sửa Sinh viên</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Sửa Sinh viên</h1>
+        <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay lại
+        </a>
+    </div>
 
     @if($errors->any())
         <div class="alert alert-danger">
@@ -27,7 +29,8 @@
         </div>
         <div class="form-group">
             <label for="student_name">Tên Sinh viên:</label>
-            <input type="text" name="student_name" id="student_name" class="form-control" value="{{ $student->student_name }}" required>
+            <input type="text" name="student_name" id="student_name" class="form-control"
+                   value="{{ $student->student_name }}" required>
         </div>
         <div class="form-group">
             <label for="major_id">Chuyên ngành:</label>
@@ -40,8 +43,14 @@
                 @endforeach
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary mr-2">
+                <i class="fas fa-save"></i> Cập nhật
+            </button>
+            <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Hủy bỏ
+            </a>
+        </div>
     </form>
 </div>
-</body>
-</html>
+@endsection

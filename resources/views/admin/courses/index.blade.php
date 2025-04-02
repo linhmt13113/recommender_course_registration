@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách Môn học</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@extends('layouts.app')
 
-    <style>
-        /* Một chút style để ẩn hiện ô tìm kiếm theo yêu cầu */
-        .search-input {
-            margin-bottom: 15px;
-        }
-    </style>
-</head>
-<body>
-<div class="container mt-4">
+@section('title', 'Danh sách Môn học')
+
+@section('content')
     <h1>Quản lý Môn học</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Form lọc: chọn chuyên ngành và tìm kiếm -->
+    <!-- Form lọc -->
     <form method="GET" action="{{ route('monhoc.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
@@ -35,7 +23,6 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <!-- Ô tìm kiếm với giao diện và chức năng giống file course -->
                 <input type="text" name="search" class="form-control search-input"
                     placeholder="Tìm kiếm..."
                     value="{{ request('search') }}"
@@ -47,7 +34,6 @@
             </div>
         </div>
     </form>
-
 
     <a href="{{ route('monhoc.create') }}" class="btn btn-primary mb-3">Thêm Môn học</a>
 
@@ -115,29 +101,23 @@
         </tbody>
     </table>
     {{ $courses->appends(request()->query())->links() }}
-</div>
+@endsection
 
-<!-- Nếu bạn muốn sử dụng một hàm JavaScript để lọc bảng trực tiếp khi gõ (bổ sung ngoài bộ lọc backend) -->
+@push('scripts')
 <script>
     function filterTable(tableId, query) {
         const filter = query.toUpperCase();
         const table = document.getElementById(tableId);
         const tr = table.getElementsByTagName("tr");
 
-        for (let i = 1; i < tr.length; i++) { // Bỏ qua header (row đầu tiên)
+        for (let i = 1; i < tr.length; i++) { // Bỏ qua header
             const tdArray = tr[i].getElementsByTagName("td");
             let rowText = "";
             for (let j = 0; j < tdArray.length; j++) {
                 rowText += tdArray[j].textContent || tdArray[j].innerText;
             }
-            if (rowText.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
+            tr[i].style.display = rowText.toUpperCase().indexOf(filter) > -1 ? "" : "none";
         }
     }
 </script>
-
-</body>
-</html>
+@endpush

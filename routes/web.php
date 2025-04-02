@@ -40,7 +40,7 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     // Dashboard Admin
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
-    });
+    })->name('admin.dashboard');
 
     // Route quản lý mở đợt đăng ký
     Route::get('/registration', [RegistrationController::class, 'index'])->name('admin.registration.index');

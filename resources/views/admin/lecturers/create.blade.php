@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm Giảng viên</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Thêm Giảng viên')
+
+@section('content')
 <div class="container mt-4">
     <h1>Thêm Giảng viên</h1>
 
@@ -30,5 +27,4 @@
         <button type="submit" class="btn btn-primary">Thêm Giảng viên</button>
     </form>
 </div>
-</body>
-</html>
+@endsection

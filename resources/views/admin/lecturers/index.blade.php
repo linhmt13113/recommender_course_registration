@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Danh sách Giảng viên</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+@extends('layouts.app')
 
-</head>
-<body>
+@section('title', 'Danh sách Giảng viên')
+
+@section('content')
 <div class="container mt-4">
     <h1>Quản lý Giảng viên</h1>
 
@@ -46,5 +41,4 @@
     </table>
     {!! $lecturers->links() !!}
 </div>
-</body>
-</html>
+@endsection

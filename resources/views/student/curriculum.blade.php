@@ -20,13 +20,20 @@
                         <td>{{ $item['course']['course_id'] }}</td>
                         <td>{{ $item['course']['course_name'] }}</td>
                         <td>
-                            @if(\Illuminate\Support\Str::startsWith($item['course']['course_id'], 'ELEC-'))
-                                Elective
+                            @if($item['is_elective'] == 1)
+                                Tự chọn
                             @else
-                                {{ $item['is_elective'] == 1 ? 'Tự chọn' : 'Bắt buộc' }}
+                                Bắt buộc
                             @endif
                         </td>
-                        <td>{{ $item['recommended_semester'] }}</td>
+                        <td>
+                            <!-- @if($item['is_elective'] != 1)
+                                {{ $item['recommended_semester'] }}
+                            @else
+                                -
+                            @endif -->
+                            {{ $item['recommended_semester'] }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

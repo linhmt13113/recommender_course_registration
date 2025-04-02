@@ -121,6 +121,28 @@ class CourseRegistrationController extends Controller
             return back()->withErrors(['prerequisite' => $prereqError]);
         }
         $courseName = $semesterCourse->course->course_name;
+
+        // Logic đặc biệt cho các môn IT082IU và IT174IU: học kỳ gần nhất phải lớn hơn 4
+        if (in_array($courseId, ['IT082IU', 'IT174IU'])) {
+            $currentSemester = $this->registrationService->getCurrentSemester($student);
+            if (($currentSemester + 1)<= 4) {
+                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi học kỳ gần nhất lớn hơn 4."]);
+            }
+        }
+        // Logic đặc biệt cho môn IT083IU: tổng tín chỉ đã học phải lớn hơn 96
+        if ($courseId === 'IT083IU') {
+            // Tính tổng số tín chỉ của các môn đã học (trong bảng StudentCourse)
+            $totalCredits = StudentCourse::where('student_id', $student->student_id)
+                ->with('course')
+                ->get()
+                ->sum(function ($sc) {
+                    return $sc->course->credits;
+                });
+            if ($totalCredits <= 96) {
+                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi tổng tín chỉ đã học vượt quá 96. (Hiện tại: $totalCredits credit)"]);
+            }
+        }
+
         // Kiểm tra xem sinh viên đã đăng ký môn học này chưa
         $existing = StudentRegistration::where('student_id', $student->student_id)
             ->where('course_id', $courseId)
@@ -185,13 +207,13 @@ class CourseRegistrationController extends Controller
         }
         $request->validate([
             'q1_project_description' => 'nullable|string',
-            'q2_tools'             => 'nullable|array',
-            'q2_other_tools'       => 'nullable|string',
+            'q2_tools' => 'nullable|array',
+            'q2_other_tools' => 'nullable|string',
             'q3_interested_skills' => 'nullable|string',
-            'q4_desired_skill'     => 'nullable|string',
-            'q5_time_activity'     => 'nullable|array',
-            'q5_other_activity'    => 'nullable|string',
-            'q6_other_interest'    => 'nullable|string',
+            'q4_desired_skill' => 'nullable|string',
+            'q5_time_activity' => 'nullable|array',
+            'q5_other_activity' => 'nullable|string',
+            'q6_other_interest' => 'nullable|string',
         ]);
 
         $q1 = $request->input('q1_project_description');
@@ -213,22 +235,22 @@ class CourseRegistrationController extends Controller
 
         $combinedPreference = '';
         if (!empty($q1)) {
-        $combinedPreference .= "$q1. ";
+            $combinedPreference .= "$q1. ";
         }
         if (!empty($q2)) {
-        $combinedPreference .= implode(', ', $q2) . ". ";
+            $combinedPreference .= implode(', ', $q2) . ". ";
         }
         if (!empty($q3)) {
-        $combinedPreference .= "$q3. ";
+            $combinedPreference .= "$q3. ";
         }
         if (!empty($q4)) {
-        $combinedPreference .= "$q4. ";
+            $combinedPreference .= "$q4. ";
         }
         if (!empty($q5)) {
-        $combinedPreference .= implode(', ', $q5) . ". ";
+            $combinedPreference .= implode(', ', $q5) . ". ";
         }
         if (!empty($q6)) {
-        $combinedPreference .= "$q6. ";
+            $combinedPreference .= "$q6. ";
         }
 
         // dd($preferenceText, $preferenceSelect, $combinedPreference);

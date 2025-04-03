@@ -17,12 +17,15 @@
         <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Admin</a>
         <!-- Các menu, nav-item khác -->
         <div class="dashboard-menu mt-3">
-            <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Quản lý Môn học</a>
+            <a href="{{ route('viewmonhoc.index') }}" class="btn btn-primary">Quản lý Môn học</a>
             <a href="{{ route('giangvien.index') }}" class="btn btn-primary">Quản lý Giảng viên</a>
             <a href="{{ route('sinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
         </div>
 
         <div class="logout-btn mt-3">
+            <a href="{{ route('admin.change_password') }}" class="btn btn-outline-primary me-2">
+                Đổi mật khẩu
+            </a>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
                 <button type="submit" class="btn btn-danger">Đăng xuất</button>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('title', 'Danh sách Môn học')
 
@@ -10,7 +10,7 @@
     @endif
 
     <!-- Form lọc -->
-    <form method="GET" action="{{ route('viewmonhoc.index') }}" class="mb-3">
+    <form method="GET" action="{{ route('monhoc.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
                 <select name="major_id" class="form-control">
@@ -30,11 +30,12 @@
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Lọc</button>
-                <a href="{{ route('viewmonhoc.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
     </form>
 
+    <a href="{{ route('monhoc.create') }}" class="btn btn-primary mb-3">Thêm Môn học</a>
 
     <table class="table table-bordered" id="electiveTable">
         <thead>
@@ -88,7 +89,8 @@
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_course_id : 'N/A' }}</td>
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_type : 'N/A' }}</td>
                 <td>
-                    <form action="{{ route('viewmonhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
+                    <a href="{{ route('monhoc.edit', $course->course_id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <form action="{{ route('monhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>

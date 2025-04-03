@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Staff\SemesterController;
+use App\Http\Controllers\Staff\HandleCourseController;
 use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
@@ -68,10 +69,16 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
 
     // Quản lý Môn học
-    Route::resource('monhoc', CourseController::class);
+    Route::resource('viewmonhoc', CourseController::class)->only([
+        'index', 'destroy'
+    ]);;
 
     // Quản lý Học kỳ
     // Route::resource('hocki', SemesterController::class);
+
+    Route::get('/change-password', function () {
+        return view('admin.change_password');
+    })->name('admin.change_password');
 });
 
 Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function () {
@@ -87,10 +94,14 @@ Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function (
     Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('academic_staff.registration.storeCourses');
 
     // Quản lý Môn học
-    Route::resource('monhoc', CourseController::class);
+    Route::resource('monhoc', HandleCourseController::class);
 
     // Quản lý Học kỳ
     Route::resource('hocki', SemesterController::class);
+
+    Route::get('/change-password', function () {
+        return view('academic_staff.change_password');
+    })->name('academic_staff.change_password');
 });
 
 

@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="{{ route('lecturer.schedule') }}">
-                {{ session('user')->lecturer_name ?? session('user')->lecturer_id }}
+                Welcome {{ session('user')->lecturer_name ?? session('user')->lecturer_id }}
             </a>
             <div class="d-flex align-items-center">
                 <a href="{{ route('lecturer.change_password') }}" class="btn btn-outline-primary me-2">

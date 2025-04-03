@@ -40,7 +40,7 @@
                             <td>{{ $registration->course->credits }}</td>
                             <td>
                                 <span class="badge {{ $registration->status ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $registration->status ? 'Đã hoàn thành' : 'Đang học' }}
+                                    {{ $registration->status ? 'Đã đăng ký' : 'Error' }}
                                 </span>
                             </td>
                             <td>{{ $registration->semester ?? 'N/A' }}</td>

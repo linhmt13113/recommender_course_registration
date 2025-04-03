@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Student;
 use App\Models\Lecturer;
+use App\Models\AcademicStaff;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -31,14 +33,14 @@ class AuthController extends Controller
 
         $username = $request->input('username');
         $password = $request->input('password');
-
+        // dd(session()->all());
         // Kiểm tra trong bảng Admin (dùng email làm username)
         $admin = Admin::where('email', $username)->first();
         if ($admin && Hash::check($password, $admin->password)) {
             // Lưu thông tin vào session để xác định role admin
             session([
                 'user_role' => 'admin',
-                'user'      => $admin
+                'user' => $admin
             ]);
             return redirect('/qly/dashboard');
         }
@@ -48,9 +50,19 @@ class AuthController extends Controller
         if ($lecturer && Hash::check($password, $lecturer->password)) {
             session([
                 'user_role' => 'lecturer',
-                'user'      => $lecturer
+                'user' => $lecturer
             ]);
             return redirect('/gvien/lichday');
+        }
+
+        // Kiểm tra Nhân viên giáo vụ
+        $staff = AcademicStaff::where('staff_id', $username)->first();
+        if ($staff && Hash::check($password, $staff->password)) {
+            session([
+                'user_role' => 'staff',  // Role mới
+                'user' => $staff
+            ]);
+            return redirect('/giaovu/dashboard');
         }
 
         // Kiểm tra trong bảng Student (sử dụng student_id làm username)
@@ -59,11 +71,13 @@ class AuthController extends Controller
             // Lưu thêm thông tin chuyên ngành của sinh viên vào session
             session([
                 'user_role' => 'student',
-                'user'      => $student,
-                'major_id'  => $student->major_id
+                'user' => $student,
+                'major_id' => $student->major_id
             ]);
             return redirect('/svien/dashboard')->with('student', $student);
         }
+
+
 
         // Nếu không tìm thấy hoặc mật khẩu không đúng, trả về lỗi
         return back()->withErrors(['username' => 'Tài khoản hoặc mật khẩu không đúng!']);
@@ -75,6 +89,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->session()->flush();
+        Auth::logout();
         return redirect('/login');
     }
 
@@ -86,7 +101,7 @@ class AuthController extends Controller
         // Validate dữ liệu nhập vào
         $request->validate([
             'current_password' => 'required',
-            'new_password'     => 'required|min:6|confirmed',
+            'new_password' => 'required|min:6|confirmed',
         ]);
 
         $user = session('user');

@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Staff;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Semester;
 use App\Models\CourseMajor;
 
 class RegistrationController extends Controller
 {
+    //
     public function index()
     {
         $semesters = Semester::all();
-        return view('admin.registration.index', compact('semesters'));
+        return view('academic_staff.registration.index', compact('semesters'));
     }
 
     public function openRegistration($id)
@@ -24,7 +26,7 @@ class RegistrationController extends Controller
             // hoặc nếu đã có, admin có thể cập nhật danh sách.
             $semester->registration_status = 'open';
             $semester->save();
-            return redirect()->route('admin.registration.courses', $semester->id)
+            return redirect()->route('academic_staff.registration.courses', $semester->id)
                 ->with('success', 'Mở đợt đăng ký thành công cho học kỳ: ' . $semester->semester_id);
         } else {
             return redirect()->back()->with('error', 'Học kỳ này đã bắt đầu, không thể mở đăng ký.');
@@ -59,7 +61,7 @@ class RegistrationController extends Controller
             ->unique('course_id');
 
 
-        return view('admin.registration.courses', compact(
+        return view('academic_staff.registration.courses', compact(
             'semester',
             'electiveCourses',
             'evenNonElectiveCourses',
@@ -86,7 +88,7 @@ class RegistrationController extends Controller
         // sync sẽ tự động thêm các môn mới và xóa những môn bị bỏ chọn.
         $semester->courses()->sync($selectedCourses);
 
-        return redirect()->route('admin.registration.index')
+        return redirect()->route('academic_staff.registration.index')
             ->with('success', 'Đã lưu và cập nhật các môn đăng ký cho học kỳ: ' . $semester->semester_id);
     }
 
@@ -95,6 +97,6 @@ class RegistrationController extends Controller
         $semester = Semester::with('courses')->findOrFail($id);
         $registrationCourses = $semester->courses; // Đây là Collection chứa các đối tượng Course
 
-        return view('admin.registration.index', compact('semester', 'registrationCourses'));
+        return view('academic_staff.registration.index', compact('semester', 'registrationCourses'));
     }
 }

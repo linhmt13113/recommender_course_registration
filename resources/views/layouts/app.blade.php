@@ -21,7 +21,6 @@
             <a href="{{ route('giangvien.index') }}" class="btn btn-primary">Quản lý Giảng viên</a>
             <a href="{{ route('hocki.index') }}" class="btn btn-primary">Quản lý Học kỳ</a>
             <a href="{{ route('sinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
-            <a href="{{ route('admin.registration.index') }}" class="btn btn-primary">Quản lý Mở Đăng Ký Môn</a>
         </div>
 
         <div class="logout-btn mt-3">

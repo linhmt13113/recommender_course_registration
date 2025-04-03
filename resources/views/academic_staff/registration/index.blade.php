@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('title', 'Quản lý Đăng ký Học kỳ')
 
@@ -33,11 +33,11 @@
                 <td>{{ ucfirst($semester->registration_status) }}</td>
                 <td>
                     @if($semester->registration_status == 'closed')
-                        <a href="{{ route('admin.registration.courses', $semester->id) }}" class="btn btn-success">
+                        <a href="{{ route('academic_staff.registration.courses', $semester->id) }}" class="btn btn-success">
                             Chọn môn & Mở đăng ký
                         </a>
                     @elseif($semester->registration_status == 'open')
-                        <a href="{{ route('admin.registration.courses', $semester->id) }}" class="btn btn-primary">
+                        <a href="{{ route('academic_staff.registration.courses', $semester->id) }}" class="btn btn-primary">
                             Xem/Chỉnh sửa môn đăng ký
                         </a>
                     @else

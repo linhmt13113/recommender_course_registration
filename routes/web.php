@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\CheckLecturer;
 use App\Http\Middleware\CheckStudent;
-use App\Http\Controllers\RegistrationController;
+// use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\Staff\RegistrationController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\SemesterController;
 use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
+use App\Http\Middleware\CheckAcademicStaff;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,10 +45,10 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     })->name('admin.dashboard');
 
     // Route quản lý mở đợt đăng ký
-    Route::get('/registration', [RegistrationController::class, 'index'])->name('admin.registration.index');
-    Route::post('/registration/open/{id}', [RegistrationController::class, 'openRegistration'])->name('admin.registration.open');
-    Route::get('/registration/courses/{id}', [RegistrationController::class, 'showRegistrationCourses'])->name('admin.registration.courses');
-    Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('admin.registration.storeCourses');
+    // Route::get('/registration', [RegistrationController::class, 'index'])->name('admin.registration.index');
+    // Route::post('/registration/open/{id}', [RegistrationController::class, 'openRegistration'])->name('admin.registration.open');
+    // Route::get('/registration/courses/{id}', [RegistrationController::class, 'showRegistrationCourses'])->name('admin.registration.courses');
+    // Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('admin.registration.storeCourses');
 
     // Quản lý Sinh viên
     Route::resource('sinhvien', StudentController::class);
@@ -71,6 +73,26 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     // Quản lý Học kỳ
     Route::resource('hocki', SemesterController::class);
 });
+
+Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function () {
+    // Dashboard Nhân viên Giáo vụ
+    Route::get('/dashboard', function () {
+        return view('academic_staff.dashboard');
+    })->name('academic_staff.dashboard');
+
+    // Quản lý mở đợt đăng ký
+    Route::get('/registration', [RegistrationController::class, 'index'])->name('academic_staff.registration.index');
+    Route::post('/registration/open/{id}', [RegistrationController::class, 'openRegistration'])->name('academic_staff.registration.open');
+    Route::get('/registration/courses/{id}', [RegistrationController::class, 'showRegistrationCourses'])->name('academic_staff.registration.courses');
+    Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('academic_staff.registration.storeCourses');
+
+    // Quản lý Môn học
+    Route::resource('monhoc', CourseController::class);
+
+    // Quản lý Học kỳ
+    Route::resource('hocki', SemesterController::class);
+});
+
 
 
 // Route cho Lecturer

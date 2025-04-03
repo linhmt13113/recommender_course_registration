@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('title', 'Chọn môn đăng ký cho học kỳ ' . $semester->semester_id)
 
@@ -10,7 +10,7 @@
       <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form action="{{ route('admin.registration.storeCourses', $semester->id) }}" method="POST">
+    <form action="{{ route('academic_staff.registration.storeCourses', $semester->id) }}" method="POST">
         @csrf
 
         {{-- Nhóm môn tự chọn --}}
@@ -137,7 +137,7 @@
         <button type="submit" class="btn btn-primary mt-3">Lưu các môn đăng ký & Mở đăng ký</button>
     </form>
 
-    <a href="{{ route('admin.registration.index') }}" class="btn btn-secondary mt-3">Quay lại danh sách Học kỳ</a>
+    <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-secondary mt-3">Quay lại danh sách Học kỳ</a>
 </div>
 @endsection
 

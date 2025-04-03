@@ -17,6 +17,8 @@
                 ký</a>
             <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Quản lý môn học</a>
             <a href="{{ route('hocki.index') }}" class="btn btn-primary">Quản lý học kỳ</a>
+            <a href="{{ route('viewsinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
+
         </div>
         <div class="logout-btn mt-3">
             <a href="{{ route('academic_staff.change_password') }}" class="btn btn-outline-primary me-2">

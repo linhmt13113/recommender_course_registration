@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Staff\SemesterController;
 use App\Http\Controllers\Staff\HandleCourseController;
+use App\Http\Controllers\Staff\ViewStudentController;
 use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
@@ -54,15 +55,15 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
     // Quản lý Sinh viên
     Route::resource('sinhvien', StudentController::class);
-    // Xem danh sách các môn học mà sinh viên đã học
-    Route::get('sinhvien/{id}/courses', [StudentController::class, 'showCourses'])
-        ->name('admin.students.courses');
-    // Route xem danh sách các môn mới đăng ký (từ bảng student_registrations)
-    Route::get('sinhvien/{id}/registrations', [StudentController::class, 'showRegistrations'])
-        ->name('admin.students.registrations');
+    // // Xem danh sách các môn học mà sinh viên đã học
+    // Route::get('sinhvien/{id}/courses', [StudentController::class, 'showCourses'])
+    //     ->name('admin.students.courses');
+    // // Route xem danh sách các môn mới đăng ký (từ bảng student_registrations)
+    // Route::get('sinhvien/{id}/registrations', [StudentController::class, 'showRegistrations'])
+    //     ->name('admin.students.registrations');
 
-    Route::delete('sinhvien/registrations/{registration}', [StudentController::class, 'destroyRegistration'])
-        ->name('admin.students.registrations.destroy');
+    // Route::delete('sinhvien/registrations/{registration}', [StudentController::class, 'destroyRegistration'])
+    //     ->name('admin.students.registrations.destroy');
 
     // Quản lý Giảng viên
     Route::resource('giangvien', LecturerController::class);
@@ -72,8 +73,10 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     Route::resource('staff_management', AcademicStaffController::class);
     // Quản lý Môn học
     Route::resource('viewmonhoc', CourseController::class)->only([
-        'index', 'destroy'
-    ]);;
+        'index',
+        'destroy'
+    ]);
+    ;
 
     // Quản lý Học kỳ
     // Route::resource('hocki', SemesterController::class);
@@ -88,6 +91,20 @@ Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function (
     Route::get('/dashboard', function () {
         return view('academic_staff.dashboard');
     })->name('academic_staff.dashboard');
+
+    Route::resource('viewsinhvien', ViewStudentController::class)->only([
+        'index'
+    ]);
+
+    // Xem danh sách các môn học mà sinh viên đã học
+    Route::get('viewsinhvien/{id}/courses', [ViewStudentController::class, 'showCourses'])
+        ->name('staff.students.courses');
+    // Route xem danh sách các môn mới đăng ký (từ bảng student_registrations)
+    Route::get('viewsinhvien/{id}/registrations', [ViewStudentController::class, 'showRegistrations'])
+        ->name('staff.students.registrations');
+
+    Route::delete('viewsinhvien/registrations/{registration}', [ViewStudentController::class, 'destroyRegistration'])
+        ->name('staff.students.registrations.destroy');
 
     // Quản lý mở đợt đăng ký
     Route::get('/registration', [RegistrationController::class, 'index'])->name('academic_staff.registration.index');

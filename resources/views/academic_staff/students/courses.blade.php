@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('title', 'Môn học của Sinh viên')
 
@@ -29,6 +29,6 @@
             @endforelse
         </tbody>
     </table>
-    <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
+    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
 </div>
 @endsection

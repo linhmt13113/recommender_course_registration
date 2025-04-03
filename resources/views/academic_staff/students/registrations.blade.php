@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.apps')
 
 @section('title', 'Đăng ký môn học của sinh viên ' . $student->student_name)
 
 @section('content')
 <div class="container mt-4">
     <h1>Đăng ký môn học của sinh viên: {{ $student->student_name }}</h1>
-    <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary mb-3">Trở về danh sách Sinh viên</a>
+    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary mb-3">Trở về danh sách Sinh viên</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -40,7 +40,7 @@
                         </td>
                         <td>{{ $registration->semester ?? 'N/A' }}</td>
                         <td>
-                            <form action="{{ route('admin.students.registrations.destroy', $registration->id) }}"
+                            <form action="{{ route('staff.students.registrations.destroy', $registration->id) }}"
                                 method="POST" onsubmit="return confirm('Bạn có chắc chắn xóa đăng ký này không?');">
                                 @csrf
                                 @method('DELETE')

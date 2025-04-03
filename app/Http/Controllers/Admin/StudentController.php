@@ -4,28 +4,33 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Student;
-use App\Models\Major;
-use App\Models\StudentRegistration;
+use App\Http\Services\StudentService;
 
 class StudentController extends Controller
 {
+    protected $studentService;
+
+    public function __construct(StudentService $studentService)
+    {
+        $this->studentService = $studentService;
+    }
+
     /**
-     * Hiển thị danh sách sinh viên cùng các môn học đã đăng ký.
+     * Hiển thị danh sách sinh viên.
      */
     public function index(Request $request)
     {
-        $students = Student::with('courses')->paginate(10);
+        $students = $this->studentService->index($request);
         return view('admin.students.index', compact('students'));
     }
 
     /**
-     * Hiển thị form thêm sinh viên.
+     * Hiển thị form tạo sinh viên.
      */
     public function create()
     {
-        $majors = Major::all();
-        return view('admin.students.create', compact('majors'));
+        $data = $this->studentService->prepareCreateData();
+        return view('admin.students.create', $data);
     }
 
     /**
@@ -33,21 +38,9 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'student_id' => 'required|unique:students,student_id',
-            'student_name' => 'required',
-            'major_id' => 'required',
-        ]);
-
-        $student = new Student();
-        $student->student_id = $request->input('student_id');
-        $student->student_name = $request->input('student_name');
-        $student->major_id = $request->input('major_id');
-        $student->password = bcrypt('student123');
-        $student->save();
-
+        $this->studentService->store($request);
         return redirect()->route('sinhvien.index')
-            ->with('success', 'Thêm sinh viên thành công.');
+                         ->with('success', 'Thêm sinh viên thành công.');
     }
 
     /**
@@ -55,79 +48,27 @@ class StudentController extends Controller
      */
     public function edit($student_id)
     {
-        $student = Student::findOrFail($student_id);
-        $majors = Major::all();
-        return view('admin.students.edit', compact('student', 'majors'));
+        $data = $this->studentService->prepareEditData($student_id);
+        return view('admin.students.edit', $data);
     }
 
     /**
-     * Cập nhật thông tin sinh viên.
+     * Cập nhật sinh viên.
      */
     public function update(Request $request, $student_id)
     {
-        $request->validate([
-            'student_name' => 'nullable|string|max:255',
-            'major_id' => 'sometimes|nullable|exists:majors,id',
-            'password' => 'nullable|string|min:6'
-        ]);
-
-        $student = Student::findOrFail($student_id);
-
-        if ($request->filled('student_name')) {
-            $student->student_name = $request->input('student_name');
-        }
-
-        if ($request->has('major_id') && $request->input('major_id') != '') {
-            $student->major_id = $request->input('major_id');
-        }
-
-        if ($request->filled('password')) {
-            $student->password = bcrypt($request->input('password'));
-        }
-
-        $student->save();
-
+        $this->studentService->update($request, $student_id);
         return redirect()->route('sinhvien.index')
-            ->with('success', 'Cập nhật sinh viên thành công.');
+                         ->with('success', 'Cập nhật sinh viên thành công.');
     }
-
 
     /**
      * Xóa sinh viên.
      */
     public function destroy($student_id)
     {
-        $student = Student::findOrFail($student_id);
-        $student->delete();
-
+        $this->studentService->destroy($student_id);
         return redirect()->route('sinhvien.index')
-            ->with('success', 'Xóa sinh viên thành công.');
-    }
-
-    /**
-     * Xem chi tiết các môn học mà sinh viên đã hoc.
-     */
-    public function showCourses($student_id)
-    {
-        $student = Student::with('courses', 'major')->findOrFail($student_id);
-        return view('admin.students.courses', compact('student'));
-    }
-
-    public function showRegistrations($student_id)
-    {
-        $student = Student::with('major')->findOrFail($student_id);
-        // Lấy đăng ký từ bảng student_registrations, eager load quan hệ course
-        $registrations = StudentRegistration::with('course')
-            ->where('student_id', $student_id)
-            ->get();
-
-        return view('admin.students.registrations', compact('student', 'registrations'));
-    }
-
-    public function destroyRegistration($registrationId)
-    {
-        $registration = StudentRegistration::findOrFail($registrationId);
-        $registration->delete();
-        return redirect()->back()->with('success', 'Xóa đăng ký môn học thành công.');
+                         ->with('success', 'Xóa sinh viên thành công.');
     }
 }

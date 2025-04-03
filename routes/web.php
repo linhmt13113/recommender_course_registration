@@ -16,6 +16,7 @@ use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
 use App\Http\Middleware\CheckAcademicStaff;
+use App\Http\Controllers\Admin\AcademicStaffController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -68,6 +69,7 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     Route::get('giangvien/{lecturer}/courses', [LecturerController::class, 'courses'])->name('giangvien.courses');
 
 
+    Route::resource('staff_management', AcademicStaffController::class);
     // Quản lý Môn học
     Route::resource('viewmonhoc', CourseController::class)->only([
         'index', 'destroy'

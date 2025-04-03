@@ -20,6 +20,7 @@
             <a href="{{ route('viewmonhoc.index') }}" class="btn btn-primary">Quản lý Môn học</a>
             <a href="{{ route('giangvien.index') }}" class="btn btn-primary">Quản lý Giảng viên</a>
             <a href="{{ route('sinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
+            <a href="{{ route('staff_management.index') }}" class="btn btn-primary">Quản lý Academic_Staff</a>
         </div>
 
         <div class="logout-btn mt-3">

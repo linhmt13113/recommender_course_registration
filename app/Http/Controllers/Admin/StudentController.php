@@ -66,20 +66,31 @@ class StudentController extends Controller
     public function update(Request $request, $student_id)
     {
         $request->validate([
-            'student_id' => 'required|unique:students,student_id,' . $student_id,
-            'student_name' => 'required',
-            'major_id' => 'required',
+            'student_name' => 'nullable|string|max:255',
+            'major_id' => 'sometimes|nullable|exists:majors,id',
+            'password' => 'nullable|string|min:6'
         ]);
 
         $student = Student::findOrFail($student_id);
-        $student->student_id = $request->input('student_id');
-        $student->student_name = $request->input('student_name');
-        $student->major_id = $request->input('major_id');
+
+        if ($request->filled('student_name')) {
+            $student->student_name = $request->input('student_name');
+        }
+
+        if ($request->has('major_id') && $request->input('major_id') != '') {
+            $student->major_id = $request->input('major_id');
+        }
+
+        if ($request->filled('password')) {
+            $student->password = bcrypt($request->input('password'));
+        }
+
         $student->save();
 
         return redirect()->route('sinhvien.index')
             ->with('success', 'Cập nhật sinh viên thành công.');
     }
+
 
     /**
      * Xóa sinh viên.

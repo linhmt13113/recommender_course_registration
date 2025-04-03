@@ -25,23 +25,27 @@
         <div class="form-group">
             <label for="student_id">Mã Sinh viên:</label>
             <input type="text" name="student_id" id="student_id" class="form-control"
-                   value="{{ $student->student_id }}" required>
+                   value="{{ $student->student_id }}" readonly>
         </div>
         <div class="form-group">
             <label for="student_name">Tên Sinh viên:</label>
             <input type="text" name="student_name" id="student_name" class="form-control"
-                   value="{{ $student->student_name }}" required>
+                   value="{{ old('student_name', $student->student_name) }}" >
         </div>
         <div class="form-group">
             <label for="major_id">Chuyên ngành:</label>
-            <select name="major_id" id="major_id" class="form-control" required>
+            <select name="major_id" id="major_id" class="form-control" >
                 @foreach($majors as $major)
                     <option value="{{ $major->id }}"
-                        {{ $student->major_id == $major->id ? 'selected' : '' }}>
+                        {{ old('major_id', $student->major_id) == $major->id ? 'selected' : '' }}>
                         {{ $major->major_name }}
                     </option>
                 @endforeach
             </select>
+        </div>
+        <div class="form-group">
+            <label for="password">Mật khẩu mới:</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Nhập mật khẩu mới">
         </div>
         <div class="form-group mt-3">
             <button type="submit" class="btn btn-primary mr-2">

@@ -10,7 +10,7 @@ use App\Http\Controllers\Staff\RegistrationController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\LecturerController;
 use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\SemesterController;
+use App\Http\Controllers\Staff\SemesterController;
 use App\Http\Controllers\Lecturer\LecturersController;
 use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
@@ -71,7 +71,7 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     Route::resource('monhoc', CourseController::class);
 
     // Quản lý Học kỳ
-    Route::resource('hocki', SemesterController::class);
+    // Route::resource('hocki', SemesterController::class);
 });
 
 Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function () {

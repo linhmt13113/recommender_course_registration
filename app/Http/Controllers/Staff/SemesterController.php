@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Staff;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Semester;
 
+
 class SemesterController extends Controller
 {
-    /**
+    //
+     /**
      * Hiển thị danh sách học kỳ.
      */
     public function index()
     {
         $semesters = Semester::paginate(10);
-        return view('admin.semesters.index', compact('semesters'));
+        return view('academic_staff.semesters.index', compact('semesters'));
     }
 
     /**
@@ -22,7 +24,7 @@ class SemesterController extends Controller
      */
     public function create()
     {
-        return view('admin.semesters.create');
+        return view('academic_staff.semesters.create');
     }
 
     /**
@@ -54,7 +56,7 @@ class SemesterController extends Controller
     public function edit($id)
     {
         $semester = Semester::findOrFail($id);
-        return view('admin.semesters.edit', compact('semester'));
+        return view('academic_staff.semesters.edit', compact('semester'));
     }
 
     /**

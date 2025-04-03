@@ -19,7 +19,6 @@
         <div class="dashboard-menu mt-3">
             <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Quản lý Môn học</a>
             <a href="{{ route('giangvien.index') }}" class="btn btn-primary">Quản lý Giảng viên</a>
-            <a href="{{ route('hocki.index') }}" class="btn btn-primary">Quản lý Học kỳ</a>
             <a href="{{ route('sinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
         </div>
 

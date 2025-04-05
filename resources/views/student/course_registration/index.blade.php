@@ -351,5 +351,5 @@
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('template/js/students/index_course_registration.js') }}"></script>
+    <script src="{{ asset('template/js/index_course_registration.js') }}"></script>
 @endpush

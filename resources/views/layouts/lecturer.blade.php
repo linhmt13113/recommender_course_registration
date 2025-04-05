@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title') - Hệ thống Giảng viên</title>
+    <title>@yield('title') - Lecturer System</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('template/css/lecturers/style.css') }}">
     <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     @stack('styles')
@@ -16,7 +17,7 @@
         <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
             <div class="toast show" role="alert">
                 <div class="toast-header bg-success text-white">
-                    <strong class="me-auto">Thành công</strong>
+                    <strong class="me-auto">Success</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
                 </div>
                 <div class="toast-body">
@@ -32,18 +33,15 @@
             </a>
             <div class="d-flex align-items-center">
                 <a href="{{ route('lecturer.change_password') }}" class="btn btn-outline-primary me-2">
-                    Đổi mật khẩu
+                    Change Password
                 </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-outline-danger">Đăng xuất</button>
+                    <button type="submit" class="btn btn-outline-danger">Logout</button>
                 </form>
             </div>
         </div>
     </nav>
-
-
-
 
     <div class="container mt-4">
         @yield('content')
@@ -51,11 +49,12 @@
 
     <footer class="mt-5 py-3 bg-light">
         <div class="container text-center">
-            <p class="mb-0">&copy; {{ date('Y') }} Hệ thống Quản lý Giảng dạy</p>
+            <p class="mb-0">&copy; {{ date('Y') }} Teaching Management System</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('template/js/lec.js') }}"></script>
     @stack('scripts')
 </body>
 

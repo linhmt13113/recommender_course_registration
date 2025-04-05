@@ -1,0 +1,63 @@
+/* Reset basic properties */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Add style for header navbar */
+.navbar {
+    background-color: #007bff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .navbar-brand {
+    color: white;
+    font-weight: bold;
+}
+
+.navbar .navbar-brand:hover {
+    color: #f8f9fa;
+}
+
+.navbar .btn-outline-primary,
+.navbar .btn-outline-danger {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.navbar .btn-outline-primary:hover,
+.navbar .btn-outline-danger:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Style for toast notifications */
+.toast {
+    max-width: 350px;
+    border-radius: 10px;
+}
+
+.toast-header {
+    background-color: #28a745;
+    color: white;
+}
+
+.toast-body {
+    font-size: 14px;
+}
+
+/* Style for footer */
+footer {
+    background-color: #f8f9fa;
+}
+
+footer p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Style for container */
+.container {
+    max-width: 960px;
+}

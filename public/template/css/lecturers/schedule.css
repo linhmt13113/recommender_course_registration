@@ -1,0 +1,45 @@
+/* Add spacing between tables */
+.table {
+    margin-top: 20px;
+}
+
+/* Style for notifications */
+.alert {
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+/* Style for rows in the table */
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Style for action buttons */
+.btn-outline-info {
+    color: #17a2b8;
+    border-color: #17a2b8;
+    border-radius: 20px;
+    padding: 8px 20px;
+    transition: all 0.3s;
+}
+
+.btn-outline-info:hover {
+    background-color: #17a2b8;
+    color: white;
+}
+
+/* Add styles for the course schedule badges */
+.badge {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    margin-right: 5px;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d;
+}
+
+.badge.bg-primary {
+    background-color: #007bff;
+}

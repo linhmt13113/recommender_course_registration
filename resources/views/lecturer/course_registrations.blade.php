@@ -1,6 +1,6 @@
 @extends('layouts.lecturer')
 
-@section('title', 'Danh sách đăng ký')
+@section('title', 'Registration List')
 
 @push('styles')
 <style>
@@ -13,9 +13,9 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Môn học: {{ $course->course_name }}</h2>
+        <h2>Course: {{ $course->course_name }}</h2>
         <a href="{{ route('lecturer.schedule') }}" class="btn btn-secondary">
-            ← Quay về
+            ← Back
         </a>
     </div>
 
@@ -25,11 +25,11 @@
                 <table class="table registration-table">
                     <thead>
                         <tr>
-                            <th>Mã SV</th>
-                            <th>Tên SV</th>
-                            <th>Số TC</th>
-                            <th>Trạng thái</th>
-                            <th>Học kỳ</th>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Credits</th>
+                            <th>Status</th>
+                            <th>Semester</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,7 +40,7 @@
                             <td>{{ $registration->course->credits }}</td>
                             <td>
                                 <span class="badge {{ $registration->status ? 'bg-success' : 'bg-warning' }}">
-                                    {{ $registration->status ? 'Đã đăng ký' : 'Error' }}
+                                    {{ $registration->status ? 'Registered' : 'Error' }}
                                 </span>
                             </td>
                             <td>{{ $registration->semester ?? 'N/A' }}</td>
@@ -51,7 +51,7 @@
             </div>
         </div>
     @else
-        <div class="alert alert-info">Chưa có sinh viên đăng ký môn học này.</div>
+        <div class="alert alert-info">No students have registered for this course yet.</div>
     @endif
 </div>
 @endsection

@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Môn học do Giảng viên ' . $lecturer->lecturer_name . ' dạy')
+@section('title', 'Subjects taught by Lecturer ' . $lecturer->lecturer_name)
 
 @section('content')
 <div class="container mt-4">
-    <h1>Môn học do Giảng viên {{ $lecturer->lecturer_name }} dạy</h1>
-    <a href="{{ route('giangvien.index') }}" class="btn btn-secondary mb-3">Trở về danh sách Giảng viên</a>
+    <h1>Subjects taught by Lecturer {{ $lecturer->lecturer_name }}</h1>
+    <a href="{{ route('giangvien.index') }}" class="btn btn-secondary mb-3">Back to Lecturer List</a>
     @if($courses->isNotEmpty())
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Mã môn học</th>
-                    <th>Tên môn học</th>
-                    <th>Số tín chỉ</th>
-                    <th>Thời gian</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Credits</th>
+                    <th>Schedule</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,22 +25,22 @@
                     <td>
                         @if($course->schedules->isNotEmpty())
                             @php $schedule = $course->schedules->first(); @endphp
-                            <div><strong>Ngày:</strong>
+                            <div><strong>Day:</strong>
                                 @switch($schedule->day_of_week)
-                                    @case(1) Thứ 2 @break
-                                    @case(2) Thứ 3 @break
-                                    @case(3) Thứ 4 @break
-                                    @case(4) Thứ 5 @break
-                                    @case(5) Thứ 6 @break
-                                    @case(6) Thứ 7 @break
-                                    @case(7) Chủ nhật @break
-                                    @default Không xác định
+                                    @case(1) Monday @break
+                                    @case(2) Tuesday @break
+                                    @case(3) Wednesday @break
+                                    @case(4) Thursday @break
+                                    @case(5) Friday @break
+                                    @case(6) Saturday @break
+                                    @case(7) Sunday @break
+                                    @default Undefined
                                 @endswitch
                             </div>
-                            <div><strong>Bắt đầu:</strong> {{ $schedule->start_time }}</div>
-                            <div><strong>Kết thúc:</strong> {{ $schedule->end_time }}</div>
+                            <div><strong>Start Time:</strong> {{ $schedule->start_time }}</div>
+                            <div><strong>End Time:</strong> {{ $schedule->end_time }}</div>
                         @else
-                            Chưa có lịch dạy
+                            No schedule available
                         @endif
                     </td>
                 </tr>
@@ -48,7 +48,7 @@
             </tbody>
         </table>
     @else
-        <p>Giảng viên này hiện chưa dạy môn học nào.</p>
+        <p>This lecturer has not taught any subjects yet.</p>
     @endif
 </div>
 @endsection

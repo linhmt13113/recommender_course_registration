@@ -3,8 +3,8 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-    <h1>Chào mừng Admin!</h1>
-    <p>Đây là trang quản trị hệ thống.</p>
+    <h1>Welcome Admin!</h1>
+    <p>This is the system administration page.</p>
 @endsection
 
 @push('styles')

@@ -22,3 +22,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Example JS for Admin pages
+document.addEventListener('DOMContentLoaded', function() {
+    // For example, you could add a confirmation for delete buttons globally
+    const deleteButtons = document.querySelectorAll('button.btn-danger');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Are you sure you want to delete?')) {
+                e.preventDefault();
+            }
+        });
+    });
+});

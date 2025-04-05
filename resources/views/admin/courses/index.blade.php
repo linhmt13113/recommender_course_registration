@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
-@section('title', 'Danh sách Môn học')
+@section('title', 'Course List')
 
 @section('content')
-    <h1>Quản lý Môn học</h1>
+    <h1>Course Management</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <!-- Form lọc -->
+    <!-- Filter Form -->
     <form method="GET" action="{{ route('viewmonhoc.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
                 <select name="major_id" class="form-control">
-                    <option value="">-- Chọn chuyên ngành --</option>
+                    <option value="">-- Select Major --</option>
                     @foreach($majors as $major)
                         <option value="{{ $major->major_id }}" {{ request('major_id') == $major->major_id ? 'selected' : '' }}>
                             {{ $major->major_name }}
@@ -24,32 +24,31 @@
             </div>
             <div class="col-md-4">
                 <input type="text" name="search" class="form-control search-input"
-                    placeholder="Tìm kiếm..."
+                    placeholder="Search..."
                     value="{{ request('search') }}"
                     onkeyup="filterTable('electiveTable', this.value)">
             </div>
             <div class="col-md-4">
-                <button type="submit" class="btn btn-primary">Lọc</button>
+                <button type="submit" class="btn btn-primary">Filter</button>
                 <a href="{{ route('viewmonhoc.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
     </form>
 
-
     <table class="table table-bordered" id="electiveTable">
         <thead>
             <tr>
-                <th>Mã Môn học</th>
-                <th>Tên Môn học</th>
-                <th>Mô tả</th>
-                <th>Giảng viên</th>
-                <th>Lịch học</th>
-                <th>Số tín chỉ</th>
-                <th>Is Elective</th>
-                <th>Học kỳ đề xuất</th>
-                <th>Môn tiên quyết</th>
-                <th>Loại tiên quyết</th>
-                <th>Hành động</th>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Description</th>
+                <th>Lecturer</th>
+                <th>Schedule</th>
+                <th>Credits</th>
+                <th>Type</th>
+                <th>Recommended Semester</th>
+                <th>Prerequisite</th>
+                <th>Prerequisite Type</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -57,33 +56,39 @@
             <tr>
                 <td>{{ $course->course_id }}</td>
                 <td>{{ $course->course_name }}</td>
-                <td>{{ $course->course_description ?? 'Không có mô tả' }}</td>
+                <td>
+                    @if(isset($course->course_description) && strlen($course->course_description) > 50)
+                        <span class="short-description">{{ substr($course->course_description, 0, 50) }}...</span>
+                        <a href="javascript:void(0)" class="toggle-desc" onclick="toggleDescription(this)">Show More</a>
+                        <span class="full-description" style="display: none;">{{ $course->course_description }}</span>
+                    @else
+                        {{ $course->course_description ?? 'No description' }}
+                    @endif
+                </td>
                 <td>{{ $course->lecturer ? $course->lecturer->lecturer_name : 'N/A' }}</td>
                 <td>
                     @if($course->schedules->isNotEmpty())
-                        @php
-                            $schedule = $course->schedules->first();
-                        @endphp
-                        <div><strong>Ngày:</strong>
+                        @php $schedule = $course->schedules->first(); @endphp
+                        <div><strong>Day:</strong>
                             @switch($schedule->day_of_week)
-                                @case(1) Thứ 2 @break
-                                @case(2) Thứ 3 @break
-                                @case(3) Thứ 4 @break
-                                @case(4) Thứ 5 @break
-                                @case(5) Thứ 6 @break
-                                @case(6) Thứ 7 @break
-                                @case(7) Chủ nhật @break
-                                @default Không xác định
+                                @case(1) Monday @break
+                                @case(2) Tuesday @break
+                                @case(3) Wednesday @break
+                                @case(4) Thursday @break
+                                @case(5) Friday @break
+                                @case(6) Saturday @break
+                                @case(7) Sunday @break
+                                @default Not specified
                             @endswitch
                         </div>
-                        <div><strong>Bắt đầu:</strong> {{ $schedule->start_time }}</div>
-                        <div><strong>Kết thúc:</strong> {{ $schedule->end_time }}</div>
+                        <div><strong>Start:</strong> {{ $schedule->start_time }}</div>
+                        <div><strong>End:</strong> {{ $schedule->end_time }}</div>
                     @else
-                        Chưa có lịch học
+                        No schedule
                     @endif
                 </td>
                 <td>{{ $course->credits }}</td>
-                <td>{{ $course->course_major ? ($course->course_major->is_elective ? 'Tự chọn' : 'Bắt buộc') : 'N/A' }}</td>
+                <td>{{ $course->course_major ? ($course->course_major->is_elective ? 'Elective' : 'Mandatory') : 'N/A' }}</td>
                 <td>{{ $course->course_major ? $course->course_major->recommended_semester : 'N/A' }}</td>
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_course_id : 'N/A' }}</td>
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_type : 'N/A' }}</td>
@@ -91,7 +96,7 @@
                     <form action="{{ route('viewmonhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -103,18 +108,35 @@
 
 @push('scripts')
 <script>
+    // Filter table function remains the same.
     function filterTable(tableId, query) {
         const filter = query.toUpperCase();
         const table = document.getElementById(tableId);
         const tr = table.getElementsByTagName("tr");
 
-        for (let i = 1; i < tr.length; i++) { // Bỏ qua header
+        // Loop through table rows, skipping the header row
+        for (let i = 1; i < tr.length; i++) {
             const tdArray = tr[i].getElementsByTagName("td");
             let rowText = "";
             for (let j = 0; j < tdArray.length; j++) {
                 rowText += tdArray[j].textContent || tdArray[j].innerText;
             }
             tr[i].style.display = rowText.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+        }
+    }
+
+    // Toggle description display function.
+    function toggleDescription(el) {
+        const fullDesc = el.nextElementSibling;
+        const shortDesc = el.previousElementSibling;
+        if (fullDesc.style.display === "none") {
+            fullDesc.style.display = "inline";
+            el.textContent = "Show Less";
+            shortDesc.style.display = "none";
+        } else {
+            fullDesc.style.display = "none";
+            el.textContent = "Show More";
+            shortDesc.style.display = "inline";
         }
     }
 </script>

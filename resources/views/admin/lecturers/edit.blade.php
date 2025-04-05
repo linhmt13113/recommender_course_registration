@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Sửa Giảng viên')
+@section('title', 'Edit Lecturer')
 
 @section('content')
 <div class="container mt-4">
-    <h1>Sửa Giảng viên</h1>
+    <h1>Edit Lecturer</h1>
 
     @if($errors->any())
         <div class="alert alert-danger">
@@ -18,18 +18,18 @@
         @csrf
         @method('PUT')
         <div class="form-group">
-            <label for="lecturer_id">Mã Giảng viên:</label>
+            <label for="lecturer_id">Lecturer ID:</label>
             <input type="text" name="lecturer_id" id="lecturer_id" class="form-control" value="{{ $lecturer->lecturer_id }}" readonly>
         </div>
         <div class="form-group">
-            <label for="lecturer_name">Tên Giảng viên:</label>
+            <label for="lecturer_name">Lecturer Name:</label>
             <input type="text" name="lecturer_name" id="lecturer_name" class="form-control" value="{{ $lecturer->lecturer_name }}" required>
         </div>
         <div class="form-group">
-            <label for="password">Mật khẩu mới:</label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Nhập mật khẩu mới" required>
+            <label for="password">New Password:</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter new password" required>
         </div>
-        <button type="submit" class="btn btn-primary">Cập nhật</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 </div>
 @endsection

@@ -1,24 +1,24 @@
 @extends('layouts.apps')
 
-@section('title', 'Danh sách Học kỳ')
+@section('title', 'Semester List')
 
 @section('content')
 <div class="container mt-4">
-    <h1>Quản lý Học kỳ</h1>
+    <h1>Semester Management</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('hocki.create') }}" class="btn btn-primary mb-3">Thêm Học kỳ</a>
+    <a href="{{ route('hocki.create') }}" class="btn btn-primary mb-3">Add Semester</a>
 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Mã Học kỳ</th>
-                <th>Ngày bắt đầu</th>
-                <th>Ngày kết thúc</th>
-                <th>Hành động</th>
+                <th>Semester ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,12 +28,12 @@
                 <td>{{ $semester->start_date }}</td>
                 <td>{{ $semester->end_date }}</td>
                 <td>
-                    <a href="{{ route('hocki.edit', $semester->id) }}" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="{{ route('hocki.edit', $semester->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     <form action="{{ route('hocki.destroy', $semester->id) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm"
-                            onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                            onclick="return confirm('Are you sure you want to delete this?')">Delete</button>
                     </form>
                 </td>
             </tr>

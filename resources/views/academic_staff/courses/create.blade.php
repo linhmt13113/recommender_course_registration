@@ -1,149 +1,167 @@
 @extends('layouts.apps')
 
-@section('title', 'Thêm Môn học')
+@section('title', 'Add Course')
 
 @section('content')
-    <h1>Thêm Môn học</h1>
+    <div class="create-course-container">
+        <h1 class="page-title">Add Course</h1>
 
-    @if($errors->any())
-        <div class="alert alert-danger">
-            @foreach($errors->all() as $error)
-                <p>{{ $error }}</p>
-            @endforeach
-        </div>
-    @endif
-
-    <form action="{{ route('monhoc.store') }}" method="POST">
-        @csrf
-
-        <div class="form-group">
-            <label for="course_id">Mã Môn học:</label>
-            <input type="text" name="course_id" id="course_id" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="course_name">Tên Môn học:</label>
-            <input type="text" name="course_name" id="course_name" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="credits">Số tín chỉ:</label>
-            <input type="number" name="credits" id="credits" class="form-control" required min="1">
-        </div>
-        <div class="form-group">
-            <label for="course_description">Mô tả:</label>
-            <textarea name="course_description" id="course_description" class="form-control"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="lecturer_id">Chọn Giảng viên (nếu có):</label>
-            <select name="lecturer_id" id="lecturer_id" class="form-control">
-                <option value="">-- Chọn Giảng viên --</option>
-                @foreach($lecturers as $lecturer)
-                    <option value="{{ $lecturer->lecturer_id }}">{{ $lecturer->lecturer_name }}</option>
+        @if($errors->any())
+            <div class="alert alert-danger error-alert">
+                @foreach($errors->all() as $error)
+                    <p>{{ $error }}</p>
                 @endforeach
-            </select>
-        </div>
+            </div>
+        @endif
 
-        <!-- Phần Lịch học -->
-        <hr>
-        <h4>Lịch học</h4>
-        <div class="form-group">
-            <label for="day_of_week">Chọn ngày trong tuần:</label>
-            <select name="day_of_week" id="day_of_week" class="form-control" required>
-                <option value="">-- Chọn ngày --</option>
-                <option value="1">Thứ 2</option>
-                <option value="2">Thứ 3</option>
-                <option value="3">Thứ 4</option>
-                <option value="4">Thứ 5</option>
-                <option value="5">Thứ 6</option>
-                <option value="6">Thứ 7</option>
-                <option value="7">Chủ nhật</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="start_time">Giờ bắt đầu:</label>
-            <input type="time" name="start_time" id="start_time" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="end_time">Giờ kết thúc:</label>
-            <input type="time" name="end_time" id="end_time" class="form-control" required>
-        </div>
+        <form action="{{ route('monhoc.store') }}" method="POST">
+            @csrf
 
-        <!-- Phần Course Major -->
-        <hr>
-        <h4>Thông tin Chuyên ngành (Course Major)</h4>
-        <div class="form-group">
-            <label>Chọn Chuyên ngành:</label>
-            <div class="border p-2" style="max-height: 200px; overflow-y: auto;">
-                @foreach($majors as $major)
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="majors[]" id="major_{{ $major->major_id }}" value="{{ $major->major_id }}">
-                        <label class="form-check-label" for="major_{{ $major->major_id }}">
-                            {{ $major->major_name }}
-                        </label>
+            <!-- Course Information -->
+            <div class="form-section">
+                <h4 class="section-title">Course Information</h4>
+                <div class="form-group">
+                    <label for="course_id" class="form-label">Course ID:</label>
+                    <input type="text" name="course_id" id="course_id" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="course_name" class="form-label">Course Name:</label>
+                    <input type="text" name="course_name" id="course_name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="credits" class="form-label">Credits:</label>
+                    <input type="number" name="credits" id="credits" class="form-control" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="course_description" class="form-label">Description:</label>
+                    <textarea name="course_description" id="course_description" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lecturer_id" class="form-label">Select Lecturer (if available):</label>
+                    <select name="lecturer_id" id="lecturer_id" class="form-control">
+                        <option value="">-- Select Lecturer --</option>
+                        @foreach($lecturers as $lecturer)
+                            <option value="{{ $lecturer->lecturer_id }}">{{ $lecturer->lecturer_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <!-- Schedule Section -->
+            <hr>
+            <div class="form-section">
+                <h4 class="section-title">Schedule</h4>
+                <div class="form-group">
+                    <label for="day_of_week" class="form-label">Select Day of Week:</label>
+                    <select name="day_of_week" id="day_of_week" class="form-control" required>
+                        <option value="">-- Select Day --</option>
+                        <option value="1">Monday</option>
+                        <option value="2">Tuesday</option>
+                        <option value="3">Wednesday</option>
+                        <option value="4">Thursday</option>
+                        <option value="5">Friday</option>
+                        <option value="6">Saturday</option>
+                        <option value="7">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start_time" class="form-label">Start Time:</label>
+                    <input type="time" name="start_time" id="start_time" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="end_time" class="form-label">End Time:</label>
+                    <input type="time" name="end_time" id="end_time" class="form-control" required>
+                </div>
+            </div>
+
+            <!-- Course Major Section -->
+            <hr>
+            <div class="form-section">
+                <h4 class="section-title">Major Information</h4>
+                <div class="form-group">
+                    <label class="form-label">Select Major:</label>
+                    <div class="major-scroll border p-2">
+                        @foreach($majors as $major)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="majors[]" id="major_{{ $major->major_id }}" value="{{ $major->major_id }}">
+                                <label class="form-check-label" for="major_{{ $major->major_id }}">
+                                    {{ $major->major_name }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                    @error('majors')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="is_elective" class="form-label">Course Type:</label>
+                    <select name="is_elective" id="is_elective" class="form-control">
+                        <option value="0">Mandatory</option>
+                        <option value="1">Elective</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="recommended_semester" class="form-label">Recommended Semester:</label>
+                    <input type="number" name="recommended_semester" id="recommended_semester" class="form-control">
+                </div>
             </div>
-            @error('majors')
-                <div class="text-danger">{{ $message }}</div>
-            @enderror
-        </div>
-        <div class="form-group">
-            <label for="is_elective">Loại môn học:</label>
-            <select name="is_elective" id="is_elective" class="form-control">
-                <option value="0">Bắt buộc</option>
-                <option value="1">Tự chọn</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="recommended_semester">Học kỳ đề xuất:</label>
-            <input type="number" name="recommended_semester" id="recommended_semester" class="form-control">
-        </div>
 
-        <!-- Phần Prerequisites -->
-        <hr>
-        <h4>Thông tin Tiên quyết (Prerequisites)</h4>
-        <div class="form-group">
-            <label>
-                <input type="checkbox" name="no_prerequisites" id="no_prerequisites" value="1">
-                Không có tiên quyết
-            </label>
-        </div>
-        <div id="prerequisites_fields">
-            <div class="form-group">
-                <label for="prerequisite_major_id">Chọn Chuyên ngành áp dụng:</label>
-                <select name="prerequisite_major_id" id="prerequisite_major_id" class="form-control">
-                    <option value="">-- Chọn chuyên ngành --</option>
-                    @foreach($majors as $major)
-                        <option value="{{ $major->major_id }}">{{ $major->major_name }}</option>
-                    @endforeach
-                </select>
+            <!-- Prerequisites Section -->
+            <hr>
+            <div class="form-section">
+                <h4 class="section-title">Prerequisites Information</h4>
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" name="no_prerequisites" id="no_prerequisites" value="1">
+                        No Prerequisites
+                    </label>
+                </div>
+                <div id="prerequisites_fields">
+                    <div class="form-group">
+                        <label for="prerequisite_major_id" class="form-label">Select Applicable Major:</label>
+                        <select name="prerequisite_major_id" id="prerequisite_major_id" class="form-control">
+                            <option value="">-- Select Major --</option>
+                            @foreach($majors as $major)
+                                <option value="{{ $major->major_id }}">{{ $major->major_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="prerequisite_course_id" class="form-label">Select Prerequisite Course:</label>
+                        <select name="prerequisite_course_id" id="prerequisite_course_id" class="form-control">
+                            <option value="">-- Select Prerequisite Course --</option>
+                            @foreach($coursesList as $courseItem)
+                                <option value="{{ $courseItem->course_id }}">{{ $courseItem->course_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="prerequisite_type" class="form-label">Prerequisite Type:</label>
+                        <select name="prerequisite_type" id="prerequisite_type" class="form-control">
+                            <option value="Required">Mandatory</option>
+                            <option value="Optional">Optional</option>
+                            <option value="Previous">Prior</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="prerequisite_course_id">Chọn Môn học tiên quyết:</label>
-                <select name="prerequisite_course_id" id="prerequisite_course_id" class="form-control">
-                    <option value="">-- Chọn Môn học tiên quyết --</option>
-                    @foreach($coursesList as $courseItem)
-                        <option value="{{ $courseItem->course_id }}">{{ $courseItem->course_name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="prerequisite_type">Loại tiên quyết:</label>
-                <select name="prerequisite_type" id="prerequisite_type" class="form-control">
-                    <option value="Required">Bắt buộc</option>
-                    <option value="Optional">Tùy chọn</option>
-                    <option value="Previous">Trước</option>
-                </select>
-            </div>
-        </div>
 
-        <script>
-            document.getElementById('no_prerequisites').addEventListener('change', function () {
-                var prereqFields = document.getElementById('prerequisites_fields');
-                prereqFields.style.display = this.checked ? 'none' : 'block';
-            });
-        </script>
+            <script>
+                document.getElementById('no_prerequisites').addEventListener('change', function () {
+                    var prereqFields = document.getElementById('prerequisites_fields');
+                    prereqFields.style.display = this.checked ? 'none' : 'block';
+                });
+            </script>
 
-        <button type="submit" class="btn btn-primary">Thêm Môn học</button>
-        <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Trở về danh sách</a>
-    </form>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add Course</button>
+                <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('template/css/staffs/create_course.css') }}">
+@endpush

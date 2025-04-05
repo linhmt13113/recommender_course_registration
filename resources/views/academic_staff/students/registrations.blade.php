@@ -1,11 +1,11 @@
 @extends('layouts.apps')
 
-@section('title', 'Đăng ký môn học của sinh viên ' . $student->student_name)
+@section('title', 'Student Course Registration for ' . $student->student_name)
 
 @section('content')
 <div class="container mt-4">
-    <h1>Đăng ký môn học của sinh viên: {{ $student->student_name }}</h1>
-    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary mb-3">Trở về danh sách Sinh viên</a>
+    <h1>Course Registration for Student: {{ $student->student_name }}</h1>
+    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary mb-3">Back to Student List</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,13 +15,13 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID đăng ký</th>
-                    <th>Mã môn học</th>
-                    <th>Tên môn học</th>
-                    <th>Số tín chỉ</th>
-                    <th>Trạng thái</th>
-                    <th>Học kỳ</th>
-                    <th>Hành động</th>
+                    <th>Registration ID</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Status</th>
+                    <th>Semester</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,18 +33,18 @@
                         <td>{{ $registration->course->credits }}</td>
                         <td>
                             @if($registration->status == 1)
-                                Đã đăng kí thành công
+                                Successfully Registered
                             @else
-                                Không thành công
+                                Unsuccessful
                             @endif
                         </td>
                         <td>{{ $registration->semester ?? 'N/A' }}</td>
                         <td>
                             <form action="{{ route('staff.students.registrations.destroy', $registration->id) }}"
-                                method="POST" onsubmit="return confirm('Bạn có chắc chắn xóa đăng ký này không?');">
+                                method="POST" onsubmit="return confirm('Are you sure you want to delete this registration?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -52,7 +52,7 @@
             </tbody>
         </table>
     @else
-        <p>Sinh viên này chưa đăng ký môn học mới nào.</p>
+        <p>This student has not registered for any courses yet.</p>
     @endif
 
 </div>

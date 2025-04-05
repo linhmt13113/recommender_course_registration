@@ -1,33 +1,32 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Hệ thống quản lý đăng ký môn học')</title>
+    <title>@yield('title', 'Course Registration Management System')</title>
     <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('template/css/admins/admin.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     @stack('styles')
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{{ route('academic_staff.dashboard') }}">Quản lý giáo vụ</a>
+        <a class="navbar-brand" href="{{ route('academic_staff.dashboard') }}">Academic Staff</a>
         <div class="dashboard-menu mt-3">
-            <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-primary">Quản lý mở đợt đăng
-                ký</a>
-            <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Quản lý môn học</a>
-            <a href="{{ route('hocki.index') }}" class="btn btn-primary">Quản lý học kỳ</a>
-            <a href="{{ route('viewsinhvien.index') }}" class="btn btn-primary">Quản lý Sinh viên</a>
-
+            <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-primary">Manage Registration Periods</a>
+            <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Manage Courses</a>
+            <a href="{{ route('hocki.index') }}" class="btn btn-primary">Manage Semesters</a>
+            <a href="{{ route('viewsinhvien.index') }}" class="btn btn-primary">Manage Students</a>
         </div>
-        <div class="logout-btn mt-3">
+        <div class="dashboard-menu mt-3">
             <a href="{{ route('academic_staff.change_password') }}" class="btn btn-outline-primary me-2">
-                Đổi mật khẩu
+                Change Password
             </a>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="btn btn-danger">Đăng xuất</button>
+                <button type="submit" class="btn btn-danger">Logout</button>
             </form>
         </div>
     </nav>
@@ -38,6 +37,7 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('template/js/.js') }}"></script>
     @stack('scripts')
 </body>
 

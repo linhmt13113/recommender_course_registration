@@ -78,9 +78,8 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
 Route::prefix('giaovu')->middleware(CheckAcademicStaff::class)->group(function () {
     // Dashboard Nhân viên Giáo vụ
-    Route::get('/dashboard', function () {
-        return view('academic_staff.dashboard');
-    })->name('academic_staff.dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\Staff\DashboardController::class, 'index'])
+    ->name('academic_staff.dashboard');
 
     Route::resource('viewsinhvien', ViewStudentController::class)->only([
         'index'

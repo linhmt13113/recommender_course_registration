@@ -1,0 +1,69 @@
+/* Container for Course Registration Page */
+.course-registration {
+    /* Optional: if you want additional styling for the outer container */
+}
+
+/* Ensure card body (scrollable table container) behaves correctly */
+.course-registration .card-body {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+}
+
+/* Table styling with fixed layout */
+.course-registration .nested-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.course-registration .nested-table th,
+.course-registration .nested-table td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    word-wrap: break-word;
+}
+
+/* Fix the width for the checkbox column */
+.course-registration .nested-table th:first-child,
+.course-registration .nested-table td:first-child {
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Checkbox input adjustments */
+.course-registration .form-check-input {
+    margin: 0;
+    display: block;
+}
+
+/* Search input styling */
+.course-registration .search-input {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 300px;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+/* Button group in card header */
+.course-registration .card-header .btn-group {
+    float: right;
+    margin-top: -30px;
+}
+
+.course-registration .card-header .btn-group .btn {
+    margin-left: 5px;
+}
+
+/* Optional: custom scrollbar styling */
+.course-registration .card-body::-webkit-scrollbar {
+    width: 8px;
+}
+.course-registration .card-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}

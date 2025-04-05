@@ -1,24 +1,24 @@
 @extends('layouts.apps')
 
-@section('title', 'Danh sách Sinh viên')
+@section('title', 'Student List')
 
 @section('content')
 <div class="container mt-4">
-    <h1>Quản lý Sinh viên</h1>
+    <h1>Student Management</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('sinhvien.create') }}" class="btn btn-primary mb-3">Thêm Sinh viên</a>
+    <a href="{{ route('sinhvien.create') }}" class="btn btn-primary mb-3">Add Student</a>
 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Mã SV</th>
-                <th>Tên</th>
-                <th>Chuyên ngành</th>
-                <th>Hành động</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Major</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,16 +28,15 @@
                 <td>{{ $student->student_name }}</td>
                 <td>{{ $student->major->major_name ?? 'N/A' }}</td>
                 <td>
-                    <a href="{{ route('staff.students.courses', ['id' => $student->student_id]) }}" class="btn btn-info btn-sm">Xem môn học</a>
-                    <a href="{{ route('staff.students.registrations', ['id' => $student->student_id]) }}" class="btn btn-success btn-sm">Xem đăng ký mới</a>
-
+                    <a href="{{ route('staff.students.courses', ['id' => $student->student_id]) }}" class="btn btn-info btn-sm">View Courses</a>
+                    <a href="{{ route('staff.students.registrations', ['id' => $student->student_id]) }}" class="btn btn-success btn-sm">View New Registrations</a>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- Phân trang -->
+    <!-- Pagination -->
     {{ $students->links() }}
 </div>
 @endsection

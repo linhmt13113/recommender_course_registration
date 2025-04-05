@@ -1,10 +1,10 @@
 @extends('layouts.apps')
 
-@section('title', 'Chọn môn đăng ký cho học kỳ ' . $semester->semester_id)
+@section('title', 'Select Courses for Semester ' . $semester->semester_id)
 
 @section('content')
 <div class="container mt-4">
-    <h1>Chọn môn đăng ký cho học kỳ {{ $semester->semester_id }}</h1>
+    <h1>Select Courses for Semester {{ $semester->semester_id }}</h1>
 
     @if(session('success'))
       <div class="alert alert-success">{{ session('success') }}</div>
@@ -13,22 +13,22 @@
     <form action="{{ route('academic_staff.registration.storeCourses', $semester->id) }}" method="POST">
         @csrf
 
-        {{-- Nhóm môn tự chọn --}}
+        {{-- Elective Courses --}}
         <div class="card mb-3">
             <div class="card-header">
-                <strong>Các môn tự chọn</strong>
+                <strong>Elective Courses</strong>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('elective')">Chọn tất cả</button>
-                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('elective')">Bỏ chọn tất cả</button>
+                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('elective')">Select All</button>
+                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('elective')">Deselect All</button>
                 </div>
-                <input type="text" class="form-control search-input" placeholder="Tìm kiếm..." onkeyup="filterTable('electiveTable', this.value)">
+                <input type="text" class="form-control search-input" placeholder="Search..." onkeyup="filterTable('electiveTable', this.value)">
             </div>
             <div class="card-body">
                 @if($electiveCourses->isNotEmpty())
                 <table class="nested-table table table-bordered" id="electiveTable">
                     <thead>
                         <tr>
-                            <th>Chọn</th>
+                            <th>Select</th>
                             <th>Course ID</th>
                             <th>Course Name</th>
                         </tr>
@@ -47,30 +47,30 @@
                     </tbody>
                 </table>
                 @else
-                    <p>Không có môn tự chọn.</p>
+                    <p>No elective courses available.</p>
                 @endif
             </div>
         </div>
 
-        {{-- Nhóm môn bắt buộc - Học kỳ chẵn --}}
+        {{-- Required Courses - Even Semester --}}
         <div class="card mb-3">
             <div class="card-header">
-                <strong>Các môn bắt buộc – Học kỳ chẵn</strong>
+                <strong>Required Courses – Even Semester</strong>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('even')">Chọn tất cả</button>
-                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('even')">Bỏ chọn tất cả</button>
+                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('even')">Select All</button>
+                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('even')">Deselect All</button>
                 </div>
-                <input type="text" class="form-control search-input" placeholder="Tìm kiếm..." onkeyup="filterTable('evenTable', this.value)">
+                <input type="text" class="form-control search-input" placeholder="Search..." onkeyup="filterTable('evenTable', this.value)">
             </div>
             <div class="card-body">
                 @if($evenNonElectiveCourses->isNotEmpty())
                 <table class="nested-table table table-bordered" id="evenTable">
                     <thead>
                         <tr>
-                            <th>Chọn</th>
+                            <th>Select</th>
                             <th>Course ID</th>
                             <th>Course Name</th>
-                            <th>Học kỳ đề xuất</th>
+                            <th>Suggested Semester</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,30 +88,30 @@
                     </tbody>
                 </table>
                 @else
-                    <p>Không có môn học phù hợp cho học kỳ chẵn.</p>
+                    <p>No suitable courses for the even semester.</p>
                 @endif
             </div>
         </div>
 
-        {{-- Nhóm môn bắt buộc - Học kỳ lẻ --}}
+        {{-- Required Courses - Odd Semester --}}
         <div class="card mb-3">
             <div class="card-header">
-                <strong>Các môn bắt buộc – Học kỳ lẻ</strong>
+                <strong>Required Courses – Odd Semester</strong>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('odd')">Chọn tất cả</button>
-                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('odd')">Bỏ chọn tất cả</button>
+                    <button type="button" class="btn btn-sm btn-info" onclick="selectAll('odd')">Select All</button>
+                    <button type="button" class="btn btn-sm btn-warning" onclick="deselectAll('odd')">Deselect All</button>
                 </div>
-                <input type="text" class="form-control search-input" placeholder="Tìm kiếm..." onkeyup="filterTable('oddTable', this.value)">
+                <input type="text" class="form-control search-input" placeholder="Search..." onkeyup="filterTable('oddTable', this.value)">
             </div>
             <div class="card-body">
                 @if($oddNonElectiveCourses->isNotEmpty())
                 <table class="nested-table table table-bordered" id="oddTable">
                     <thead>
                         <tr>
-                            <th>Chọn</th>
+                            <th>Select</th>
                             <th>Course ID</th>
                             <th>Course Name</th>
-                            <th>Học kỳ đề xuất</th>
+                            <th>Suggested Semester</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,15 +129,15 @@
                     </tbody>
                 </table>
                 @else
-                    <p>Không có môn học phù hợp cho học kỳ lẻ.</p>
+                    <p>No suitable courses for the odd semester.</p>
                 @endif
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Lưu các môn đăng ký & Mở đăng ký</button>
+        <button type="submit" class="btn btn-primary mt-3">Save Courses & Open Registration</button>
     </form>
 
-    <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-secondary mt-3">Quay lại danh sách Học kỳ</a>
+    <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-secondary mt-3">Back to Semester List</a>
 </div>
 @endsection
 

@@ -1,10 +1,10 @@
 @extends('layouts.apps')
 
-@section('title', 'Quản lý Đăng ký Học kỳ')
+@section('title', 'Semester Registration Management')
 
 @section('content')
 <div class="container mt-4">
-    <h1>Quản lý Đăng ký Học kỳ</h1>
+    <h1>Semester Registration Management</h1>
 
     @if(session('success'))
       <div class="alert alert-success">{{ session('success') }}</div>
@@ -21,7 +21,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Registration Status</th>
-                <th>Hành động</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -34,14 +34,14 @@
                 <td>
                     @if($semester->registration_status == 'closed')
                         <a href="{{ route('academic_staff.registration.courses', $semester->id) }}" class="btn btn-success">
-                            Chọn môn & Mở đăng ký
+                            Select Courses & Open Registration
                         </a>
                     @elseif($semester->registration_status == 'open')
                         <a href="{{ route('academic_staff.registration.courses', $semester->id) }}" class="btn btn-primary">
-                            Xem/Chỉnh sửa môn đăng ký
+                            View/Edit Registered Courses
                         </a>
                     @else
-                        <span>Đã kết thúc</span>
+                        <span>Closed</span>
                     @endif
                 </td>
             </tr>

@@ -1,17 +1,17 @@
 @extends('layouts.apps')
 
-@section('title', 'Môn học của Sinh viên')
+@section('title', 'Student Courses')
 
 @section('content')
 <div class="container mt-4">
-    <h1>Môn học của Sinh viên: {{ $student->student_name }}</h1>
+    <h1>Student Courses: {{ $student->student_name }}</h1>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Mã môn học</th>
-                <th>Tên môn học</th>
-                <th>Học kỳ</th>
-                <th>Trạng thái</th>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Semester</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -20,15 +20,15 @@
                 <td>{{ $course->course_id }}</td>
                 <td>{{ $course->course_name }}</td>
                 <td>{{ $course->pivot->semester }}</td>
-                <td>{{ $course->pivot->status == 1 ? 'Đã học' : 'Chưa hoàn thành' }}</td>
+                <td>{{ $course->pivot->status == 1 ? 'Completed' : 'Not Completed' }}</td>
             </tr>
             @empty
             <tr>
-                <td colspan="4">Sinh viên chưa đăng ký môn học nào.</td>
+                <td colspan="4">The student has not registered for any courses.</td>
             </tr>
             @endforelse
         </tbody>
     </table>
-    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
+    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary">Back to Student List</a>
 </div>
 @endsection

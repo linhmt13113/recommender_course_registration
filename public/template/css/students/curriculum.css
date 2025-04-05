@@ -1,0 +1,70 @@
+.curriculum-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #1c3d8c;
+    margin-bottom: 20px;
+}
+
+.no-data-text {
+    font-size: 16px;
+    color: #e74c3c;
+    text-align: center;
+}
+
+.curriculum-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
+}
+
+.curriculum-table th,
+.curriculum-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.curriculum-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.curriculum-table td {
+    background-color: #ffffff;
+}
+
+.curriculum-table tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+.curriculum-table td {
+    vertical-align: middle;
+}
+
+/* Add hover effect on rows */
+.curriculum-table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+/* Highlight column names */
+.curriculum-table th {
+    font-size: 16px;
+}
+
+/* Add spacing and subtle background color for course types */
+.curriculum-table td:nth-child(3) {
+    font-weight: bold;
+    color: #2ecc71;
+}
+
+.curriculum-table td:nth-child(3):contains('Tự chọn') {
+    color: #f39c12;
+}

@@ -3,32 +3,53 @@
 @endphp
 
 @extends('student.dashboard')
+@section('title', 'Completed Courses')
 
 @section('content')
-    <h1>Các môn đã học</h1>
-    @if($courses->isEmpty())
-        <p>Chưa có môn học nào.</p>
-    @else
-        <table style="border: 1px solid black; border-collapse: collapse;" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>Mã môn</th>
-                    <th>Tên môn</th>
-                    <th>Học kỳ</th>
-                    <th>Trạng thái</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($courses as $course)
-                    <tr>
-                        <td>{{ $course->course->course_id }}</td>
-                        <td>{{ $course->course->course_name }}</td>
-                        <td>{{ $course->semester }}</td>
-                        <td>{{ $course->status == '1' || $course->status == 1 ? 'Đã học' : 'Chưa hoàn thành'}}</td>
+    <div class="past-courses-container">
+        <div class="card shadow-sm p-4">
+            <h2 class="text-center text-primary mb-4">The courses have learned</h2>
 
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+            @if($courses->isEmpty())
+                <p class="text-center">There is no courses.</p>
+            @else
+                <table class="table table-bordered table-striped">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Subject code</th>
+                            <th>Subject name</th>
+                            <th>Semester</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($courses as $course)
+                            <tr>
+                                <td>{{ $course->course->course_id }}</td>
+                                <td>{{ $course->course->course_name }}</td>
+                                <td>{{ $course->semester }}</td>
+                                <td>{{ $course->status == '1' || $course->status == 1 ? 'Completed' : 'Incompleted'}}</td>
+                            </tr>
+                        @endforeach
+
+
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    </div>
+
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('template/css/students/past-courses.css') }}">
+    <style>
+        .table {
+            margin-bottom: 20px;
+        }
+
+        .past-courses-container .card {
+            margin-bottom: 100px;
+        }
+    </style>
+@endpush

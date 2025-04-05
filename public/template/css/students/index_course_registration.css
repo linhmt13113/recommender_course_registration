@@ -1,0 +1,141 @@
+/* Global container */
+.course-reg-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+}
+
+/* Page title */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1c3d8c;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #007bff;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #00c6ff;
+    padding-bottom: 5px;
+}
+
+/* Alert messages */
+.alert {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Table Scroll Wrapper */
+.table-scroll {
+    max-height: 300px; /* Chỉnh chiều cao tối đa */
+    overflow-y: auto;  /* Hiển thị thanh cuộn dọc nếu vượt quá chiều cao */
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.table-bordered th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+.table-bordered tr:nth-child(even) td {
+    background-color: #f2f2f2;
+}
+
+/* Buttons */
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.btn-info {
+    background-color: #17a2b8;
+    border: none;
+    color: #fff;
+}
+.btn-info:hover {
+    background-color: #138496;
+}
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: #fff;
+}
+.btn-success:hover {
+    background-color: #218838;
+}
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Form styling */
+.preferences-form .form-group {
+    margin-bottom: 20px;
+}
+.form-control {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-check {
+    margin-bottom: 5px;
+}
+
+/* Submit button */
+.submit-btn {
+    margin-top: 20px;
+}
+
+/* Search box */
+.search-box {
+    margin-bottom: 15px;
+}
+.search-box input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-box input[type="text"] {
+        width: 100%;
+    }
+}

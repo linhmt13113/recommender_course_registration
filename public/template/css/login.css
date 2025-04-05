@@ -1,0 +1,16 @@
+
+body {
+    background: linear-gradient(to right, rgb(246, 248, 247), rgb(29, 30, 30));
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.card-body h3 {
+    margin-bottom: 2rem;
+}
+
+.btn-block {
+    width: 100%;
+}

@@ -6,6 +6,8 @@
     <title>@yield('title', 'Admin Dashboard')</title>
     <!-- Import CSS chung, bootstrap... -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Các style bổ sung nếu cần -->
     @stack('styles')

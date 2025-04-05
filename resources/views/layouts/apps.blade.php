@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Hệ thống quản lý đăng ký môn học')</title>
+    <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     @stack('styles')
 </head>

@@ -18,6 +18,7 @@ use App\Http\Controllers\Student\MainStudentController;
 use App\Http\Controllers\Student\CourseRegistrationController;
 use App\Http\Middleware\CheckAcademicStaff;
 use App\Http\Controllers\Admin\AcademicStaffController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,23 +48,13 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    // Route quản lý mở đợt đăng ký
-    // Route::get('/registration', [RegistrationController::class, 'index'])->name('admin.registration.index');
-    // Route::post('/registration/open/{id}', [RegistrationController::class, 'openRegistration'])->name('admin.registration.open');
-    // Route::get('/registration/courses/{id}', [RegistrationController::class, 'showRegistrationCourses'])->name('admin.registration.courses');
-    // Route::post('/registration/courses/{id}', [RegistrationController::class, 'storeRegistrationCourses'])->name('admin.registration.storeCourses');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+
+
 
     // Quản lý Sinh viên
     Route::resource('sinhvien', StudentController::class);
-    // // Xem danh sách các môn học mà sinh viên đã học
-    // Route::get('sinhvien/{id}/courses', [StudentController::class, 'showCourses'])
-    //     ->name('admin.students.courses');
-    // // Route xem danh sách các môn mới đăng ký (từ bảng student_registrations)
-    // Route::get('sinhvien/{id}/registrations', [StudentController::class, 'showRegistrations'])
-    //     ->name('admin.students.registrations');
-
-    // Route::delete('sinhvien/registrations/{registration}', [StudentController::class, 'destroyRegistration'])
-    //     ->name('admin.students.registrations.destroy');
 
     // Quản lý Giảng viên
     Route::resource('giangvien', LecturerController::class);
@@ -78,8 +69,7 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
     ]);
     ;
 
-    // Quản lý Học kỳ
-    // Route::resource('hocki', SemesterController::class);
+
 
     Route::get('/change-password', function () {
         return view('admin.change_password');

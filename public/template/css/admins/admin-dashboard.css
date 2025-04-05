@@ -1,0 +1,27 @@
+/* Dashboard Summary Cards */
+.dashboard-summary .card {
+    margin-bottom: 20px;
+}
+.dashboard-summary .card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.dashboard-summary .card-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Recent Registrations Table */
+.recent-registrations .card-header {
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.2rem;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.recent-registrations .card-body {
+    padding: 0;
+}
+.recent-registrations table {
+    margin: 0;
+}

@@ -129,8 +129,17 @@ class CourseRegistrationController extends Controller
                 return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi học kỳ gần nhất lớn hơn 4."]);
             }
         }
-        // Logic đặc biệt cho môn IT083IU: tổng tín chỉ đã học phải lớn hơn 96
+
+        // Logic đặc biệt cho các môn IT083IU: học kỳ gần nhất phải lớn hơn 6
         if ($courseId === 'IT083IU') {
+            $currentSemester = $this->registrationService->getCurrentSemester($student);
+            if (($currentSemester + 1) <= 6) {
+                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi học kỳ gần nhất lớn hơn 6."]);
+            }
+        }
+
+        // Logic đặc biệt cho môn IT058IU: tổng tín chỉ đã học phải lớn hơn 70
+        if ($courseId === 'IT058IU') {
             // Tính tổng số tín chỉ của các môn đã học (trong bảng StudentCourse)
             $totalCredits = StudentCourse::where('student_id', $student->student_id)
                 ->with('course')
@@ -138,8 +147,8 @@ class CourseRegistrationController extends Controller
                 ->sum(function ($sc) {
                     return $sc->course->credits;
                 });
-            if ($totalCredits <= 96) {
-                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi tổng tín chỉ đã học vượt quá 96. (Hiện tại: $totalCredits credit)"]);
+            if ($totalCredits <= 70) {
+                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi tổng tín chỉ đã học là 90%. (Hiện tại: $totalCredits credit)"]);
             }
         }
 

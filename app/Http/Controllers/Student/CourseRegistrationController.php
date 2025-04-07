@@ -28,12 +28,19 @@ class CourseRegistrationController extends Controller
      * - Các môn bắt buộc của học kỳ tiếp theo.
      * - Các môn tự chọn.
      * - Các thông báo ưu tiên nếu có.
+     *
+     * Display the course registration page with the following lists:
+     * - Courses available for registration based on the major.
+     * - Courses already registered.
+     * - Required courses for the next semester.
+     * - Elective courses.
+     * - Priority messages, if any.
      */
     public function index()
     {
         $user = session('user');
         if (!$user) {
-            return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
+            return redirect()->route('login')->withErrors('Please log in again.');
         }
         $student = Student::with('major')->where('student_id', $user['student_id'])->first();
 
@@ -45,25 +52,30 @@ class CourseRegistrationController extends Controller
         $currentSemester = $this->registrationService->getCurrentSemester($student);
 
         // Lấy sở thích của sinh viên (bản ghi mới nhất)
+        // Get the student's preferences (latest record)
         $studentPref = StudentPreference::where('student_id', $student->student_id)
             ->latest()->first();
         $electiveRecommendations = [];
         if ($studentPref) {
             $preference = $studentPref->preferences;
             // Tạo mảng các mô tả cho các môn tự chọn
+            // Create an array of descriptions for elective courses
             $courseDescriptions = [];
             foreach ($electiveCourses as $cm) {
                 // Dùng course_description nếu có, nếu không dùng course_name
+                // Use course_description if available, otherwise use course_name
                 $desc = $cm->course->course_description ?: $cm->course->course_name;
                 $courseDescriptions[] = $desc;
             }
             // Gọi file Python qua shell_exec. Chú ý: đường dẫn là "api/elective_course_recommendation.py"
+            // Call Python file via shell_exec. Note: the path is "api/elective_course_recommendation.py"
             $cmd = escapeshellcmd("python3 api/elective_course_recommendation.py " . escapeshellarg($preference) . " " . escapeshellarg(json_encode($courseDescriptions)));
             $output = shell_exec($cmd);
             $result = json_decode($output, true);
             if (isset($result['top3'])) {
                 $topCourses = [];
                 // Chuyển collection electiveCourses thành mảng với các giá trị liên tiếp.
+                // Convert the electiveCourses collection into an array with continuous values.
                 $electiveArray = $electiveCourses->values()->all();
                 foreach ($result['top3'] as $item) {
                     $index = $item['index'];
@@ -94,12 +106,14 @@ class CourseRegistrationController extends Controller
 
     /**
      * Xử lý đăng ký môn học cho sinh viên.
+     *
+     * Handle the course registration for the student.
      */
     public function register(Request $request)
     {
         $user = session('user');
         if (!$user) {
-            return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
+            return redirect()->route('login')->withErrors('Please log in again.');
         }
 
         $request->validate([
@@ -110,12 +124,14 @@ class CourseRegistrationController extends Controller
         $courseId = $request->course_id;
 
         // Kiểm tra xem môn học có mở đăng ký không
+        // Check if the course is open for registration
         $semesterCourse = SemesterCourse::where('course_id', $courseId)->first();
         if (!$semesterCourse) {
-            return back()->withErrors(['course_id' => 'Môn học không được mở đăng ký.']);
+            return back()->withErrors(['course_id' => 'The course is not available for registration.']);
         }
 
         // Kiểm tra điều kiện prerequisite
+        // Check the prerequisite condition
         $prereqError = $this->registrationService->checkPrerequisites($student, $courseId);
         if ($prereqError) {
             return back()->withErrors(['prerequisite' => $prereqError]);
@@ -123,24 +139,28 @@ class CourseRegistrationController extends Controller
         $courseName = $semesterCourse->course->course_name;
 
         // Logic đặc biệt cho các môn IT082IU và IT174IU: học kỳ gần nhất phải lớn hơn 4
+        // Special logic for courses IT082IU and IT174IU: the most recent semester must be greater than 4
         if (in_array($courseId, ['IT082IU', 'IT174IU'])) {
             $currentSemester = $this->registrationService->getCurrentSemester($student);
-            if (($currentSemester + 1)<= 4) {
-                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi học kỳ gần nhất lớn hơn 4."]);
+            if (($currentSemester + 1) <= 4) {
+                return back()->withErrors(['special' => "Course $courseName can only be registered if the most recent semester is greater than 4."]);
             }
         }
 
         // Logic đặc biệt cho các môn IT083IU: học kỳ gần nhất phải lớn hơn 6
+        // Special logic for course IT083IU: the most recent semester must be greater than 6
         if ($courseId === 'IT083IU') {
             $currentSemester = $this->registrationService->getCurrentSemester($student);
             if (($currentSemester + 1) <= 6) {
-                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi học kỳ gần nhất lớn hơn 6."]);
+                return back()->withErrors(['special' => "Course $courseName can only be registered if the most recent semester is greater than 6."]);
             }
         }
 
         // Logic đặc biệt cho môn IT058IU: tổng tín chỉ đã học phải lớn hơn 70
+        // Special logic for course IT058IU: total credits completed must be greater than 70
         if ($courseId === 'IT058IU') {
             // Tính tổng số tín chỉ của các môn đã học (trong bảng StudentCourse)
+            // Calculate the total credits of completed courses (in the StudentCourse table)
             $totalCredits = StudentCourse::where('student_id', $student->student_id)
                 ->with('course')
                 ->get()
@@ -148,19 +168,21 @@ class CourseRegistrationController extends Controller
                     return $sc->course->credits;
                 });
             if ($totalCredits <= 70) {
-                return back()->withErrors(['special' => "Môn $courseName chỉ được đăng ký khi tổng tín chỉ đã học là 90%. (Hiện tại: $totalCredits credit)"]);
+                return back()->withErrors(['special' => "Course $courseName can only be registered if the total credits completed is above 70. (Currently: $totalCredits credits)"]);
             }
         }
 
         // Kiểm tra xem sinh viên đã đăng ký môn học này chưa
+        // Check if the student has already registered for this course
         $existing = StudentRegistration::where('student_id', $student->student_id)
             ->where('course_id', $courseId)
             ->exists();
         if ($existing) {
-            return back()->withErrors(['duplicate' => 'Bạn đã đăng ký môn học ' . $courseName . ' rồi.']);
+            return back()->withErrors(['duplicate' => 'You have already registered for the course ' . $courseName . '.']);
         }
 
         // Nếu đủ điều kiện, tạo bản ghi đăng ký
+        // If eligible, create a registration record
         StudentRegistration::create([
             'student_id' => $student->student_id,
             'course_id' => $courseId,
@@ -168,17 +190,19 @@ class CourseRegistrationController extends Controller
             'status' => '1'
         ]);
 
-        return back()->with('success', 'Đăng ký môn học ' . $courseName . ' thành công.');
+        return back()->with('success', 'Successfully registered for the course ' . $courseName . '.');
     }
 
     /**
      * Hủy đăng ký môn học.
+     *
+     * Cancel the course registration.
      */
     public function deleteRegistration($courseId)
     {
         $user = session('user');
         if (!$user) {
-            return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
+            return redirect()->route('login')->withErrors('Please log in again.');
         }
         $studentId = $user->student_id;
         $registration = StudentRegistration::where('student_id', $studentId)
@@ -188,17 +212,19 @@ class CourseRegistrationController extends Controller
         $registration->delete();
         $courseName = $registration->course->course_name ?? '';
 
-        return back()->with('success', 'Hủy đăng ký môn học ' . $courseName . ' thành công.');
+        return back()->with('success', 'Successfully canceled the registration for course ' . $courseName . '.');
     }
 
     /**
      * Hiển thị thời khóa biểu của sinh viên.
+     *
+     * Display the student's schedule.
      */
     public function showSchedule()
     {
         $user = session('user');
         if (!$user) {
-            return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
+            return redirect()->route('login')->withErrors('Please log in again.');
         }
         $studentId = $user->student_id;
         $student = Student::with('registrations.course.schedules')->find($studentId);
@@ -207,12 +233,14 @@ class CourseRegistrationController extends Controller
 
     /**
      * Lưu sở thích của sinh viên.
+     *
+     * Store the student's preferences.
      */
     public function storePreferences(Request $request)
     {
         $user = session('user');
         if (!$user) {
-            return redirect()->route('login')->withErrors('Vui lòng đăng nhập lại.');
+            return redirect()->route('login')->withErrors('Please log in again.');
         }
         $request->validate([
             'q1_project_description' => 'nullable|string',
@@ -272,12 +300,15 @@ class CourseRegistrationController extends Controller
         );
 
         // Lấy thông tin sinh viên (bao gồm major) từ DB
+        // Get the student information (including major) from the database
         $student = Student::with('major')->where('student_id', $user['student_id'])->first();
 
         // Lấy danh sách các môn tự chọn chưa hoàn thành từ service
+        // Get the list of elective courses not yet completed from the service
         $electiveCourses = $this->registrationService->getElectiveCourses($student);
 
         // Xây dựng mảng mô tả cho các môn tự chọn (sử dụng course_description nếu có, nếu không dùng course_name)
+        // Build an array of descriptions for elective courses (use course_description if available, otherwise use course_name)
         $courseDescriptions = [];
         foreach ($electiveCourses as $cm) {
             $desc = $cm->course->course_description ?: $cm->course->course_name;
@@ -285,15 +316,16 @@ class CourseRegistrationController extends Controller
         }
 
         // Payload gửi tới API FastAPI (đường dẫn giả sử: http://localhost:8001/recommend)
+        // Payload to send to the FastAPI (assumed path: http://localhost:8001/recommend)
         $payload = [
             'preference' => $combinedPreference,
             'course_descriptions' => $courseDescriptions,
         ];
 
-
         // dd($payload);
 
         // Gọi API bằng HTTP POST (sử dụng Laravel Http facade)
+        // Call the API using HTTP POST (using Laravel Http facade)
         $response = Http::post('http://localhost:8001/recommend', $payload);
         // $response = Http::post('http://localhost:8002/retrain_and_recommend', $payload);
         $electiveRecommendations = [];
@@ -301,6 +333,7 @@ class CourseRegistrationController extends Controller
             $result = $response->json();
             if (isset($result['top3'])) {
                 // Chuyển collection electiveCourses thành mảng index liên tục
+                // Convert the electiveCourses collection into an array with continuous indices
                 $electiveArray = $electiveCourses->values()->all();
                 foreach ($result['top3'] as $item) {
                     $index = $item['index'];
@@ -311,21 +344,14 @@ class CourseRegistrationController extends Controller
                             'course_id' => $course->course_id,
                             'course_name' => $course->course_name,
                             'score' => $score,
-                            'course_description' => $course->course_description
                         ];
                     }
                 }
             }
-        } else {
-            // Nếu không thành công, có thể lưu log hoặc đặt mảng rỗng
-            $electiveRecommendations = [];
         }
 
-        // Trả về view với flash message và gợi ý các môn tự chọn
-        return back()->with([
-            'success' => 'Lưu sở thích thành công.',
-            'electiveRecommendations' => $electiveRecommendations
-        ]);
-
+        // Trả về màn hình với kết quả khuyến nghị môn học (nếu có)
+        // Return the screen with the recommended courses (if any)
+        return redirect()->back()->with('electiveRecommendations', $electiveRecommendations);
     }
 }

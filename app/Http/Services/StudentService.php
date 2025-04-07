@@ -11,15 +11,20 @@ class StudentService
 {
     /**
      * Lấy danh sách sinh viên kèm các môn học đã đăng ký (với eager load).
+     *
+     * Get the list of students with the courses they have registered for (using eager load).
      */
     public function index(Request $request)
     {
         // Nếu cần thêm filter, có thể bổ sung vào đây
+        // If additional filters are needed, they can be added here
         return Student::with('courses')->paginate(10);
     }
 
     /**
      * Lấy dữ liệu cần thiết cho form tạo sinh viên.
+     *
+     * Get the necessary data for the student creation form.
      */
     public function prepareCreateData()
     {
@@ -29,6 +34,8 @@ class StudentService
 
     /**
      * Lưu sinh viên mới.
+     *
+     * Store a new student.
      */
     public function store(Request $request)
     {
@@ -50,6 +57,8 @@ class StudentService
 
     /**
      * Lấy dữ liệu cho form chỉnh sửa sinh viên.
+     *
+     * Get the necessary data for the student edit form.
      */
     public function prepareEditData($student_id)
     {
@@ -60,6 +69,8 @@ class StudentService
 
     /**
      * Cập nhật thông tin sinh viên.
+     *
+     * Update student information.
      */
     public function update(Request $request, $student_id)
     {
@@ -90,6 +101,8 @@ class StudentService
 
     /**
      * Xóa sinh viên.
+     *
+     * Delete a student.
      */
     public function destroy($student_id)
     {
@@ -100,6 +113,8 @@ class StudentService
 
     /**
      * Lấy chi tiết sinh viên kèm các môn học đã học.
+     *
+     * Get the details of a student along with the courses they have taken.
      */
     public function showCourses($student_id)
     {
@@ -108,6 +123,8 @@ class StudentService
 
     /**
      * Lấy thông tin đăng ký của sinh viên.
+     *
+     * Get the student's registration information.
      */
     public function showRegistrations($student_id)
     {
@@ -120,6 +137,8 @@ class StudentService
 
     /**
      * Xóa một đăng ký môn học của sinh viên.
+     *
+     * Delete a course registration for a student.
      */
     public function destroyRegistration($registrationId)
     {

@@ -12,7 +12,7 @@
     @stack('styles')
     <style>
         .container.mt-4 {
-            margin-bottom: 300px;
+            margin-bottom: 460px;
         }
     </style>
 </head>
@@ -52,9 +52,9 @@
         @yield('content')
     </div>
 
-    <footer class="mt-5 py-3 bg-light">
+    <footer class="mt-5 py-3 bg-dark">
         <div class="container text-center">
-            <p class="mb-0">&copy; {{ date('Y') }} Teaching Management System</p>
+            <p class="mb-0" style="color: white;">&copy; {{ date('Y') }} Teaching Management System</p>
         </div>
     </footer>
 

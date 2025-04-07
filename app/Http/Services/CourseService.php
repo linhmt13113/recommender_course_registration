@@ -13,6 +13,8 @@ class CourseService
 {
     /**
      * Lấy danh sách môn học kèm lọc theo chuyên ngành và từ khóa.
+     *
+     * Get the list of courses filtered by major and search keyword.
      */
     public function index(Request $request)
     {
@@ -41,6 +43,8 @@ class CourseService
 
     /**
      * Chuẩn bị dữ liệu cần thiết cho form tạo môn học.
+     *
+     * Prepare necessary data for creating a new course form.
      */
     public function prepareCreateData()
     {
@@ -52,6 +56,8 @@ class CourseService
 
     /**
      * Lưu môn học mới và các thông tin liên quan.
+     *
+     * Store a new course and related information.
      */
     public function store(Request $request)
     {
@@ -78,6 +84,7 @@ class CourseService
         $course->save();
 
         // Tạo lịch học cho môn học
+        // Create schedule for the course
         $course->schedules()->create([
             'day_of_week' => $request->input('day_of_week'),
             'start_time'  => $request->input('start_time'),
@@ -85,6 +92,7 @@ class CourseService
         ]);
 
         // Xử lý chuyên ngành
+        // Handle major associations
         foreach ($request->input('majors', []) as $majorId) {
             CourseMajor::create([
                 'course_id'           => $course->course_id,
@@ -95,6 +103,7 @@ class CourseService
         }
 
         // Xử lý prerequisites nếu có
+        // Handle prerequisites if any
         if (
             !$request->has('no_prerequisites') &&
             $request->filled('prerequisite_major_id') &&
@@ -114,6 +123,8 @@ class CourseService
 
     /**
      * Lấy dữ liệu cần thiết để chỉnh sửa môn học.
+     *
+     * Get the necessary data to edit a course.
      */
     public function edit($course_id)
     {
@@ -132,6 +143,8 @@ class CourseService
 
     /**
      * Cập nhật thông tin môn học.
+     *
+     * Update course information.
      */
     public function update(Request $request, $course_id)
     {
@@ -167,6 +180,7 @@ class CourseService
         $course->save();
 
         // Cập nhật lịch học
+        // Update course schedule
         if ($course->schedules()->exists()) {
             $course->schedules()->update([
                 'day_of_week' => $request->input('day_of_week'),
@@ -182,6 +196,7 @@ class CourseService
         }
 
         // Xử lý chuyên ngành
+        // Handle major associations
         $syncData = [];
         foreach ($request->input('majors') as $majorData) {
             if (isset($majorData['active'])) {
@@ -194,6 +209,7 @@ class CourseService
         $course->majors()->sync($syncData);
 
         // Xử lý prerequisites
+        // Handle prerequisites
         if ($request->has('delete_prerequisites')) {
             Prerequisite::where('course_id', $course->course_id)->delete();
         } else {
@@ -215,6 +231,8 @@ class CourseService
 
     /**
      * Xóa môn học.
+     *
+     * Delete a course.
      */
     public function destroy($course_id)
     {

@@ -59,7 +59,7 @@ class AuthController extends Controller
                 'user_role' => 'lecturer',
                 'user' => $lecturer
             ]);
-            return redirect('/gvien/lichday');
+            return redirect('/lecturer/schedule');
         }
 
         // Kiểm tra Nhân viên giáo vụ
@@ -85,7 +85,7 @@ class AuthController extends Controller
                 'user' => $student,
                 'major_id' => $student->major_id
             ]);
-            return redirect('/svien/dashboard')->with('student', $student);
+            return redirect('/student/dashboard')->with('student', $student);
         }
 
         // Nếu không tìm thấy hoặc mật khẩu không đúng, trả về lỗi

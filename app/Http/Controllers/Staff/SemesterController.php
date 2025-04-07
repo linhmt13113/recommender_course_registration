@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Semester;
 
-
 class SemesterController extends Controller
 {
     //
-     /**
-     * Hiển thị danh sách học kỳ.
+    /**
+     * Display the list of semesters.
      */
     public function index()
     {
@@ -20,7 +19,7 @@ class SemesterController extends Controller
     }
 
     /**
-     * Hiển thị form thêm học kỳ.
+     * Display the form to add a new semester.
      */
     public function create()
     {
@@ -28,7 +27,7 @@ class SemesterController extends Controller
     }
 
     /**
-     * Lưu học kỳ mới.
+     * Store a new semester.
      */
     public function store(Request $request)
     {
@@ -42,16 +41,16 @@ class SemesterController extends Controller
         $semester->semester_id         = $request->input('semester_id');
         $semester->start_date          = $request->input('start_date');
         $semester->end_date            = $request->input('end_date');
-        // registration_status mặc định là 'closed'
+        // Default registration_status is 'closed'
         $semester->registration_status = 'closed';
         $semester->save();
 
-        return redirect()->route('hocki.index')
-                         ->with('success', 'Thêm học kỳ thành công.');
+        return redirect()->route('semesters.index')
+                         ->with('success', 'Successfully added the semester.');
     }
 
     /**
-     * Hiển thị form chỉnh sửa học kỳ.
+     * Display the form to edit a semester.
      */
     public function edit($id)
     {
@@ -60,7 +59,7 @@ class SemesterController extends Controller
     }
 
     /**
-     * Cập nhật học kỳ.
+     * Update a semester.
      */
     public function update(Request $request, $id)
     {
@@ -76,19 +75,19 @@ class SemesterController extends Controller
         $semester->end_date    = $request->input('end_date');
         $semester->save();
 
-        return redirect()->route('hocki.index')
-                         ->with('success', 'Cập nhật học kỳ thành công.');
+        return redirect()->route('semesters.index')
+                         ->with('success', 'Successfully updated the semester.');
     }
 
     /**
-     * Xóa học kỳ.
+     * Delete a semester.
      */
     public function destroy($id)
     {
         $semester = Semester::findOrFail($id);
         $semester->delete();
 
-        return redirect()->route('hocki.index')
-                         ->with('success', 'Xóa học kỳ thành công.');
+        return redirect()->route('semesters.index')
+                         ->with('success', 'Successfully deleted the semester.');
     }
 }

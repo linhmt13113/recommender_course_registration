@@ -20,8 +20,9 @@ class ViewStudentController extends Controller
         $students = $this->studentService->index($request);
         return view('academic_staff.students.index', compact('students'));
     }
+
     /**
-     * Hiển thị chi tiết các môn học mà sinh viên đã học.
+     * Display the details of the courses the student has taken.
      */
     public function showCourses($student_id)
     {
@@ -30,7 +31,7 @@ class ViewStudentController extends Controller
     }
 
     /**
-     * Hiển thị đăng ký môn học của sinh viên.
+     * Display the course registrations of the student.
      */
     public function showRegistrations($student_id)
     {
@@ -39,11 +40,11 @@ class ViewStudentController extends Controller
     }
 
     /**
-     * Xóa một đăng ký môn học của sinh viên.
+     * Delete a course registration of the student.
      */
     public function destroyRegistration($registrationId)
     {
         $this->studentService->destroyRegistration($registrationId);
-        return redirect()->back()->with('success', 'Xóa đăng ký môn học thành công.');
+        return redirect()->back()->with('success', 'Course registration deleted successfully.');
     }
 }

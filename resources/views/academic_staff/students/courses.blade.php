@@ -29,6 +29,6 @@
             @endforelse
         </tbody>
     </table>
-    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary">Back to Student List</a>
+    <a href="{{ route('staff_viewstudents.index') }}" class="btn btn-secondary">Back to Student List</a>
 </div>
 @endsection

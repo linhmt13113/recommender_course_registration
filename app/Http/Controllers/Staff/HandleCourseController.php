@@ -12,22 +12,21 @@ class HandleCourseController extends Controller
 
     public function __construct(CourseService $courseService)
     {
-        // Có thể áp dụng middleware nếu cần (ví dụ: kiểm tra role staff)
+        // checking staff role
         $this->courseService = $courseService;
     }
 
     /**
-     * Hiển thị danh sách môn học.
+     * Display the list of courses.
      */
     public function index(Request $request)
     {
         $data = $this->courseService->index($request);
-        // Giả sử view dành cho staff nằm trong staff/courses
         return view('academic_staff.courses.index', $data);
     }
 
     /**
-     * Hiển thị form tạo môn học.
+     * Display the course creation form.
      */
     public function create()
     {
@@ -36,17 +35,17 @@ class HandleCourseController extends Controller
     }
 
     /**
-     * Lưu môn học mới.
+     * Store a new course.
      */
     public function store(Request $request)
     {
         $course = $this->courseService->store($request);
-        return redirect()->route('monhoc.index')
-            ->with('success', 'Thêm môn học thành công.');
+        return redirect()->route('staff_courses.index')
+            ->with('success', 'Course added successfully.');
     }
 
     /**
-     * Hiển thị form chỉnh sửa môn học.
+     * Display the course edit form.
      */
     public function edit($course_id)
     {
@@ -55,22 +54,22 @@ class HandleCourseController extends Controller
     }
 
     /**
-     * Cập nhật môn học.
+     * Update the course.
      */
     public function update(Request $request, $course_id)
     {
         $course = $this->courseService->update($request, $course_id);
-        return redirect()->route('monhoc.index')
-            ->with('success', 'Cập nhật môn học thành công.');
+        return redirect()->route('staff_courses.index')
+            ->with('success', 'Course updated successfully.');
     }
 
     /**
-     * Xóa môn học.
+     * Delete the course.
      */
     public function destroy($course_id)
     {
         $this->courseService->destroy($course_id);
-        return redirect()->route('monhoc.index')
-            ->with('success', 'Xóa môn học thành công.');
+        return redirect()->route('staff_courses.index')
+            ->with('success', 'Course deleted successfully.');
     }
 }

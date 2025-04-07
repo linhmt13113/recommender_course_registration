@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-4">
     <h1>Course Registration for Student: {{ $student->student_name }}</h1>
-    <a href="{{ route('viewsinhvien.index') }}" class="btn btn-secondary mb-3">Back to Student List</a>
+    <a href="{{ route('staff_viewstudents.index') }}" class="btn btn-secondary mb-3">Back to Student List</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>

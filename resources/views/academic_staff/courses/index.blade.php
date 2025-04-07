@@ -10,7 +10,7 @@
     @endif
 
     <!-- Filter Form -->
-    <form method="GET" action="{{ route('monhoc.index') }}" class="mb-3">
+    <form method="GET" action="{{ route('staff_courses.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
                 <select name="major_id" class="form-control">
@@ -30,12 +30,12 @@
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('staff_courses.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
     </form>
 
-    <a href="{{ route('monhoc.create') }}" class="btn btn-primary mb-3">Add Course</a>
+    <a href="{{ route('staff_courses.create') }}" class="btn btn-primary mb-3">Add Course</a>
 
     <table class="table table-bordered" id="electiveTable">
         <thead>
@@ -95,8 +95,8 @@
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_course_id : 'N/A' }}</td>
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_type : 'N/A' }}</td>
                 <td>
-                    <a href="{{ route('monhoc.edit', $course->course_id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('monhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
+                    <a href="{{ route('staff_courses.edit', $course->course_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('staff_courses.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete?')">Delete</button>

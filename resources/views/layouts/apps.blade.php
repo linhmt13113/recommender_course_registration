@@ -21,9 +21,9 @@
         <a class="navbar-brand" href="{{ route('academic_staff.dashboard') }}">Academic Staff</a>
         <div class="dashboard-menu mt-3">
             <a href="{{ route('academic_staff.registration.index') }}" class="btn btn-primary">Manage Registration Periods</a>
-            <a href="{{ route('monhoc.index') }}" class="btn btn-primary">Manage Courses</a>
-            <a href="{{ route('hocki.index') }}" class="btn btn-primary">Manage Semesters</a>
-            <a href="{{ route('viewsinhvien.index') }}" class="btn btn-primary">Manage Students</a>
+            <a href="{{ route('staff_courses.index') }}" class="btn btn-primary">Manage Courses</a>
+            <a href="{{ route('semesters.index') }}" class="btn btn-primary">Manage Semesters</a>
+            <a href="{{ route('staff_viewstudents.index') }}" class="btn btn-primary">Manage Students</a>
         </div>
         <div class="dashboard-menu mt-3">
             <a href="{{ route('academic_staff.change_password') }}" class="btn btn-outline-primary me-2">

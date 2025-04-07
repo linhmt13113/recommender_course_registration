@@ -13,7 +13,7 @@
             @endforeach
         </div>
     @endif
-    <form action="{{ route('monhoc.update', $course->course_id) }}" method="POST">
+    <form action="{{ route('staff_courses.update', $course->course_id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -172,7 +172,7 @@
 
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Update Course</button>
-            <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Back to List</a>
+            <a href="{{ route('staff_courses.index') }}" class="btn btn-secondary">Back to List</a>
         </div>
     </form>
 </div>

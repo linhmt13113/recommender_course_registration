@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('hocki.store') }}" method="POST">
+    <form action="{{ route('semesters.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="semester_id">Semester ID:</label>
@@ -29,7 +29,7 @@
             <input type="date" name="end_date" id="end_date" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary">Add Semester</button>
-        <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('semesters.index') }}" class="btn btn-secondary">Back</a>
     </form>
 </div>
 @endsection

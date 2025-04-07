@@ -62,6 +62,11 @@
     justify-content: center;
 }
 
+select.form-control {
+    font-size: 0.875rem; /* Reduce font size */
+    padding: 8px; /* Adjust padding */
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .create-course-container {

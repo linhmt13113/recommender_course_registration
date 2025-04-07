@@ -14,6 +14,7 @@ class AuthController extends Controller
 {
     /**
      * Hiển thị trang đăng nhập.
+     * Display the login page.
      */
     public function showLoginForm()
     {
@@ -22,10 +23,12 @@ class AuthController extends Controller
 
     /**
      * Xử lý đăng nhập.
+     * Handle the login process.
      */
     public function login(Request $request)
     {
         // Validate dữ liệu đầu vào
+        // Validate the input data
         $request->validate([
             'username' => 'required',
             'password' => 'required'
@@ -34,10 +37,13 @@ class AuthController extends Controller
         $username = $request->input('username');
         $password = $request->input('password');
         // dd(session()->all());
+
         // Kiểm tra trong bảng Admin (dùng email làm username)
+        // Check in the Admin table (use email as username)
         $admin = Admin::where('email', $username)->first();
         if ($admin && Hash::check($password, $admin->password)) {
             // Lưu thông tin vào session để xác định role admin
+            // Store information in session to identify the admin role
             session([
                 'user_role' => 'admin',
                 'user' => $admin
@@ -46,6 +52,7 @@ class AuthController extends Controller
         }
 
         // Kiểm tra trong bảng Lecturer (dùng email làm username)
+        // Check in the Lecturer table (use email as username)
         $lecturer = Lecturer::where('lecturer_id', $username)->first();
         if ($lecturer && Hash::check($password, $lecturer->password)) {
             session([
@@ -56,19 +63,23 @@ class AuthController extends Controller
         }
 
         // Kiểm tra Nhân viên giáo vụ
+        // Check in the Academic Staff table
         $staff = AcademicStaff::where('staff_id', $username)->first();
         if ($staff && Hash::check($password, $staff->password)) {
             session([
                 'user_role' => 'staff',  // Role mới
+                // New role
                 'user' => $staff
             ]);
-            return redirect('/giaovu/dashboard');
+            return redirect('/academicstaff/dashboard');
         }
 
         // Kiểm tra trong bảng Student (sử dụng student_id làm username)
+        // Check in the Student table (use student_id as username)
         $student = Student::where('student_id', $username)->first();
         if ($student && Hash::check($password, $student->password)) {
             // Lưu thêm thông tin chuyên ngành của sinh viên vào session
+            // Store additional student major information in session
             session([
                 'user_role' => 'student',
                 'user' => $student,
@@ -77,14 +88,15 @@ class AuthController extends Controller
             return redirect('/svien/dashboard')->with('student', $student);
         }
 
-
-
         // Nếu không tìm thấy hoặc mật khẩu không đúng, trả về lỗi
-        return back()->withErrors(['username' => 'Tài khoản hoặc mật khẩu không đúng!']);
+        // If no user is found or the password is incorrect, return an error
+        return back()->withErrors(['username' => 'Incorrect account or password!']);
+        // Account or password is incorrect!
     }
 
     /**
      * Xử lý đăng xuất.
+     * Handle the logout process.
      */
     public function logout(Request $request)
     {
@@ -95,10 +107,12 @@ class AuthController extends Controller
 
     /**
      * Thay đổi mật khẩu (Ví dụ).
+     * Change password (Example).
      */
     public function changePassword(Request $request)
     {
         // Validate dữ liệu nhập vào
+        // Validate the input data
         $request->validate([
             'current_password' => 'required',
             'new_password' => 'required|min:6|confirmed',
@@ -106,14 +120,18 @@ class AuthController extends Controller
 
         $user = session('user');
         // Kiểm tra mật khẩu hiện tại
+        // Check the current password
         if (!Hash::check($request->input('current_password'), $user->password)) {
-            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không đúng!']);
+            return back()->withErrors(['current_password' => 'Current password is incorrect!']);
+            // The current password is incorrect!
         }
 
         // Cập nhật mật khẩu mới (băm lại mật khẩu)
+        // Update the new password (hash the password)
         $user->password = Hash::make($request->input('new_password'));
         $user->save();
 
-        return back()->with('success', 'Mật khẩu đã được cập nhật thành công.');
+        return back()->with('success', 'Password updated successfully.');
+        // Password has been successfully updated.
     }
 }

@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Edit Semester</h1>
-        <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('semesters.index') }}" class="btn btn-secondary">Back</a>
     </div>
 
     @if($errors->any())
@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <form action="{{ route('hocki.update', $semester->id) }}" method="POST">
+    <form action="{{ route('semesters.update', $semester->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -34,7 +34,7 @@
         </div>
         <div class="form-group mt-3">
             <button type="submit" class="btn btn-primary">Update Semester</button>
-            <a href="{{ route('hocki.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('semesters.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </form>
 </div>

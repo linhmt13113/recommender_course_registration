@@ -10,6 +10,11 @@
     <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     @stack('styles')
+    <style>
+        .container.mt-4 {
+            margin-bottom: 300px;
+        }
+    </style>
 </head>
 
 <body>

@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="{{ asset('template/css/admins/admin.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
     @stack('styles')
+    <style>
+        .container.mt-4 {
+            margin-bottom: 326px;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,6 +39,12 @@
     <div class="container mt-4">
         @yield('content')
     </div>
+
+    <footer class="mt-4 text-center">
+        <div class="container">
+            <p>&copy; {{ date('Y') }} - Acadamic Staff System</p>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -10,7 +10,6 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('sinhvien.create') }}" class="btn btn-primary mb-3">Add Student</a>
 
     <table class="table table-bordered">
         <thead>

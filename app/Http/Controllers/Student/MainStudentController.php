@@ -166,7 +166,7 @@ class MainStudentController extends Controller
         $mergedCurriculum = collect(array_merge($curriculumArr, $defaultElectivesArr))
             ->sortBy('recommended_semester');
 
-        return view('student.curriculum', compact('curriculum', 'mergedCurriculum', 'student'));
+        return view('student.curriculum', compact('curriculum', 'mergedCurriculum', 'student'))->with('student', $student);
     }
 
 }

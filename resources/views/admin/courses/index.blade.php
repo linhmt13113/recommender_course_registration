@@ -10,7 +10,7 @@
     @endif
 
     <!-- Filter Form -->
-    <form method="GET" action="{{ route('viewmonhoc.index') }}" class="mb-3">
+    <form method="GET" action="{{ route('viewcourses.index') }}" class="mb-3">
         <div class="row">
             <div class="col-md-4">
                 <select name="major_id" class="form-control">
@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-4">
                 <button type="submit" class="btn btn-primary">Filter</button>
-                <a href="{{ route('viewmonhoc.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('viewcourses.index') }}" class="btn btn-secondary">Reset</a>
             </div>
         </div>
     </form>
@@ -93,7 +93,7 @@
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_course_id : 'N/A' }}</td>
                 <td>{{ $course->prerequisite ? $course->prerequisite->prerequisite_type : 'N/A' }}</td>
                 <td>
-                    <form action="{{ route('viewmonhoc.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
+                    <form action="{{ route('viewcourses.destroy', $course->course_id) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete?')">Delete</button>

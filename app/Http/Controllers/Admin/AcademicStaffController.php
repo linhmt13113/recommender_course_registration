@@ -9,7 +9,7 @@ use App\Models\AcademicStaff;
 class AcademicStaffController extends Controller
 {
     /**
-     * Hiển thị danh sách cán bộ học vụ.
+     * Display the list of academic staff.
      */
     public function index()
     {
@@ -18,7 +18,7 @@ class AcademicStaffController extends Controller
     }
 
     /**
-     * Hiển thị form thêm cán bộ học vụ.
+     * Display the form for adding new academic staff.
      */
     public function create()
     {
@@ -26,7 +26,7 @@ class AcademicStaffController extends Controller
     }
 
     /**
-     * Lưu cán bộ học vụ mới.
+     * Store a new academic staff member.
      */
     public function store(Request $request)
     {
@@ -44,11 +44,11 @@ class AcademicStaffController extends Controller
         $staff->save();
 
         return redirect()->route('staff_management.index')
-                         ->with('success', 'Thêm cán bộ học vụ thành công.');
+                         ->with('success', 'Academic staff added successfully.');
     }
 
     /**
-     * Hiển thị form chỉnh sửa cán bộ học vụ.
+     * Display the form for editing academic staff.
      */
     public function edit($staff_id)
     {
@@ -57,7 +57,7 @@ class AcademicStaffController extends Controller
     }
 
     /**
-     * Cập nhật thông tin cán bộ học vụ.
+     * Update the information of academic staff.
      */
     public function update(Request $request, $staff_id)
     {
@@ -71,6 +71,7 @@ class AcademicStaffController extends Controller
         $staff->staff_name = $request->input('staff_name');
         $staff->email = $request->input('email');
 
+        // Update password if it's provided.
         if ($request->filled('password')) {
             $staff->password = bcrypt($request->input('password'));
         }
@@ -78,11 +79,11 @@ class AcademicStaffController extends Controller
         $staff->save();
 
         return redirect()->route('staff_management.index')
-                         ->with('success', 'Cập nhật cán bộ học vụ thành công.');
+                         ->with('success', 'Academic staff updated successfully.');
     }
 
     /**
-     * Xóa cán bộ học vụ.
+     * Delete academic staff.
      */
     public function destroy($staff_id)
     {
@@ -90,6 +91,6 @@ class AcademicStaffController extends Controller
         $staff->delete();
 
         return redirect()->route('staff_management.index')
-                         ->with('success', 'Xóa cán bộ học vụ thành công.');
+                         ->with('success', 'Academic staff deleted successfully.');
     }
 }

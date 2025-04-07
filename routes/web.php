@@ -37,12 +37,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/change-password', [AuthController::class, 'changePassword'])->name('change.password');
 
 // Route cho Admin (sử dụng middleware trực tiếp)
-// Route::get('/qly/dashboard', function () {
+// Route::get('/admin/dashboard', function () {
 //     return view('admin.dashboard');
 // })->middleware(CheckAdmin::class);
 
 // Nhóm route cho Admin với middleware (có thể sử dụng trực tiếp nếu chưa đăng ký trong Kernel)
-Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
+Route::prefix('admin')->middleware(CheckAdmin::class)->group(function () {
     // Dashboard Admin
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
@@ -54,16 +54,16 @@ Route::prefix('qly')->middleware(CheckAdmin::class)->group(function () {
 
 
     // Quản lý Sinh viên
-    Route::resource('sinhvien', StudentController::class);
+    Route::resource('ad_student', StudentController::class);
 
     // Quản lý Giảng viên
-    Route::resource('giangvien', LecturerController::class);
-    Route::get('giangvien/{lecturer}/courses', [LecturerController::class, 'courses'])->name('giangvien.courses');
+    Route::resource('ad_lecturer', LecturerController::class);
+    Route::get('ad_lecturer/{lecturer}/courses', [LecturerController::class, 'courses'])->name('ad_lecturer.courses');
 
 
     Route::resource('staff_management', AcademicStaffController::class);
     // Quản lý Môn học
-    Route::resource('viewmonhoc', CourseController::class)->only([
+    Route::resource('viewcourses', CourseController::class)->only([
         'index',
         'destroy'
     ]);

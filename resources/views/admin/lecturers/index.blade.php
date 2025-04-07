@@ -10,7 +10,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('giangvien.create') }}" class="btn btn-primary mb-3">Add Lecturer</a>
+    <a href="{{ route('ad_lecturer.create') }}" class="btn btn-primary mb-3">Add Lecturer</a>
 
     <table class="table table-bordered">
         <thead>
@@ -26,9 +26,9 @@
                 <td>{{ $lecturer->lecturer_id }}</td>
                 <td>{{ $lecturer->lecturer_name }}</td>
                 <td>
-                    <a href="{{ route('giangvien.edit', ['giangvien' => $lecturer->lecturer_id]) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <a href="{{ route('giangvien.courses', $lecturer->lecturer_id) }}" class="btn btn-info btn-sm">View Subjects</a>
-                    <form action="{{ route('giangvien.destroy', ['giangvien' => $lecturer->lecturer_id]) }}" method="POST" style="display:inline-block">
+                    <a href="{{ route('ad_lecturer.edit', ['ad_lecturer' => $lecturer->lecturer_id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ route('ad_lecturer.courses', $lecturer->lecturer_id) }}" class="btn btn-info btn-sm">View Subjects</a>
+                    <form action="{{ route('ad_lecturer.destroy', ['ad_lecturer' => $lecturer->lecturer_id]) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm"

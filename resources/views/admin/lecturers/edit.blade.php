@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('giangvien.update', ['giangvien' => $lecturer->lecturer_id]) }}" method="POST">
+    <form action="{{ route('ad_lecturer.update', ['ad_lecturer' => $lecturer->lecturer_id]) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">

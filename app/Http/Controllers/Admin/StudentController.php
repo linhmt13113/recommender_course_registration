@@ -16,7 +16,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Hiển thị danh sách sinh viên.
+     * Display the list of students.
      */
     public function index(Request $request)
     {
@@ -25,7 +25,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Hiển thị form tạo sinh viên.
+     * Display the student creation form.
      */
     public function create()
     {
@@ -34,17 +34,17 @@ class StudentController extends Controller
     }
 
     /**
-     * Lưu sinh viên mới.
+     * Store a new student.
      */
     public function store(Request $request)
     {
         $this->studentService->store($request);
-        return redirect()->route('sinhvien.index')
-                         ->with('success', 'Thêm sinh viên thành công.');
+        return redirect()->route('ad_student.index')
+                         ->with('success', 'Student added successfully.');
     }
 
     /**
-     * Hiển thị form chỉnh sửa sinh viên.
+     * Display the student edit form.
      */
     public function edit($student_id)
     {
@@ -53,22 +53,22 @@ class StudentController extends Controller
     }
 
     /**
-     * Cập nhật sinh viên.
+     * Update a student.
      */
     public function update(Request $request, $student_id)
     {
         $this->studentService->update($request, $student_id);
-        return redirect()->route('sinhvien.index')
-                         ->with('success', 'Cập nhật sinh viên thành công.');
+        return redirect()->route('ad_student.index')
+                         ->with('success', 'Student updated successfully.');
     }
 
     /**
-     * Xóa sinh viên.
+     * Delete a student.
      */
     public function destroy($student_id)
     {
         $this->studentService->destroy($student_id);
-        return redirect()->route('sinhvien.index')
-                         ->with('success', 'Xóa sinh viên thành công.');
+        return redirect()->route('ad_student.index')
+                         ->with('success', 'Student deleted successfully.');
     }
 }

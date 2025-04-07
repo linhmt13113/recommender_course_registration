@@ -13,7 +13,7 @@
         </div>
     @endif
 
-    <form action="{{ route('monhoc.store') }}" method="POST">
+    <form action="{{ route('viewcourses.store') }}" method="POST">
         @csrf
 
         <div class="form-group">
@@ -145,6 +145,6 @@
         </script>
 
         <button type="submit" class="btn btn-primary">Add Course</button>
-        <a href="{{ route('monhoc.index') }}" class="btn btn-secondary">Back to List</a>
+        <a href="{{ route('viewcourses.index') }}" class="btn btn-secondary">Back to List</a>
     </form>
 @endsection

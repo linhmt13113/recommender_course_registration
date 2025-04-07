@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('auth.login'); // Tạo file view resources/views/auth/login.blade.php sau
+        return view('auth.login');
     }
 
     /**
@@ -42,7 +42,7 @@ class AuthController extends Controller
                 'user_role' => 'admin',
                 'user' => $admin
             ]);
-            return redirect('/qly/dashboard');
+            return redirect('/admin/dashboard');
         }
 
         // Kiểm tra trong bảng Lecturer (dùng email làm username)

@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('giangvien.store') }}" method="POST">
+    <form action="{{ route('ad_lecturer.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="lecturer_id">Lecturer ID:</label>

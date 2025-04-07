@@ -10,7 +10,7 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('sinhvien.create') }}" class="btn btn-primary mb-3">Add Student</a>
+    <a href="{{ route('ad_student.create') }}" class="btn btn-primary mb-3">Add Student</a>
 
     <table class="table table-bordered">
         <thead>
@@ -28,8 +28,8 @@
                 <td>{{ $student->student_name }}</td>
                 <td>{{ $student->major->major_name ?? 'N/A' }}</td>
                 <td>
-                    <a href="{{ route('sinhvien.edit', ['sinhvien' => $student->student_id]) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('sinhvien.destroy', ['sinhvien' => $student->student_id]) }}" method="POST" style="display:inline-block">
+                    <a href="{{ route('ad_student.edit', ['ad_student' => $student->student_id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('ad_student.destroy', ['ad_student' => $student->student_id]) }}" method="POST" style="display:inline-block">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm"

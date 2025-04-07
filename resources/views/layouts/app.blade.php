@@ -23,9 +23,9 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('admin.dashboard') }}">Admin</a>
             <div class="dashboard-menu mt-3">
-                <a href="{{ route('viewmonhoc.index') }}" class="btn btn-primary">Manage Courses</a>
-                <a href="{{ route('giangvien.index') }}" class="btn btn-primary">Manage Lecturers</a>
-                <a href="{{ route('sinhvien.index') }}" class="btn btn-primary">Manage Students</a>
+                <a href="{{ route('viewcourses.index') }}" class="btn btn-primary">Manage Courses</a>
+                <a href="{{ route('ad_lecturer.index') }}" class="btn btn-primary">Manage Lecturers</a>
+                <a href="{{ route('ad_student.index') }}" class="btn btn-primary">Manage Students</a>
                 <a href="{{ route('staff_management.index') }}" class="btn btn-primary">Manage Academic Staff</a>
             </div>
             <div class="dashboard-menu mt-3">

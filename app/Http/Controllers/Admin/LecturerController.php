@@ -10,7 +10,7 @@ use App\Models\Course;
 class LecturerController extends Controller
 {
     /**
-     * Hiển thị danh sách giảng viên.
+     * Display the list of lecturers.
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class LecturerController extends Controller
     }
 
     /**
-     * Hiển thị form thêm giảng viên.
+     * Display the form for adding a new lecturer.
      */
     public function create()
     {
@@ -27,7 +27,7 @@ class LecturerController extends Controller
     }
 
     /**
-     * Lưu giảng viên mới.
+     * Store a new lecturer.
      */
     public function store(Request $request)
     {
@@ -42,12 +42,12 @@ class LecturerController extends Controller
         $lecturer->password      = bcrypt('lecturer123');
         $lecturer->save();
 
-        return redirect()->route('giangvien.index')
-                         ->with('success', 'Thêm giảng viên thành công.');
+        return redirect()->route('ad_lecturer.index')
+                         ->with('success', 'Lecturer added successfully.');
     }
 
     /**
-     * Hiển thị form chỉnh sửa giảng viên.
+     * Display the form for editing a lecturer.
      */
     public function edit($lecturer_id)
     {
@@ -56,7 +56,7 @@ class LecturerController extends Controller
     }
 
     /**
-     * Cập nhật thông tin giảng viên.
+     * Update lecturer information.
      */
     public function update(Request $request, $lecturer_id)
     {
@@ -70,22 +70,25 @@ class LecturerController extends Controller
         $lecturer->password = bcrypt($request->input('password'));
         $lecturer->save();
 
-        return redirect()->route('giangvien.index')
-                         ->with('success', 'Cập nhật giảng viên thành công.');
+        return redirect()->route('ad_lecturer.index')
+                         ->with('success', 'Lecturer updated successfully.');
     }
 
     /**
-     * Xóa giảng viên.
+     * Delete a lecturer.
      */
     public function destroy($lecturer_id)
     {
         $lecturer = Lecturer::findOrFail($lecturer_id);
         $lecturer->delete();
 
-        return redirect()->route('giangvien.index')
-                         ->with('success', 'Xóa giảng viên thành công.');
+        return redirect()->route('ad_lecturer.index')
+                         ->with('success', 'Lecturer deleted successfully.');
     }
 
+    /**
+     * Display the courses assigned to a lecturer.
+     */
     public function courses($lecturer_id)
     {
         $lecturer = Lecturer::findOrFail($lecturer_id);

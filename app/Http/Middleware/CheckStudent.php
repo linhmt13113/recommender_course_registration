@@ -16,7 +16,7 @@ class CheckStudent
     public function handle(Request $request, Closure $next): Response
     {
         if (!session()->has('user_role') || session('user_role') !== 'student') {
-            return redirect('/login')->withErrors(['access' => 'Bạn không có quyền truy cập trang này.']);
+            return redirect('/login')->withErrors(['access' => 'You do not have permission to access this page.']);
         }
         return $next($request);
     }

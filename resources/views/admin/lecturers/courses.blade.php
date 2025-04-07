@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-4">
     <h1>Subjects taught by Lecturer {{ $lecturer->lecturer_name }}</h1>
-    <a href="{{ route('giangvien.index') }}" class="btn btn-secondary mb-3">Back to Lecturer List</a>
+    <a href="{{ route('ad_lecturer.index') }}" class="btn btn-secondary mb-3">Back to Lecturer List</a>
     @if($courses->isNotEmpty())
         <table class="table table-bordered">
             <thead>

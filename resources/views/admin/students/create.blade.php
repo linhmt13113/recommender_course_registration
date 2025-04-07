@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Add Student</h1>
-        <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary">
+        <a href="{{ route('ad_student.index') }}" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>
@@ -19,7 +19,7 @@
         </div>
     @endif
 
-    <form action="{{ route('sinhvien.store') }}" method="POST">
+    <form action="{{ route('ad_student.store') }}" method="POST">
         @csrf
         <div class="form-group">
             <label for="student_id">Student ID:</label>
@@ -41,7 +41,7 @@
             <button type="submit" class="btn btn-primary mr-2">
                 <i class="fas fa-plus"></i> Add Student
             </button>
-            <a href="{{ route('sinhvien.index') }}" class="btn btn-secondary">
+            <a href="{{ route('ad_student.index') }}" class="btn btn-secondary">
                 <i class="fas fa-times"></i> Cancel
             </a>
         </div>

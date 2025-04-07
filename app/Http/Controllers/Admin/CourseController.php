@@ -12,27 +12,27 @@ class CourseController extends Controller
 
     public function __construct(CourseService $courseService)
     {
-        // Nếu cần middleware kiểm tra quyền admin, có thể thêm ở đây
+        // If you need to check admin privileges, you can add middleware here
         $this->courseService = $courseService;
     }
 
     /**
-     * Hiển thị danh sách môn học.
+     * Display the list of courses.
      */
     public function index(Request $request)
     {
         $data = $this->courseService->index($request);
-        // Giả sử view dành cho admin nằm trong admin/courses
+        // Assuming the view for the admin is located in admin/courses
         return view('admin.courses.index', $data);
     }
 
     /**
-     * Xóa môn học.
+     * Delete a course.
      */
     public function destroy($course_id)
     {
         $this->courseService->destroy($course_id);
-        return redirect()->route('viewmonhoc.index')
-            ->with('success', 'Xóa môn học thành công.');
+        return redirect()->route('viewcourses.index')
+            ->with('success', 'Course deleted successfully.');
     }
 }

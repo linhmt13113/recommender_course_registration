@@ -13,6 +13,27 @@ body {
     margin: auto;
   }
 
+  /* === Content Area === */
+header + .container {
+    padding-top: 2rem;
+    text-align: center;
+  }
+
+  .container h1.display-4 {
+    margin-top: 30px;
+    font-weight: bold;
+    color: #007bff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-size: 2.5rem;
+  }
+
+  .container p.lead {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: normal;
+  }
+
+
   /* === Header === */
   .main-header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -55,8 +76,16 @@ body {
   /* === Navbar === */
   .navbar {
     background: #5988be;
-    border-bottom: 4px solid #00c6ff;
   }
+
+  .navbar-dark .navbar-nav .nav-link {
+    color: #fff !important; /* Thay đổi màu sắc chữ */
+    font-size: 1.5rem; /* Điều chỉnh kích thước chữ */
+    font-weight: bold; /* Đậm chữ */
+  }
+
+
+
   .navbar .navbar-brand {
     font-size: 1.7rem;
     font-weight: bold;
@@ -64,8 +93,8 @@ body {
     letter-spacing: 1px;
   }
   .navbar .nav-link {
-    font-size: 1rem;
-    color: #bdc3c7;
+    font-size: 1.5rem;
+    color: #fff;
     margin: 0 0.5rem;
     padding: 0.5rem 1rem;
     font-weight: bold;
@@ -73,7 +102,7 @@ body {
   }
   .navbar .nav-link:hover,
   .navbar .nav-link.active {
-    color: #fff;
+    color: #f4f4f4;
   }
   .navbar .btn {
     margin-left: 0.5rem;

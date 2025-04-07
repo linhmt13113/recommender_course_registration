@@ -63,7 +63,7 @@
                                     <td>{{ round($rec['score'], 4) }}</td>
                                     <td>
                                         <button type="button" class="btn btn-sm btn-info" onclick="fillSearch('{{ $rec['course_id'] }}')">
-                                            Search Now
+                                            Search
                                         </button>
                                     </td>
                                 </tr>
@@ -171,7 +171,7 @@
                                     <form action="{{ route('student.course_registration.delete', $reg->course->course_id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-danger">Cancel Registration</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
                                     </form>
                                 </td>
                             </tr>
@@ -183,6 +183,8 @@
 
         {{-- Required courses for the next semester --}}
         {{-- Các môn bắt buộc cho học kỳ tiếp theo --}}
+        <div class="section-separator"></div>
+        <h2 class="section-title">The current semester of the student is {{ $currentSemester }}.</h2>
         <h2 class="section-title">Required Courses for Semester {{ $currentSemester + 1 }} :</h2>
         @if($requiredNextSemesterCourses->isEmpty())
             <p class="no-data-text">No required courses for registration.</p>
@@ -210,7 +212,7 @@
                                 <td>{{ $item->recommended_semester }}</td>
                                 <td>
                                     <button type="button" class="btn btn-sm btn-info" onclick="fillSearch('{{ optional($course)->course_id }}')">
-                                        Search Now
+                                        Search
                                     </button>
                                 </td>
                             </tr>
@@ -253,6 +255,7 @@
 
         {{-- Preferences form --}}
         {{-- Form lưu sở thích (Preferences) --}}
+        <div class="section-separator"></div>
         <h2 class="section-title">Save Your Preferences</h2>
         <form action="{{ route('student.course_registration.preferences') }}" method="POST" class="preferences-form">
             @csrf

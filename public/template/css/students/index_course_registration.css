@@ -133,6 +133,13 @@
     border-radius: 4px;
 }
 
+
+.section-separator {
+    border-top: 4px solid #000000;
+    margin: 30px 0;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .search-box input[type="text"] {

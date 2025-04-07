@@ -58,7 +58,7 @@
   <!-- Content Header -->
   <div class="container mt-5 pt-3">
     <h1 class="display-4">Welcome, {{ session('user')->student_name }}!</h1>
-    <p class="lead">This is your student dashboard. Your student ID is: {{ session('user')->student_id }}</p>
+    <p class="lead">Your student ID is: {{ session('user')->student_id }}</p>
   </div>
 
   <!-- Main Content & Latest News Section -->

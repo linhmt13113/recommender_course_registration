@@ -25,7 +25,6 @@ class RecommendationRequest(BaseModel):
 
 @app.post("/recommend")
 def recommend(req: RecommendationRequest):
-    logger.debug("Received request: %s", req.model_dump())
     try:
         # Tính embedding cho sở thích và các mô tả môn học
         pref_embedding = model.encode([req.preference])[0]
@@ -35,7 +34,7 @@ def recommend(req: RecommendationRequest):
 
         # Lấy top 3 chỉ số có similarity cao nhất
         top3_idx = cos_sim.argsort()[-3:][::-1]
-        top3 = [{"index": int(idx), "score": float(cos_sim[idx])} for idx in top3_idx]
+        top3 = [{"index": int(idx), "score": float(cos_sim[idx]), "course_description": req.course_descriptions[idx]} for idx in top3_idx]
         logger.debug("Top3 recommendation: %s", top3)
         return {"top3": top3}
     except Exception as e:

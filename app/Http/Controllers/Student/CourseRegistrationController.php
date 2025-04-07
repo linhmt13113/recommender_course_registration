@@ -85,6 +85,9 @@ class CourseRegistrationController extends Controller
                         $topCourses[] = [
                             'course_id' => $course->course_id,
                             'course_name' => $course->course_name,
+                            'course_description' => !empty($course->course_description)
+                                ? $course->course_description
+                                : $course->course_name,
                             'score' => $score,
                         ];
                     }
@@ -343,6 +346,9 @@ class CourseRegistrationController extends Controller
                         $electiveRecommendations[] = [
                             'course_id' => $course->course_id,
                             'course_name' => $course->course_name,
+                            'course_description' => !empty($course->course_description)
+                                ? $course->course_description
+                                : $course->course_name,
                             'score' => $score,
                         ];
                     }

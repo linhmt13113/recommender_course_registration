@@ -271,14 +271,14 @@
             <div class="form-group">
                 <label>Question 2: Which tools/technologies do you prefer to work with?</label>
                 @foreach([
-                    'Python/R' => 'Python/R',
-                    'PyCharm/Visual Studio' => 'PyCharm/Visual Studio',
-                    'TensorFlow/PyTorch' => 'TensorFlow/PyTorch for AI',
-                    'AWS/Google Cloud' => 'AWS/Google Cloud',
-                    'Unity/Unreal Engine' => 'Unity/Unreal Engine',
-                    'SQL/NoSQL' => 'SQL/NoSQL',
-                    'Wireshark/Postman' => 'Wireshark/Postman',
-                    'Docker/Kubernetes' => 'Docker/Kubernetes'
+                    'Python or R' => 'Python or R',
+                    'PyCharm or Visual Studio' => 'PyCharm or Visual Studio',
+                    'TensorFlow or PyTorch' => 'TensorFlow or PyTorch for AI',
+                    'AWS or Google Cloud' => 'AWS or Google Cloud',
+                    'Unity or Unreal Engine' => 'Unity or Unreal Engine',
+                    'SQL or NoSQL' => 'SQL or NoSQL',
+                    'Wireshark or Postman' => 'Wireshark or Postman',
+                    'Docker or Kubernetes' => 'Docker or Kubernetes'
                 ] as $key => $label)
                     <div class="form-check">
                         <input type="checkbox" name="q2_tools[]" value="{{ $key }}"
@@ -296,7 +296,7 @@
             <!-- Question 3 -->
             <div class="form-group">
                 <label for="q3_interested_skills">
-                    Question 3: Name 2-3 subjects/skills you are most passionate about at university (e.g., "Game programming", "Data analysis", "Computer networks", ...):
+                    Question 3: Name 2-3 subjects or skills you are most passionate about at university (e.g., "Game programming", "Data analysis", "Computer networks", ...):
                 </label>
                 <textarea name="q3_interested_skills" id="q3_interested_skills" cols="50" rows="3" class="form-control">{{ old('q3_interested_skills') }}</textarea>
             </div>
@@ -308,7 +308,7 @@
                     <option value="">-- Select a skill --</option>
                     <option value="Build data mining algorithms" {{ old('q4_desired_skill') == 'Build data mining algorithms' ? 'selected' : '' }}>Build data mining algorithms</option>
                     <option value="Design distributed systems (Cloud, Distributed Systems)" {{ old('q4_desired_skill') == 'Design distributed systems (Cloud, Distributed Systems)' ? 'selected' : '' }}>Design distributed systems (Cloud, Distributed Systems)</option>
-                    <option value="Develop AR/VR applications" {{ old('q4_desired_skill') == 'Develop AR/VR applications' ? 'selected' : '' }}>Develop AR/VR applications</option>
+                    <option value="Develop AR or VR applications" {{ old('q4_desired_skill') == 'Develop AR or VR applications' ? 'selected' : '' }}>Develop AR or VR applications</option>
                     <option value="Implement virtual networks (VPN, IPSec)" {{ old('q4_desired_skill') == 'Implement virtual networks (VPN, IPSec)' ? 'selected' : '' }}>Implement virtual networks (VPN, IPSec)</option>
                     <option value="Create data visualization dashboards (Tableau, Power BI)" {{ old('q4_desired_skill') == 'Create data visualization dashboards (Tableau, Power BI)' ? 'selected' : '' }}>Create data visualization dashboards (Tableau, Power BI)</option>
                 </select>
@@ -318,7 +318,7 @@
             <div class="form-group">
                 <label>Question 5: Which activity would you like to spend most of your time on?</label>
                 @foreach([
-                    'Write image/graphics processing algorithms' => 'Write image/graphics processing algorithms',
+                    'Write image or graphics processing algorithms' => 'Write image or graphics processing algorithms',
                     'Design software architecture (UML)' => 'Design software architecture (UML)',
                     'Debug and test software' => 'Debug and test software',
                     'Build network protocols (TCP/IP, HTTP)' => 'Build network protocols (TCP/IP, HTTP)',

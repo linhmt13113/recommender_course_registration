@@ -12,6 +12,24 @@
 
     <a href="{{ route('ad_student.create') }}" class="btn btn-primary mb-3">Add Student</a>
 
+        <!-- Form search -->
+        <form action="{{ route('ad_student.index') }}" method="GET" class="mb-3">
+        <div class="row">
+            <div class="col-md-6">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    class="form-control"
+                    placeholder="Search by ID or Name">
+            </div>
+            <div class="col-md-6">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="{{ route('ad_student.index') }}" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
+    </form>
+
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -41,7 +59,6 @@
         </tbody>
     </table>
 
-    <!-- Pagination -->
-    {{ $students->links() }}
+    {{ $students->appends(request()->query())->links() }}
 </div>
 @endsection

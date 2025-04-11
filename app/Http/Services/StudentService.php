@@ -16,9 +16,17 @@ class StudentService
      */
     public function index(Request $request)
     {
-        // Nếu cần thêm filter, có thể bổ sung vào đây
-        // If additional filters are needed, they can be added here
-        return Student::with('courses')->paginate(10);
+        $search = $request->input('search');
+        // Eager load quan hệ 'major' và 'courses'
+        $query = Student::with('major', 'courses');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('student_id', 'LIKE', "%{$search}%")
+                    ->orWhere('student_name', 'LIKE', "%{$search}%");
+            });
+        }
+        return $query->paginate(10);
     }
 
     /**
@@ -40,16 +48,16 @@ class StudentService
     public function store(Request $request)
     {
         $request->validate([
-            'student_id'   => 'required|unique:students,student_id',
+            'student_id' => 'required|unique:students,student_id',
             'student_name' => 'required',
-            'major_id'     => 'required'
+            'major_id' => 'required'
         ]);
 
         $student = new Student();
-        $student->student_id   = $request->input('student_id');
+        $student->student_id = $request->input('student_id');
         $student->student_name = $request->input('student_name');
-        $student->major_id     = $request->input('major_id');
-        $student->password     = bcrypt('student123');
+        $student->major_id = $request->input('major_id');
+        $student->password = bcrypt('student123');
         $student->save();
 
         return $student;
@@ -63,7 +71,7 @@ class StudentService
     public function prepareEditData($student_id)
     {
         $student = Student::findOrFail($student_id);
-        $majors  = Major::all();
+        $majors = Major::all();
         return compact('student', 'majors');
     }
 
@@ -76,8 +84,8 @@ class StudentService
     {
         $request->validate([
             'student_name' => 'nullable|string|max:255',
-            'major_id'     => 'sometimes|nullable|exists:majors,id',
-            'password'     => 'nullable|string|min:6'
+            'major_id' => 'sometimes|nullable|exists:majors,id',
+            'password' => 'nullable|string|min:6'
         ]);
 
         $student = Student::findOrFail($student_id);

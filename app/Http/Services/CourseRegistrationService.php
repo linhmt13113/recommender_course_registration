@@ -171,8 +171,7 @@ class CourseRegistrationService
             // Check if the course is open for registration
             $open = SemesterCourse::where('course_id', $reg->course_id)->exists();
             if ($open) {
-                $priorityCourses[] = 'The course ' . $reg->course->course_name . ' has not been completed. Please prioritize registering again if needed.';
-                // Môn ' . $reg->course->course_name . ' chưa hoàn thành, vui lòng ưu tiên đăng ký lại nếu cần.
+                $priorityCourses[] = 'The subject ' . $reg->course->course_name . ' has not been completed. Please prioritize registering again in this semester.';
             }
         }
         return $priorityCourses;

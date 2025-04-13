@@ -31,4 +31,10 @@ class CourseMajor extends Model
     {
         return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
+
+    public function prerequisite()
+    {
+        return $this->hasOne(\App\Models\Prerequisite::class, 'course_id', 'course_id');
+    }
+
 }

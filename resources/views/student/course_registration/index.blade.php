@@ -235,17 +235,27 @@
                             <th>Subject code</th>
                             <th>Subject name</th>
                             <th>Credits</th>
+                            <th>Prerequisite Subject ID</th>
+                            <th>Prerequisite Subject Name</th>
+                            <th>Prerequisite Type</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($electiveCourses as $item)
                             @php
                                 $course = optional($item->course);
+                                $prereqId = optional($course->prerequisite)->prerequisite_course_id;
+                                $prereq = $course->prerequisite;
+                                $prereqCourseName = optional(optional($course->prerequisite)->prerequisiteCourse)->course_name;
+                                $prereqType = $prereq ? $prereq->prerequisite_type : '';
                             @endphp
                             <tr>
                                 <td>{{ optional($course)->course_id }}</td>
                                 <td>{{ optional($course)->course_name }}</td>
                                 <td>{{ optional($course)->credits }}</td>
+                                <td>{{ $prereqId ?? '' }}</td>
+                                <td>{{ $prereqCourseName ?? '' }}</td>
+                                <td>{{ $prereqType  }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -48,7 +48,7 @@ class Course extends Model
     // Quan hệ: Một môn học có thể có nhiều yêu cầu tiên quyết (prerequisites)
     public function prerequisites()
     {
-        return $this->hasMany(Prerequisite::class, 'course_id');
+        return $this->hasMany(Prerequisite::class, 'course_id', 'course_id');
     }
 
     // Quan hệ: Một môn học có thể là prerequisite của nhiều môn học khác

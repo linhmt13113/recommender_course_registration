@@ -30,6 +30,22 @@ DB_PASSWORD : Your database password
 
 Import database: course_registration.sql to your database
 
+Admin:
+admin@example.com
+admin123
+
+Staff:
+STAFF01
+staff123
+
+Lecturer:
+LEC01
+lecturer123
+
+Student:
+ITITCE01
+student123
+
 ## 4. Run the Project
 
 ```bash
